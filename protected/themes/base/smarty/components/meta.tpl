@@ -17,6 +17,7 @@
 	<!-- CSS -->
 	<link type="text/css" rel="stylesheet" href="/css/normalize.css" >
 	<link type="text/css" rel="stylesheet" href="/css/style.css" >
+	<link rel="icon" href="/img/favicon.png" type="image/x-icon">
 
 </head>
 <body class="page-{$_page.system}">

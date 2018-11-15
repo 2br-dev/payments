@@ -4,7 +4,7 @@
       <p><strong>Дата регистрации:</strong> {$smarty.session.user.created}</p>
     </div>
   {else}
-    <form action="/auth/auth.php" method="post">
+    <form method="post" id="authorization">
         <label for="login">Login:</label>
         <input id="login" type="text" name="login" required/>
         <label for="password">Password:</label>

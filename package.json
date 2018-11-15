@@ -1,0 +1,23 @@
+{
+  "name": "authorization.local",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "material-components-web": "^0.41.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2br-dev/payments.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/2br-dev/payments/issues"
+  },
+  "homepage": "https://github.com/2br-dev/payments#readme"
+}

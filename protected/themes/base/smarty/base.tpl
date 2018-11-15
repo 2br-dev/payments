@@ -1,8 +1,9 @@
 {strip}
 {include file="./components/meta.tpl"}
 
-{$_page.content}
 
+<div><h1><a href='logout.php'>LOGOUT</a></h1><div>
+{$_page.content}
 
 {include file="./components/scripts.tpl"}
 {/strip}

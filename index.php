@@ -1,12 +1,20 @@
 <?php
 
-$t1 = microtime(true);
+  session_start();
 
-require 'define.php';
+  if(!$_SESSION['authorization']){
+    header('location:login.php');
+  };
 
-$app = new Fastest\Core\App();
+  $t1 = microtime(true);
 
-$app->terminate($_SERVER);
+  require 'define.php';
+
+  $app = new Fastest\Core\App();
+
+  $app->terminate($_SERVER);
+
+?>  
 
 
 

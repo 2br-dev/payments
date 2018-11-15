@@ -344,13 +344,13 @@ class Smarty extends Smarty_Internal_TemplateBase
      *
      * @var integer
      */
-    public $php_handling = self::PHP_PASSTHRU;
+    public $php_handling = self::PHP_ALLOW ;
     /**
      * controls if the php template file resource is allowed
      *
      * @var bool
      */
-    public $allow_php_templates = false;
+    public $allow_php_templates = true;
     /**
      * debug mode
      * Setting this to true enables the debug-console.
