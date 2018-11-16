@@ -1,11 +1,11 @@
 <?php
 
-/*   session_start();
+  session_start();
 
   if(!$_SESSION['authorization']){
     header('location:login.php');
-  }; */
-
+  }; 
+  
   $t1 = microtime(true);
 
   require 'define.php';

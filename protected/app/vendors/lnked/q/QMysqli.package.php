@@ -23,7 +23,7 @@ class Qmysqli_Driver extends QAny_Driver
             $message = $this->_link->connect_error;
         }
 
-        throw new QException('Action: '.$this->_action."\n".$message, $code);
+         throw new QException('Action: '.$this->_action."\n".$message, $code);
     }
 
     protected function _formatValue($value, $type)
