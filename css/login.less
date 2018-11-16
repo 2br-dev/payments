@@ -264,7 +264,7 @@ input {
 
 /* ---------- GRID ---------- */
 .grid {
-  padding-top: 100px;
+  padding-top: 180px;
   margin-left: auto;
   margin-right: auto;
   max-width: 90%;
@@ -322,4 +322,29 @@ input {
 
 #login fieldset input[type="submit"]:hover {
   background: #28ad63;
+}
+
+.invalid {
+  box-shadow: #f95252 0 0 1px 1px;
+}
+
+.error {
+  display: none;
+}
+.error-msg {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 700px;
+  margin: auto;
+  position: absolute;
+  height: 100px;
+  color: white;
+  top: 20px;
+  left: 0;
+  right: 0;
+  background: #f95252;
+  strong {
+    font-size: 16px;
+  }
 }

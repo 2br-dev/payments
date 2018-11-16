@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-14 15:46:29
+/* Smarty version 3.1.32, created on 2018-11-16 14:56:00
   from 'C:\OpenServer\domains\authorization.local\protected\app\core\admin-template\view\lists\index\index.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5bec1925bae5e0_08415131',
+  'unifunc' => 'content_5beeb05065e7b9_24234409',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5bec1925bae5e0_08415131 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5beeb05065e7b9_24234409 (Smarty_Internal_Template $_smarty_tpl) {
 ?><table class="table" id="meta_data"><col><col width="180"><col width="200"><col width="65"><thead><tr><th colspan="4"><?php echo t('titles.lists');?>
 </th></tr></thead><tbody><tr><td class="h"><?php echo t('titles.list.name');?>
 </td><td class="h">Системное имя (bind)</td><td class="h">Кол-во элементов в списке</td><td class="h"></td></tr><?php

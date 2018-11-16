@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-14 15:35:16
+/* Smarty version 3.1.32, created on 2018-11-16 14:55:52
   from 'C:\OpenServer\domains\authorization.local\protected\app\core\admin-template\view\blocks\index\index.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5bec16844a8695_77579179',
+  'unifunc' => 'content_5beeb0482c8386_19350328',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5bec16844a8695_77579179 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5beeb0482c8386_19350328 (Smarty_Internal_Template $_smarty_tpl) {
 ?><table class="table"><col><col width="200"><col width="150"><col width="150"><col width="120"><col width="65"><thead><tr><th colspan="6">Список зон блоков</th></tr></thead><tbody><tr><td class="h"><?php echo t('titles.name');?>
 </td><td class="h">Код вывода</td><td class="h">Системное имя <span class="ness_color">*</span></td><td class="h">Шаблон страницы</td><td class="h">Блок активен</td><td class="h"></td></tr><?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['list_form']->value, 'item', false, NULL, 'i', array (
