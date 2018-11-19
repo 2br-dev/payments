@@ -9,11 +9,11 @@
       </select>
       <p class="payments-data"><b>Данные платежа</b></p>
       <label for="sum">Сумма платежа:</label>
-      <input type="number" id="sum">
+      <input type="text" id="sum">
       <label for="date">Дата платежа:</label>
       <input type="date" id="date">
       <label for="number">Номер платежа:</label>
-      <input type="number" id="number">
+      <input type="text" id="number">
       <button type="submit">Отправить</button>
     </form>  
   </div>

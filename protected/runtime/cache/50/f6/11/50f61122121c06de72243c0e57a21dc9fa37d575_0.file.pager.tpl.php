@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-16 15:11:20
+/* Smarty version 3.1.32, created on 2018-11-19 14:09:20
   from 'C:\OpenServer\domains\authorization.local\protected\app\core\admin-template\system\pager.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5beeb3e8227028_95858450',
+  'unifunc' => 'content_5bf299e0494b34_98602412',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5beeb3e8227028_95858450 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5bf299e0494b34_98602412 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\OpenServer\\domains\\authorization.local\\protected\\app\\vendors\\smarty\\smarty\\libs\\plugins\\function.math.php','function'=>'smarty_function_math',),));
 if (isset($_smarty_tpl->tpl_vars['pager_info']->value) && !empty($_smarty_tpl->tpl_vars['pager_info']->value)) {
 $_smarty_tpl->_assignInScope('uri', $_SERVER['REQUEST_URI']);

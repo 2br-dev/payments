@@ -11,7 +11,7 @@ $(document).ready(function() {
     
     $.ajax({
         type: "POST",
-        url: "/login.php",
+        url: "/ajax/login",
         data: data,
         success: function(res){
           var response = res.slice(0,4);
@@ -30,11 +30,74 @@ $(document).ready(function() {
     });
   });
 
-  $( ".form-input" ).click(function() {
-    $( ".form-input" ).removeClass( "invalid" );
-    $( '.error' ).fadeOut();
-  });
+  $("#vystavlenie-schetov").submit(function(e){
+    e.preventDefault();
+    var self = this;
 
+    var allRenters = [];
+    $("input[name='renter']:checked").each(function() {
+      allRenters.push($(this).val());
+    });
+
+    var data = {
+      year:     $("input[name='year']:checked").val(),
+      month:    $("input[name='month']:checked").val(),
+      renter:   allRenters,
+      first:    $("input[name='from-first']:checked").val(),
+      date:     $("input[name='date']").val(),
+    };
+    
+    console.log(data);
+    //валидация
+    if(!data.renter) {
+      $(".renter-error").show(); 
+    } 
+    if(!data.date) {
+      $(".date-error").addClass('error');
+    } 
+    if(!data.year) {
+      $(".year-error").show();
+    } 
+    if(!data.month) {
+      $(".month-error").show();
+    } 
+
+    if (data.date && data.year && data.month && data.renter) {
+                 
+      $.ajax({
+        type: "POST",
+        url: "/ajax/write",
+        data: data,
+        success: function(res){
+          console.log(res);
+          self.reset();
+        },
+        error: function(err) {
+          console.log(err);
+        }
+      });
+    }
+  
+  }); 
+
+});
+
+
+$("input[name='year']").click(function() {
+  $(".year-error").hide();
+});
+$("input[name='month']").click(function() {
+  $(".month-error").hide();
+});
+$("input[name='renter']").click(function() {
+  $(".renter-error").hide();
+});
+$("input[name='date']").click(function() {
+  $(".date-error").removeClass('error');
+});
+$( ".form-input" ).click(function() {
+  $( ".form-input" ).removeClass( "invalid" );
+  $( '.error' ).fadeOut();
 });
 
 $( ".renter" ).click(function() {
@@ -43,7 +106,6 @@ $( ".renter" ).click(function() {
 $( ".renter-contract p" ).click(function() {
   $(this).siblings('.renters-schet').slideToggle();
 });
-
 
 // custom select
 $(".custom-select").each(function() {

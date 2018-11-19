@@ -29,10 +29,10 @@ define('SEARCH_VAR', 'q');
 define('ADMIN_EMAIL', 'prog@2-br.ru');
 
 // CSP
-define('ENABLE_EXPECT_CT', true);
-define('ENABLE_P3P', true);
-define('ENABLE_CSP', true);
-define('ENABLE_CPS_REPORT_ONLY', true);
+define('ENABLE_EXPECT_CT', false);
+define('ENABLE_P3P', false);
+define('ENABLE_CSP', false);
+define('ENABLE_CPS_REPORT_ONLY', false);
 
 // PATH
 define('PATH_ROOT', __DIR__);

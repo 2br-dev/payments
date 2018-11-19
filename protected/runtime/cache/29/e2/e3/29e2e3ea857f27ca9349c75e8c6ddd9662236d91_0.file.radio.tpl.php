@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-16 15:11:13
+/* Smarty version 3.1.32, created on 2018-11-16 18:15:14
   from 'C:\OpenServer\domains\authorization.local\protected\app\core\admin-template\fields\radio.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5beeb3e1a3eca5_60374504',
+  'unifunc' => 'content_5beedf02d0b1b0_58771976',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:system/controll.tpl' => 1,
   ),
 ),false)) {
-function content_5beeb3e1a3eca5_60374504 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5beedf02d0b1b0_58771976 (Smarty_Internal_Template $_smarty_tpl) {
 if (isset($_smarty_tpl->tpl_vars['list']->value) && !empty($_smarty_tpl->tpl_vars['list']->value)) {
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['list']->value, 'e');
 if ($_from !== null) {

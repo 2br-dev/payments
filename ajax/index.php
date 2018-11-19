@@ -1,12 +1,9 @@
 <?php
-	// 
 
 error_reporting(E_ALL);
 
 if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
 {
-	$phone = $_POST["phone"];
-	$field = $_POST["field"];
 
 	$domain	= $_SERVER["HTTP_HOST"];
 
@@ -19,378 +16,249 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 	include_once '../define.php';
 
 
-
-
-	if (!session_id())
+	if ($controller == 'login')
 	{
-		session_start();
-	}
-
-	if ($controller == 'sendmessage')
-	{
-		$status = false;
-		$errors = array();
-		$responce = array();
-
-		$con = new mysqli("127.0.0.1", "root", "", "mdenta");
+		$host='localhost';
+		$user='root';
+		$pass='';
+		$db='authorization';
 	
-		if ($con -> connect_error) {
-			echo "database connection error";
+		$conn=mysqli_connect($host,$user,$pass,$db);
+	
+		$login = mysqli_real_escape_string($conn, $_POST['login']);
+		$password = mysqli_real_escape_string($conn, $_POST['password']);
+		//$password = md5($password);
+	
+		$query = "SELECT * FROM db_mdd_renters WHERE login='$login' AND password='$password' ";
+		$result = mysqli_query($conn,$query);
+			
+		if (mysqli_num_rows($result) == 1) {
+			session_start();
+			$_SESSION['authorization'] = 'true';
+			header('location:index.php');  
+		} 
+		else {
+			echo 'fail';
 		}
-		$stmt = $con->prepare("INSERT INTO db_mdd_formdata (field, phone) VALUES (?, ?)");
-		$stmt->bind_param("ss",$field,$phone);
-		if ($stmt->execute()) {
-			echo "success";
-		} else {
-			echo "failure";
-		}
+	}
 
-        $domen = str_replace([ 'http://', 'www.', 'www' ], '', $_SERVER['SERVER_NAME']);
-
-        $subject = '<h2>Новое сообщение, на сайте ' . $domen . '</h2>';
-
-        $body  = '';
-        $body .= '<p>Здравствуйте,</p>';
-        $body .= '<p>Новое сообщение, на сайте ' . $domen . '</p>';
-        $body .= '<p>--------------------</p>';
-
-        $phone = isset($_POST['phone']) ? $_POST['phone'] : '';
-		$field = isset($_POST['field']) ? $_POST['field'] : '';
+	if ($controller == 'write')
+	{
+		$allcontracts = Q("SELECT * FROM `#_mdd_contracts`")->all();
+		list($tday, $tmonth, $tyear) = explode('.', date("j.n.Y"));
+		$tday 		= intval($tday);
+		$tmonth 	= intval($tmonth);
+		$tyear 		= intval($tyear);
 		
-		if ($field == '')
-		{
-			$errors['field'] = 'field';
+		foreach ($allcontracts as $key => $value) {
+		//получаем день, месяц, и год начала договора		
+		$allcontracts[$key]['sday'] 				= date('j', strtotime($value['start_date']));
+		$allcontracts[$key]['smonth'] 			= date('n', strtotime($value['start_date']));
+		$allcontracts[$key]['syear'] 				= date('Y', strtotime($value['start_date']));
+		list($sday, $smonth, $syear) 				= explode('.', date("j.n.Y", strtotime($value['start_date'])));
+
+		//получаем день, месяц, год окончания договора
+		$allcontracts[$key]['eday'] 				= date('j', strtotime($value['end_date']));
+		$allcontracts[$key]['emonth'] 			= date('n', strtotime($value['end_date']));
+		$allcontracts[$key]['eyear'] 				= date('Y', strtotime($value['end_date']));
+				
+		$allcontracts[$key]['sday']         = intval($allcontracts[$key]['sday']);
+		$allcontracts[$key]['smonth']       = intval($allcontracts[$key]['smonth']);
+		$allcontracts[$key]['syear']        = intval($allcontracts[$key]['syear']);
+		$allcontracts[$key]['eday']         = intval($allcontracts[$key]['eday']);
+		$allcontracts[$key]['emonth']       = intval($allcontracts[$key]['emonth']);
+		$allcontracts[$key]['eyear']        = intval($allcontracts[$key]['eyear']);
+		// Метка времени текущей даты, даты начала догоовра, даты окончания договора
+		$allcontracts[$key]['tmetka'] 			= mktime(0, 0, 0, $tmonth, $tday, $tyear);
+		$allcontracts[$key]['smetka'] 			= mktime(0, 0, 0, $allcontracts[$key]['smonth'], $allcontracts[$key]['sday'], $allcontracts[$key]['syear']);
+		$allcontracts[$key]['emetka'] 			= mktime(0, 0, 0, $allcontracts[$key]['emonth'], $allcontracts[$key]['eday'], $allcontracts[$key]['eyear']);
+
+		//Проверка - является ли договор действующим.
+		if ((($allcontracts[$key]['tmetka'] >= $allcontracts[$key]['smetka']) && ($allcontracts[$key]['tmetka'] <= $allcontracts[$key]['emetka'])) || $allcontracts[$key]['end_date'] == ''){
+			$status = 1;
 		}
-		if ($phone == '')
-		{
-			$errors['phone'] = 'name';
+		else {
+			$status = 0;
 		}
-
-        if ($field)
-        {
-            $body .= '<p>Заявка с формы: <strong>'. $field .'</strong></p>';
-        }
-
-        if ($phone)
-        {
-            $body .= 'Телефон: <a href="tel:'. $phone .'"><strong>'. $phone .'</strong></a>';
-        }
-
-
-        $body .= '<p>--------------------</p>';
-        $body .= '<p>Дата отправки: '. date('d.m.Y H:i:s') .'</p>';
-
-
-		$emails = getfl('emails');
-
-            // Create the Transport
-            $transport = (new \Swift_SmtpTransport('smtp.mail.ru', 465, 'ssl'))
-                ->setUsername('prog@2-br.ru')
-                ->setPassword('123123prog')
-            ;
-
-            // Create the Mailer using your created Transport
-            $mailer = new \Swift_Mailer($transport);
-
-            // Create a message
-            $message = (new \Swift_Message($subject))
-                ->setFrom(['prog@2-br.ru' => 'DEV'])
-                ->setTo($emails)
-                ->setBody($body, 'text/html')
-            ;
-            //$mailer->send($message);
-
-            if ($mailer->send($message))
-            {
-                //unset($_SESSION[$this->session]);
-                $response['success'] = 1;
-            }
-            else
-            {
-                $response['error'] = 1;
-            }
-
-		exit(
-			json_encode( $responce, 64 | 256 )
-		);
-	}
-
-	if ($controller == 'feedback')
-	{
-		$status = false;
-		$errors = array();
-		$responce = array();
-
-		$name = isset($_POST['name']) ? $_POST['name'] : '';
-		$phone = isset($_POST['phone']) ? $_POST['phone'] : '';
-		$text = isset($_POST['text']) ? $_POST['text'] : '';
-
-		if ($text == '')
-		{
-			$errors['text'] = 'text';
-		}
-
-		if ($name == '')
-		{
-			$errors['name'] = 'name';
-		}
-
-
-		$_phone = str_replace(array('(', ')', '-', ' ', '+'), '', $phone);
-
-		if (strlen($_phone) !== 11 || $phone == '')
-		{
-			$errors['phone'] = 'phone';
-		}
-		
-
-		if (empty($errors))
-		{
-			$message = '<p><strong>Имя: </strong>' . $name . '</p><p><strong>Телефон: </strong>' . $phone . '</p><p><strong>Сообщение: </strong>'. $text .'</p>';
-			$emails = getfl('emails');
-	        sendMail('Сообщение с сайта КС-Клиник', $message, '92279@inbox.ru', $emails, '2212198638180067olga', 'smtp.inbox.ru');
-	        $status = true;
-
-	        O('_mdd_consultation')->create(array(
-	           's:name'        =>  $name,
-	           's:phone'       =>  $phone,
-	           'e:created'     =>  'NOW()',
-	           'i:visible'     =>  1
-	        ));
-       	}
-
-		$responce['status'] = $status;
-		$responce['errors'] = $errors;		
-
-		exit(
-			json_encode( $responce, 64 | 256 )
-		);
-	}
-
-	elseif( $controller == 'search' )
-	{
-		$term = __get( 'term' );
-		$result = Q("SELECT `id`, `city`, `region` FROM `#_mdd_cityes` WHERE `city` LIKE '%". $term ."%' ORDER BY `city` ASC LIMIT 10")->all();
-		if( !empty ( $result ) )
-		{
-			foreach( $result as &$arr )
-			{
-				$arr['label'] = str_replace( $term, '<span class="autocomplete-selected">' . $term . '</span>', $arr['city'] );
-			}
-		}
-		echo json_encode( $result );
-	}
-
-	elseif ($controller == 'registration')
-	{
-		$phone 		= __post('phone');
-		$password 	= __post('password');
-		$name 		= __post('name');
-		$email 		= __post('email');
-		$city 		= __post('city');
-		$address 	= __post('address');
-
-		$result = Q("INSERT INTO `#_mdd_users` SET `phone`=?s, `password`=?s, `name`=?s, `email`=?s, `city`=?s, `address`=?s, `created`=NOW()", array( 
-			$phone, md5( $password ), $name, $email, $city, $address
+		O("_mdd_contracts", $allcontracts[$key]['id'])->update(array(
+			'status' => $status
 		));
+	} //end foreach
 
-		echo json_encode( array( 'result' => 1 ), 64 | 256 ); 
-	}
+	//exit(__debug($allcontracts));
 
-	elseif( $controller == 'validation' )
-	{
-		$value = __post('value');
-		$field = isset($path[2] ) ? $path[2] : '';
+	$renters = Q("SELECT 
 
-		if( $field !== '' )
-		{
-			if( $field == 'email' )
-			{
-				if( !isset($_SESSION['registration']['email_code'] ) || empty( $_SESSION['registration']['email_code'] ) )
-				{
-					$_SESSION['registration']['email_code'] = rand(10000, 99990);
+			`renter`.`id` as `renter_id`, `renter`.`short_name`, `renter`.`full_name`, `contract`.`number` as `contract_number`, `contract`.`id` as `contract_id`
 
-					$code = $_SESSION['registration']['email_code'];
-					$domen = str_replace( array( 'http://', 'www.', 'www' ) , '', $_SERVER['SERVER_NAME'] );
-				   
-					$m  = '<p>Здравствуйте!</p>';
-					$m .= '<p>Ваш код подтверждения на сайте ' . $domen . ': ' . $code . '</p>';
-					$m .= '<p>Дата и время отправки сообщения: '. date( 'd.m.Y H:i:s' ) .'</p>';
+			FROM `#_mdd_contracts` as  `contract`
+			LEFT JOIN `#_mdd_renters` as `renter`
+			ON `contract`.`renter` = `renter`.`id`
+			WHERE `contract`.`status` = ?i", array(1))->all();
+	
+	$max_prev_number_schet = Q("SELECT MAX(`id`) as `number` FROM `#_mdd_invoice`")->row('number'); // Получаем макс. индекс для определения номера следующего счета. Номер текущего элемента - последний.
+	$schet_prev_number = Q("SELECT `contract_number` FROM `#_mdd_invoice` WHERE `id` = ?i", array($max_prev_number_schet))->row('number');
+	$max_prev_number_akt = Q("SELECT MAX(`akt_number`) as `number` FROM `#_mdd_invoice`")->row('number');
+	$max_prev_number_sf = Q("SELECT MAX(`sf_number`) as `number` FROM `#_mdd_invoice`")->row('number');		
 
-					$sended = sendMail('Подтверждение адреса электронной почты', $m, 'info@' . $domen, $value);
-					
-					$result = (int)is_email($value) && $sended;
-				}
-				else
-				{
-					$result = 0;
-				}
 
-				echo
-					json_encode(
-						array(
-							'result' => $result
-						), 64 | 256
-					);
-			}
-			elseif( $field == 'email_code' )
-			{
-				if( $_SESSION['registration']['email_code'] == $value )
-				{
-					$result = 1;
-				}
-				else
-				{
-					$result = 0;
-				}
+	$error = 0;
 
-				echo json_encode(
-					array(
-						'result' => $result
-					), 64 | 256
-				);
-			}
-			elseif( $field == 'phone' )
-			{
-				if( is_phone($value) )
-				{
-					$domen = str_replace( array( 'http://', 'www.', 'www' ) , '', $_SERVER['SERVER_NAME'] );
-					$phone = str_replace( array( '+', '(', ')', ' ', '-' ), '', $value );
-
-					if( !isset($_SESSION['registration']['phone_code'] ) || empty( $_SESSION['registration']['phone_code'] ) )
-					{
-						$_SESSION['registration']['phone_code'] = rand(10000, 99990);
-
-						$code = $_SESSION['registration']['phone_code'];
-						$url = "http://sms.ru/sms/send?api_id=973996a8-7094-1674-d1b6-e7f63a0c826a&to=". $phone ."&text=" . urlencode( "Ваш код подтверждения на сайте " . $domen . ": " ) . $code;
-						$responce = file_get_contents( $url );
-					}
-
-					$result = 1;
-				}
-				else
-				{
-					$result = 0;
-				}
-				
-				echo json_encode(
-					array(
-						'result' => $result
-					), 64 | 256
-				);
-			}
-			elseif( $field == 'phone_code' )
-			{
-				if( $_SESSION['registration']['phone_code'] == $value )
-				{
-					$result = 1;
-				}
-				else
-				{
-					$result = 0;
-				}
-
-				echo json_encode(
-					array(
-						'result' => $result
-					), 64 | 256
-				);
-			}
-			elseif( $field == 'fio' )
-			{
-				if((bool)preg_match('~[^а-яёА-ЯЁ\- ]~u', $value))
-				{
-					$result = 0;
-				}
-				else
-				{
-					$result = 1;
-				}
-
-				echo json_encode(
-					array(
-						'result' => $result
-					), 64 | 256
-				);
-			}
-			elseif( $field == 'address' )
-			{
-				$result = 1;
-				
-				echo json_encode(
-					array(
-						'result' => $result
-					), 64 | 256
-				);
-			}
-			elseif( $field == 'birthdate' )
-			{
-				echo json_encode(
-					array(
-						'result' => 0
-					), 64 | 256
-				);
-			}
-			elseif( $field == 'passport_series' )
-			{
-				echo json_encode(
-					array(
-						'result' => 0
-					), 64 | 256
-				);
-			}
-			elseif( $field == 'passport_number' )
-			{
-				echo json_encode(
-					array(
-						'result' => 0
-					), 64 | 256
-				);
-			}
-			elseif( $field == 'passport_issued' )
-			{
-				echo json_encode(
-					array(
-						'result' => 0
-					), 64 | 256
-				);
-			}
-			elseif( $field == 'passport_date' )
-			{
-				echo json_encode(
-					array(
-						'result' => 0
-					), 64 | 256
-				);
-			}
-			elseif( $field == 'info' )
-			{
-				echo json_encode(
-					array(
-						'result' => 1
-					), 64 | 256
-				);
-			}
-			elseif( in_array( $field, array( 'site', 'vkontakte', 'facebook', 'odnoklassniki', 'moimir', 'twitter', 'livejournal' ) ) )
-			{
-				$result = ( _isURL( $value ) && checkLink( $value ) ) ? 1 : 0 ;
-				
-				echo json_encode(
-					array(
-						'result' => $result
-					), 64 | 256
-				);
-			}
-			else
-			{
-				echo json_encode(
-					array(
-						'result' => 0
-					), 64 | 256
-				);
-			}
+	if (isset($max_prev_number_schet)){
+		if (isset($_POST['from-first'])){
+			$number_schet = 1;
 		}
+		else {
+			$number_schet = $schet_prev_number + 1;
+		}
+		
+	}
+	else {
+		$number_schet = 1;
 	}
 
+	//exit(__debug($number_schet));
+
+	if (isset($max_prev_number_akt)){
+		$number_akt = $max_prev_number_akt + 1;
+	}
+	else {
+		$number_akt = 1;
+	}	
+
+	if (isset($max_prev_number_sf)){
+		$number_sf = $max_prev_number_sf + 1;
+	}
+	else {
+		$number_sf = 1;
+	}
+		
+
+	if (!empty($_POST['renter']) && !empty($_POST['date']) && !empty($_POST['year']) && !empty($_POST['month'])){
+	//exit(__debug($_POST));
+	
+	switch ($_POST['month']) {
+		case 'Январь':
+			$month_number = '01';
+			$days = 31;
+			break;
+		case 'Февраль':
+			$month_number = '02';
+			$days = 28;
+			break;
+		case 'Март':
+			$month_number = '03';
+			$days = 31;
+			break;
+		case 'Апрель':
+			$month_number = '04';
+			$days = 30;
+			break;
+		case 'Май':
+			$month_number = '05';
+			$days = 31;
+			break;
+		case 'Июнь':
+			$month_number = '06';
+			$days = 30;
+			break;
+		case 'Июль':
+			$month_number = '07';
+			$days = 31;
+			break;
+		case 'Август':
+			$month_number = '08';
+			$days = 31;
+			break;
+		case 'Сентябрь':
+			$month_number = '09';
+			$days = 30;
+			break;
+		case 'Октябрь':
+			$month_number = '10';
+			$days = 31;
+			break;
+		case 'Ноябрь':
+			$month_number = '11';
+			$days = 30;
+			break;
+		case 'Декабрь':
+			$month_number = '12';
+			$days = 31;
+			break;
+		
+		default:
+			$month_number = '00';
+			$days = 0;
+			break;
+		}				
+
+		foreach ($_POST['renter'] as $key => $value) {				
+		
+			$contracts_for_schet = Q("SELECT * from `#_mdd_contracts` as `contract`
+									WHERE `contract`.`id` = ?i 
+									", array($value))->row();
+
+			$start_arenda = explode('.', $contracts_for_schet['start_arenda']); // Парсим дату начала аренды из договора
+		
+		// Проверяем совпадают ли месяц начала аренды (меньше или равно) в договоре с месяцем выставляемого счета и равен ли год
+			if (($start_arenda[1] == $month_number) && ($start_arenda[2] == $_POST['year'])){
+
+				// Если да, и день начала аренды ревен 1 то колличество в счете = 1	
+				if ($start_arenda[0] == '01') {
+					$summa = $contracts_for_schet['summa'];
+					$amount = 1;
+				}
+				// Если день начала аренды больше 1, то колличество дней аренды в текущем месяце в счете вычисляется
+				else {
+					$days_arenda = $days - $start_arenda[0];
+					$amount = $days_arenda/$days;			
+				}
+			}
+			else {
+				$amount = 1;
+			}
+
+			$schet_last_id = mysqli_insert_id(); // Получаем id последнего добавленного счета
+
+			// Получаем последний добавленный счет - для вычисления поля по которому будет определяться номер следующего счета.
+			$schet_last = Q("SELECT * FROM `#_mdd_invoice` WHERE `id` = ?i", array($schet_last_id))->row();
+			$schet_index = str_replace('-', '', $schet_last['date']);// Преобразуем дату счета - убераме символы "-"
+			$schet_last_number_index = $schet_last['id'] + $schet_index;
+			O('_mdd_invoice', $schet_last['id'])->update(array(						
+				'number_index' => $schet_last_number_index								
+			));
+			
+			$akt_last_id = mysqli_insert_id(); // Получаем id последнего добавленного акта
+
+			// Увеличиваем счетчики номеров для счетов, актов, сф
+			$number_schet++;	
+			
+			$summa = $contracts_for_schet['summa'] * $amount;
+			$summa = number_format($summa, 2, '.', '');
+
+			// Добавляем запись в таблицу Счета
+			O('#_mdd_invoice')->create(array(
+				'contract_date' => $_POST['date'],
+				's:period_year' => $_POST['year'],
+				's:period_month' => $_POST['month'],
+				'contract_id' => $contracts_for_schet['id'],
+				'contract_number' => $number_schet,
+				'status' => 0,
+				'payment_info' => '',
+				'summa'	=> $summa,
+				'amount' => $amount,
+				'rest' => $summa,
+				'number_index' => 0,
+				'sf_id' => $schet_last_id,
+				'sf_number' => $number_schet,
+				'akt_id' => $akt_last_id,
+				'akt_number' => $number_schet,				
+			));					
+		}				
+	}		
+	
+
+	}
 	return true ;
 }

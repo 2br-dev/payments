@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-16 11:43:58
+/* Smarty version 3.1.32, created on 2018-11-19 11:39:47
   from 'C:\OpenServer\domains\authorization.local\protected\app\core\admin-template\view\modules\binds\index.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5bee834eadd234_86026388',
+  'unifunc' => 'content_5bf276d3be3367_37084957',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5bee834eadd234_86026388 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5bf276d3be3367_37084957 (Smarty_Internal_Template $_smarty_tpl) {
 ?><table class="table" id="meta_data"><col><col><col width="110"><col width="60"><thead><tr class="th"><th colspan="4">Список функций</th></tr></thead><tbody><tr><td class="h">Название функции</td><td class="h">Системное имя</td><td class="h"><?php echo t('caching');?>
 </td><td class="h"></td></tr><?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['binds']->value, 'bind');
