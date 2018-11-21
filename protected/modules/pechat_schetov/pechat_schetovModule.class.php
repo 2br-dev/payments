@@ -10,33 +10,71 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
     {        
         return $this->blockMethod();
     }
-
-    
+ 
     public function blockMethod()
     {
-         $reestr = Q("SELECT 
-            `contract`.`id` as `contract_id`, `contract`.`number` as `contract_number`, `contract`.`datetime`,
-            `contract`.`status`, `contract`.`summa`, `contract`.`start_date`, `contract`.`end_date`, `contract`.`peni`,
-            `contract`.`start_arenda`, 
-            
-            `room`.`id` as `room_id`, `room`.`number` as `room_number`, `room`.`floor`, `room`.`square`,
-            `room`.`number_scheme`, 
-            
-            `renter`.`id` as `renter_id`, `renter`.`short_name`, `renter`.`full_name`, `renter`.`ogrn`, `renter`.`kpp`,
-            `renter`.`inn`, `renter`.`bank_bik`, `renter`.`bank_ks`, `renter`.`bank_rs`, `renter`.`bank_name`,`renter`.`email`, 
-            `renter`.`phone`, `renter`.`form`, `renter`.`post_adress`, `renter`.`uridich_address`  
-            
-            FROM `#_mdd_contracts` as `contract`					
-            LEFT JOIN `#_mdd_rooms` as `room` ON `contract`.`rooms` = `room`.`id`
-            LEFT JOIN `#_mdd_renters` as `renter` ON `contract`.`renter` = `renter`.`id`
-            WHERE `contract`.`status` = ?i", array(1))->all();
-                 
-                
-        // exit(__($reestr));
+       // include_once 'define.php';
 
-        return [
-            'template' => 'block',
-            'reestr' => $reestr
-        ];
+		if (!empty($_POST['year']) && !empty($_POST['month'])) {
+			$invoices = Q("SELECT 
+
+							`invoice`.`contract_number` as `contract_number`, `invoice`.`summa` as `invoice_summa`,
+							`renter`.`full_name` as `renter_name`, `renter`.`id` as `renter_id`, 
+							`contract`.`number` as `document_number`							  
+
+							FROM `#_mdd_invoice` as `invoice`
+
+							LEFT JOIN `#_mdd_contracts` as `contract`
+							ON `invoice`.`contract_id` = `contract`.`id`
+
+							LEFT JOIN `#_mdd_grounds` as `ground`
+							ON `contract`.`ground` = `ground`.`id`
+
+							LEFT JOIN `#_mdd_renters` as `renter`
+							ON `contract`.`renter` = `renter`.`id`
+
+							LEFT JOIN `#_mdd_rooms` as `room`
+							ON `contract`.`rooms` = `room`.`id`
+
+							WHERE `invoice`.`period_year` = ?s AND `invoice`.`period_month` = ?s",
+							array($_POST['year'], $_POST['month']))->all();
+			
+							 
+
+			foreach ($invoices as $key => $value) {
+				$akt = Q("SELECT * FROM `#_mdd_invoice` WHERE `schet_id` = ?i", 
+				array($value['contract_number']))->row();
+
+				$invoices[$key]['akt_id'] = $akt['contract_number'];
+				$invoices[$key]['sf_id'] = $akt['contract_number'];
+				$invoices[$key]['schet_id'] = $akt['contract_number'];
+				$invoices[$key]['sf_number'] = $akt['contract_number'];
+			}
+			// exit(__($invoices));
+			$year = $_POST['year'];
+			$month = $_POST['month'];
+
+			
+			if (empty($invoices)) {
+				$error = true;
+			} else {
+				$error = false;
+			}
+
+		}
+		 else {
+			$invoices = 0;
+			$year = 0;
+			$month = 0;
+			$error = false;
+		} 
+		// exit(__($invoices));
+		return array(
+			'inv' => $invoices,
+			'year' => $year,
+			'month' => $month,
+			'template' => 'block',
+			'error' => $error		
+		);
     }
 }

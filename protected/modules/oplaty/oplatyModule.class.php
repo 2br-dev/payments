@@ -14,13 +14,47 @@ final class oplatyModule extends \Fastest\Core\Modules\Module
     
     public function blockMethod()
     {
-         $payments = Q("SELECT full_name FROM `#_mdd_renters` WHERE `visible` = ?i", array(1))->all();
-                           
-        // exit(__($payments));
+
+        $renter_name = false;
+        $payments_docs = false;
+
+        $payments = Q("SELECT  
+        *         
+        FROM `#_mdd_contracts` as `contract`
+
+        LEFT JOIN `#_mdd_renters` as `renters`
+        ON `contract`.`renter` = `renters`.`id`
+         
+        WHERE `contract`.`status` = ?i", array(1))->all();
+
+        if (isset($_GET['renter'])) {
+            $renter_name = $_GET['renter'];
+     
+                $payments_docs = Q("SELECT 
+            
+                *         
+                FROM `#_mdd_contracts` as `contract`
+        
+                LEFT JOIN `#_mdd_renters` as `renters`
+                ON `contract`.`renter` = `renters`.`id`
+
+                LEFT JOIN `#_mdd_invoice` as `invoice`
+                ON `contract`.`summa` = `invoice`.`rest`
+                 
+                WHERE `renters`.`full_name` = ?s AND `contract`.`status` = ?i", array($renter_name, 1))->all();
+
+                // exit(__($payments_docs));
+        } 
+
+        //$renter_id = $_POST['renter_id'];
+    
+        // exit(__($payments_docs));
 
         return [
             'template' => 'block',
-            'payments' => $payments
+            'payments' => $payments,
+            'payments_docs' => $payments_docs,
+            'renter_name' => $renter_name
         ];
     }
 }

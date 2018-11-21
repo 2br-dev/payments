@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-19 09:20:46
+/* Smarty version 3.1.32, created on 2018-11-21 10:52:57
   from 'C:\OpenServer\domains\authorization.local\protected\app\core\admin-template\view\modules\binds\edit.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5bf2563e1631e1_01859299',
+  'unifunc' => 'content_5bf50ed918eee1_79419383',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -22,7 +22,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:system/buttons.tpl' => 1,
   ),
 ),false)) {
-function content_5bf2563e1631e1_01859299 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5bf50ed918eee1_79419383 (Smarty_Internal_Template $_smarty_tpl) {
 if (isset($_GET['msg']) && $_GET['msg'] == "apply") {?><div class="apply">Данные были успешно сохранены!</div><?php }?><form method="post" id="form_mdd"><input type="hidden" name="module_action" value="edit_bind"><table class="table"><col width="200"><col><thead><tr><th colspan="2">Редактирование функции</th></tr></thead><tbody><tr><td class="h">Имя бинда</td><td><input name="name" value="<?php echo $_smarty_tpl->tpl_vars['mdd_bind']->value['name'];?>
 " class="ness"></td></tr><tr><td class="h">Имя функции</td><td><input name="func_name" value="<?php echo $_smarty_tpl->tpl_vars['mdd_bind']->value['func_name'];?>
 " class="ness"></td></tr><tr><td class="h"><?php echo t('caching');?>

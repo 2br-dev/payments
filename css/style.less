@@ -318,7 +318,89 @@ body {
     }
   }
 }
+.pechat-schetov {
 
+  .year-error {
+    top: 0;
+  }
+  .month-error {
+    top: 69px;
+  }
+
+  &-result-header {
+    margin: 40px auto 30px;
+    text-align: center;
+  }
+}
+
+.renters-list {
+  margin: 70px auto 0;
+  width: 1000px;
+  &-link {
+    color: #232323;
+    text-decoration: none;
+    font-size: 18px;
+    p {
+      margin-bottom: 0;
+    }
+  }
+  &-item {
+    margin: 0 auto 30px;
+    padding: 5px 0 20px 30px;
+    background: white;
+    width: fit-content;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  }
+  hr {
+    border-radius: 50%;
+    margin-left: 0;
+    width: 300px;
+  }
+  .documents-block {
+    color: red;
+    a {
+      margin-right: 25px;
+      color: #232323;
+      &:hover {
+        text-decoration: none;
+        color: @red;
+        transition: .3s ease;
+      }
+    }
+  }
+}
+
+.print-error {
+  z-index: 3;
+  position: absolute;
+  top: 250px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 600px;
+  height: 125px;
+  background: @red;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  border-radius: 20px;
+  .wrapper {
+    position: relative;
+  }
+  &-text p {
+    color: white;
+    padding-left: 40px;
+    font-size: 16px;
+    margin-top: 50px;
+  }
+}
+.black-wrapper {
+  position: fixed;
+  background: rgba(0, 0, 0, .5);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
 
 
 
@@ -551,6 +633,7 @@ input[type="date"], focus {
 }
 
 .custom-options {
+  z-index: 5;
   position: absolute;
   display: block;
   top: 100%;
@@ -623,4 +706,32 @@ input[type="date"], focus {
 .custom-option:hover,
 .custom-option.selection {
   background: #f9f9f9;
+}
+
+// close icon
+.close {
+  position: absolute;
+  right: 16px;
+  top: -32px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.6;
+  z-index: 10;
+}
+.close:hover {
+  opacity: 1;
+}
+.close:before, .close:after {
+  position: absolute;
+  left: 15px;
+  content: ' ';
+  height: 33px;
+  width: 2px;
+  background-color: white;
+}
+.close:before {
+  transform: rotate(45deg);
+}
+.close:after {
+  transform: rotate(-45deg);
 }

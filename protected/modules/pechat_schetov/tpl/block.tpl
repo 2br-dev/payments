@@ -1,7 +1,6 @@
-{strip}
   <div class="vystavlenie-schetov pechat-schetov">
-    <form id="pechat-schetov">
-      <p class="mb0">Год</p>
+    <form id="pechat-schetov" action="" method="post">
+      <p class="mb0">Год</p><span class="error year-error">Выберите год:</span>
       <div class="vystavlenie-schetov-year">
          <label class="container-radio">2016
           <input name="year" type="radio" value="2016">
@@ -16,7 +15,7 @@
           <span class="checkmark"></span>
         </label>
       </div>
-      <p class="mb0">Месяц</p>
+      <p class="mb0">Месяц</p><span class="error month-error">Выберите месяц:</span>
       <div class="vystavlenie-schetov-month">
         <span>
           <label class="container-radio">Январь
@@ -80,8 +79,54 @@
     </form>
   </div>
 
-  <div class='pechat-schetov-result'>
-    <h2 class='pechat-schetov-result-header'></h2>
+{if $error} 
+  <div class="print-error">
+    <div class="wrapper">
+      <a href="#" class="close"></a>
+      <div class="print-error-text">
+        <p>К сожалению, за данный период нечего напечатать :(</p>
+      </div>
+    </div>  
   </div>
+  <div class="black-wrapper"></div>
+{/if}
 
-{/strip}
+{if $inv}
+  <div class="renters-list">
+    <div class='pechat-schetov-result'>
+      <h2 class='pechat-schetov-result-header'>{$year} {$month}</h2>
+    </div>
+	{foreach from=$inv item=i}	
+		<div class="renters-list-item">
+			<a href="#" data-arendator = "{$i.renter_id}" class="renters-list-link"><p>{$i.renter_name}</p></a>
+      <hr>
+			<div class="documents-block" data-block="{$i.renter_id}">
+				<div class="without-print">
+					<a href="/schet-pechatnaya-forma?num={$i.contract_number}&ind=sch&pr=0&disc=0" target="_blank" >Счет</a>
+					<a href="/schet-pechatnaya-forma?num={$i.akt_id}&ind=akt&pr=0&disc=0" target="_blank" >Акт</a>
+					<a href="/schet-pechatnaya-forma?num={$i.sf_id}&ind=sf&pr=0&disc=0" target="_blank" >Счет-фактура</a>
+				</div>
+				<div class="with-print">
+					<a href="/schet-pechatnaya-forma?num={$i.contract_number}&ind=sch&pr=1&disc=0" target="_blank" >Счет+печать</a>
+					<a href="/schet-pechatnaya-forma?num={$i.akt_id}&ind=akt&pr=1&disc=0" target="_blank" >Акт+печать</a>
+					<a href="/schet-pechatnaya-forma?num={$i.sf_id}&ind=sf&pr=1&disc=0" target="_blank" >Счет-фактура+печать</a>
+				</div>
+				<div class="with-discount">
+					<a href="/schet-pechatnaya-forma?num={$i.contract_number}&ind=sch&pr=0&disc=1" target="_blank" >Счет (со скидкой)</a>
+					<a href="/schet-pechatnaya-forma?num={$i.akt_id}&ind=akt&pr=0&disc=1" target="_blank" >Акт (со скидкой)</a>
+					<a href="/schet-pechatnaya-forma?num={$i.sf_id}&ind=sf&pr=0&disc=1" target="_blank" >Счет-фактура (со скидкой)</a>
+				</div>
+				<div class="with-discount">
+					<a href="/schet-pechatnaya-forma?num={$i.contract_number}&ind=sch&pr=1&disc=1" target="_blank" >Счет (со скидкой)+печать</a>
+					<a href="/schet-pechatnaya-forma?num={$i.akt_id}&ind=akt&pr=1&disc=1" target="_blank" >Акт (со скидкой)+печать</a>
+					<a href="/schet-pechatnaya-forma?num={$i.sf_id}&ind=sf&pr=1&disc=1" target="_blank" >Счет-фактура (со скидкой)+печать</a>
+				</div>
+			</div>
+		</div>
+	{/foreach}
+  </div>
+{/if}  
+
+
+
+

@@ -20,12 +20,12 @@ $(document).ready(function() {
             $( ".form-input" ).addClass( "invalid" );
             $( '.error' ).fadeIn();
           } else {
-            window.location.href = 'http://authorization.local/';
+            window.location.href = '/';
           }
           self.reset();
         },
         error: function(err) {
-          window.location.href = 'http://authorization.local/';
+          window.location.href = '/';
         }
     });
   });
@@ -38,18 +38,23 @@ $(document).ready(function() {
     $("input[name='renter']:checked").each(function() {
       allRenters.push($(this).val());
     });
+    var allRentersId = [];
+    $("input[name='renter_id']").each(function() {
+      allRentersId.push($(this).val());
+    });
 
     var data = {
-      year:     $("input[name='year']:checked").val(),
-      month:    $("input[name='month']:checked").val(),
-      renter:   allRenters,
-      first:    $("input[name='from-first']:checked").val(),
-      date:     $("input[name='date']").val(),
+      year:         $("input[name='year']:checked").val(),
+      month:        $("input[name='month']:checked").val(),
+      renter:       allRenters,
+      from_first:   $("input[name='from_first']:checked").val(),
+      date:         $("input[name='date']").val(),
+      renter_id:    allRentersId,
     };
     
     console.log(data);
     //валидация
-    if(!data.renter) {
+    if(data.renter.length === 0) {
       $(".renter-error").show(); 
     } 
     if(!data.date) {
@@ -79,9 +84,86 @@ $(document).ready(function() {
     }
   
   }); 
+  
+  // этот кусочек кода создает "видимость get-запроса", 
+  //такой сложный селектор для того чтобы не срабатывал скрипт на другие инпуты, а только на первый.
+  $("#payments div:first-child span.custom-option.undefined").click(function() {
+    var value = $(this).attr('data-value');
+    window.location.href = `/oplaty?renter=${value}`;
+  })
+
+  $("#payments").submit(function(e){
+    e.preventDefault();
+    var self = this;
+
+    var data = {
+      summa:       $("input[name='summa']").val(),
+      date:       $("input[name='date']").val(),
+      number:     $("input[name='document_number']").val(),
+      renter_name:       $("option[name='renter_name']:checked").val(),
+      renter_document:     $("option[name='renter_document']:checked").val()
+    };
+    
+    console.log(data);
+ 
+      $.ajax({
+        type: "POST",
+        data: data,
+        url: "/ajax/payment",
+        success: function(res){
+          console.log(res);
+          self.reset();
+        },
+        error: function(err) {
+          console.log(err);
+        }
+      });
+  }); 
+
+  /// cабмит для печать счетов
+  $("#pechat-schetov").submit(function(e){
+    //e.preventDefault();
+
+    var data = {
+      year:         $("input[name='year']:checked").val(),
+      month:        $("input[name='month']:checked").val(),
+    };
+    
+    //валидация
+    if(!data.year) {
+      e.preventDefault();
+      $(".year-error").show();
+    } 
+    if(!data.month) {
+      e.preventDefault();
+      $(".month-error").show();
+    } 
+
+    if (data.year && data.month) {     
+      $.ajax({
+        type: "POST",
+        data: data,
+        success: function(res){
+          console.log(res);
+
+          $('.renters-list').show();
+          self.reset();
+        },
+        error: function(err) {
+          console.log(err);
+        }
+      });
+    }
+  
+  }); 
 
 });
 
+
+$(".close").click(function() {
+  $(".print-error").fadeOut();
+  $(".black-wrapper").fadeOut();
+})
 
 $("input[name='year']").click(function() {
   $(".year-error").hide();
@@ -113,7 +195,7 @@ $(".custom-select").each(function() {
       id      = $(this).attr("id"),
       name    = $(this).attr("name");
   var template =  '<div class="' + classes + '">';
-      template += '<span class="custom-select-trigger">' + $(this).attr("placeholder") + '</span>';
+      template += '<span class="custom-select-trigger" style="margin-top: 5px;">' + $(this).attr("placeholder") + '</span>';
       template += '<div class="custom-options">';
       $(this).find("option").each(function() {
         template += '<span class="custom-option ' + $(this).attr("class") + '" data-value="' + $(this).attr("value") + '">' + $(this).html() + '</span>';

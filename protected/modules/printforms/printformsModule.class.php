@@ -1,163 +1,158 @@
 <?php
 
-class printformsModule extends Module
+declare(strict_types=1);
+
+namespace Fastest\Core\Modules;
+
+final class printformsModule extends \Fastest\Core\Modules\Module
 {
-	//use Singleton, Tools;
+    public function router()
+    {
+        return $this->blockMethod();
+    }
 
-	public $module_root = null;
-	public $arguments 	= array();
-	public $module		= array();
-	public $caching		= 1;
-
-	public function index()
-	{
-		$this->caching = $this->module['cache'];
-		
-		if (isset($this->arguments[1]))
-		{
-			return $this->errorPage;
-		}
-
-		if (isset($this->arguments[0]))
-		{
-			return $this->itemMethod(intval($this->arguments[0]));
-		}
-
-		return $this->blockMethod();
-	}
-
-	public function listMethod()
-	{
-		if (!$this->mcache_enable || ($this->caching == 1 && !($printforms = $this->getCache('_module_printforms'))))
-		{
-			$printforms = Q("SELECT * FROM `#_mdd_printforms` WHERE `visible`=1 ORDER BY STR_TO_DATE(`date`, '%d.%m.%Y') DESC, `ord` DESC")->all();
-
-			if (!empty($printforms))
-			{
-				foreach ($printforms as &$printforms_item)
-				{
-					$printforms_item['date'] = Dates($printforms_item['date'], $this->locale);
-				}
-			}
-
-			$this->setCache('_module_printforms', $printforms);
-		}
-
-		return array(
-			'printforms'		=>	$printforms,
-			'template'		=>	'list'
-		);
-	}
-	
-	public function itemMethod($item = 0)
-	{
-		if (!$this->mcache_enable || ($this->caching == 1 && !($printforms = $this->getCache('_module_printforms_item'))))
-		{
-			$printforms = Q("SELECT * FROM `#_mdd_printforms` WHERE `visible`='1' AND `id`=?i", array( $item ))->row();
-			$printforms['date'] = Dates($printforms['date'], $this->locale);
-
-			$this->setCache('_module_printforms_item', $printforms);
-		}
-
-		# Мета теги
-		# 
-		$meta['title']			= $printforms['meta_title'];
-		$meta['robots']		= $printforms['meta_robots'];
-		$meta['keywords'] 		= $printforms['meta_keywords'];
-		$meta['description'] 	= $printforms['meta_description'];
-
-		unset($printforms['meta_title'], $printforms['meta_robots'],  $printforms['meta_keywords'], $printforms['meta_description']);
-
-		# Хлебные крошки
-		# 
-		$breadcrumbs = array(
-				'id'		=> $printforms['id'],
-				'pid'		=> '',
-				'name'		=> stripslashes($printforms['name']),
-				'sys_name'	=> $printforms['system'],
-				'link'		=> '/' . $this->module_root . '/' . $printforms['id'] . '-' . $printforms['system']
-		);
-
-		return array(
-			'meta'			=>	$meta,
-			'page'			=>	array( 'name' => '' ),
-			'printforms'		=>	$printforms,
-			'breadcrumbs'	=>	$breadcrumbs,
-			'template'		=>	'item'
-		);
-	}
-
-	public function blockMethod()
-	{
-		$id = $_GET['num']; // id Документа из ГЕТ запроса
-		$ind = $_GET['ind']; // Идентефикатор документа из ГЕТ запроса: sch - счет, akt - акт, sf - счет-фактура
-		$pr = $_GET['pr']; // С печатью или без - из ГЕТ запроса: pr = 0 - без печати, pr = 1 - с печатью
-		$disc = $_GET['disc']; // Со скидкой или без - из ГЕТ запроса: disc = 0 - без скидки, disc = 1 - со скидкой
-		$discount_summ = 0;
+    public function blockMethod()
+    {
+      $id = $_GET['num']; // id Документа из ГЕТ запроса
+			$ind = $_GET['ind']; // Идентефикатор документа из ГЕТ запроса: sch - счет, akt - акт, sf - счет-фактура
+			$pr = $_GET['pr']; // С печатью или без - из ГЕТ запроса: pr = 0 - без печати, pr = 1 - с печатью
+			$disc = $_GET['disc']; // Со скидкой или без - из ГЕТ запроса: disc = 0 - без скидки, disc = 1 - со скидкой
+      $discount_summ = 0;
+        
+        //exit(__($ind));
 		
 		// Если Документ - Счет
 		if ($ind == 'sch') {
-			$print = Q("SELECT 	`invoice`.`id` as `invoice_id`, `invoice`.`number` as `invoice_numb`, `invoice`.`date` as `print_date`,
-								`invoice`.`period_year`, `invoice`.`period_month`, `invoice`.`summa` as `invoice_summa`,
-								`invoice`.`amount` as `invoice_amount`,
+			$print = Q("SELECT 
 
-								`contract`.`id` as `contract_id`, `contract`.`number` as `contract_number`, `contract`.`date` as `contract_date`,
-								`contract`.`summa` as `contract_summa`, `contract`.`ground` as `contract_ground`, `contract`.`discount`,
+                        `invoice`.`period_year`, 
+                        `invoice`.`period_month`, 
+                        `invoice`.`amount` as `invoice_amount`,
+                        `invoice`.`summa` as `invoice_summa`,
 
-								`ground`.`id` as `ground_id`, `ground`.`desc` as `ground_desc`, `ground`.`price` as `ground_price`,
-								`ground`.`ed` as `ground_ed`, `ground`.`code_ed` as `ground_code`,
+                        `contract`.`id` as `contract_id`, 
+                        `contract`.`number` as `contract_number`,
+                        `contract`.`date` as `contract_date`,
+                        `contract`.`summa` as `contract_summa`, 
+                        `contract`.`ground` as `contract_ground`, 
+                        `contract`.`discoint`,
 
-								`renter`.`id` as `renter_id`, `renter`.`full_name` as `renter_name`, `renter`.`short_name`,
+                        `ground`.`id` as `ground_id`, 
+                        `ground`.`desc` as `ground_desc`, 
+                        `ground`.`price` as `ground_price`,
+                        `ground`.`ed` as `ground_ed`, 
+                        `ground`.`code_ed` as `ground_code`,
 
-								`room`.`id` as `room_id`, `room`.`number` as `room_number`  
+                        `renter`.`id` as `renter_id`, 
+                        `renter`.`full_name` as `renter_name`, 
+                        `renter`.`short_name`,
+                        `renter`.`uridich_address` as `renter_address`, 
+                        `renter`.`inn`, `renter`.`kpp`,
 
-								FROM `#_mdd_invocearenda` as `invoice`
+                        `room`.`id` as `room_id`, 
+                        `room`.`number` as `room_number`
 
-								LEFT JOIN `#_mdd_contracts` as `contract`
-								ON `invoice`.`contract_id` = `contract`.`id`
+						FROM `#_mdd_invoice` as `invoice`
 
-								LEFT JOIN `#_mdd_grounds` as `ground` 
-								ON FIND_IN_SET(`ground`.`id`, `contract`.`ground`)
+                        LEFT JOIN `#_mdd_contracts` as `contract`
+						ON `invoice`.`contract_id` = `contract`.`id`
 
-								LEFT JOIN `#_mdd_renters` as `renter`
-								ON `contract`.`renter` = `renter`.`id`
+						LEFT JOIN `#_mdd_grounds` as `ground`
+						ON `contract`.`ground` = `ground`.`id`
 
-								LEFT JOIN `#_mdd_rooms` as `room`
-								ON `contract`.`rooms` = `room`.`id`
+						LEFT JOIN `#_mdd_renters` as `renter`
+						ON `contract`.`renter` = `renter`.`id`
 
-								WHERE `invoice`.`id` = ?i",
-								array($id))->row();
-			$discount_summ = $print['contract_summa'] - $print['discount'];	
-			$discount_summ = number_format($discount_summ, 2, '.', '');					
+						LEFT JOIN `#_mdd_rooms` as `room`
+						ON `contract`.`rooms` = `room`.`id`
+
+                        WHERE `invoice`.`contract_number` = ?i", array($id))->row();
+            
+ 
+			$discount_summ = $print['contract_summa'] - $print['discoint'];	
+            $discount_summ = number_format($discount_summ, 2, '.', '');
+            
+            switch ($print['period_month']) {
+				case 'Январь':
+					$print['print_date'] = "2018-01-31";
+					break;
+				case 'Февраль':
+					$print['print_date'] = "2018-02-28";
+					break;
+				case 'Март':
+					$print['print_date'] = "2018-03-31";
+					break;
+				case 'Апрель':
+					$print['print_date'] = "2018-04-30";
+					break;
+				case 'Май':
+					$print['print_date'] = "2018-05-31";
+					break;
+				case 'Июнь':
+					$print['print_date'] = "2018-06-30";
+					break;
+				case 'Июль':
+					$print['print_date'] = "2018-07-31";
+					break;
+				case 'Август':
+					$print['print_date'] = "2018-08-31";
+					break;
+				case 'Сентябрь':
+					$print['print_date'] = "2018-09-30";
+					break;
+				case 'Октябрь':
+					$print['print_date'] = "2018-10-31";
+					break;
+				case 'Ноябрь':
+					$print['print_date'] = "2018-11-30";
+					break;
+				case 'Декабрь':
+					$print['print_date'] = "2018-12-31";
+					break;
+				
+				default:
+					$print['print_date'] = "0000-00-00";
+					break;
+            }
 		}
 
 		// Если Документ - Акт выполненных работ
 		elseif ($ind == 'akt') {
-			$print = Q("SELECT `akt`.`id` as `akt_id`, `akt`.`number` as `akt_number`,
+			$print = Q("SELECT 
 
-						`invoice`.`period_year`, `invoice`.`period_month`, `invoice`.`amount` as `invoice_amount`,
-						`invoice`.`summa` as `invoice_summa`,
+                        `invoice`.`period_year`, 
+                        `invoice`.`period_month`, 
+                        `invoice`.`amount` as `invoice_amount`,
+                        `invoice`.`summa` as `invoice_summa`,
 
-						`contract`.`id` as `contract_id`, `contract`.`number` as `contract_number`, `contract`.`date` as `contract_date`,
-						`contract`.`summa` as `contract_summa`, `contract`.`ground` as `contract_ground`, `contract`.`discount`,
+                        `contract`.`id` as `contract_id`, 
+                        `contract`.`number` as `contract_number`,
+                        `contract`.`date` as `contract_date`,
+                        `contract`.`summa` as `contract_summa`, 
+                        `contract`.`ground` as `contract_ground`, 
+                        `contract`.`discoint`,
 
-						`ground`.`id` as `ground_id`, `ground`.`desc` as `ground_desc`, `ground`.`price` as `ground_price`,
-						`ground`.`ed` as `ground_ed`, `ground`.`code_ed` as `ground_code`,
+                        `ground`.`id` as `ground_id`, 
+                        `ground`.`desc` as `ground_desc`, 
+                        `ground`.`price` as `ground_price`,
+                        `ground`.`ed` as `ground_ed`, 
+                        `ground`.`code_ed` as `ground_code`,
 
-						`renter`.`id` as `renter_id`, `renter`.`full_name` as `renter_name`, `renter`.`short_name`,
+                        `renter`.`id` as `renter_id`, 
+                        `renter`.`full_name` as `renter_name`, 
+                        `renter`.`short_name`,
+                        `renter`.`uridich_address` as `renter_address`, 
+                        `renter`.`inn`, `renter`.`kpp`,
 
-						`room`.`id` as `room_id`, `room`.`number` as `room_number`
+                        `room`.`id` as `room_id`, 
+                        `room`.`number` as `room_number`
 
+						FROM `#_mdd_invoice` as `invoice`
 
-						FROM `#_mdd_aktarenda` as `akt`
-
-						LEFT JOIN `#_mdd_invocearenda` as `invoice`
-						ON `akt`.`schet_id` = `invoice`.`id`
-
-						LEFT JOIN `#_mdd_contracts` as `contract`
+                        LEFT JOIN `#_mdd_contracts` as `contract`
 						ON `invoice`.`contract_id` = `contract`.`id`
 
-						LEFT JOIN `#_mdd_grounds` as `ground` 
+						LEFT JOIN `#_mdd_grounds` as `ground`
 						ON `contract`.`ground` = `ground`.`id`
 
 						LEFT JOIN `#_mdd_renters` as `renter`
@@ -166,86 +161,95 @@ class printformsModule extends Module
 						LEFT JOIN `#_mdd_rooms` as `room`
 						ON `contract`.`rooms` = `room`.`id`
 
-						WHERE `akt`.`id` = ?i", array($id))->row();
+                        WHERE `invoice`.`contract_number` = ?i", array($id))->row();
+                        
 
-			$discount_summ = $print['contract_summa'] - $print['discount'];
+			$discount_summ = $print['contract_summa'] - $print['discoint'];
 			$discount_summ = number_format($discount_summ, 2, '.', '');
 
-			switch ($print['period_month']) {
+            switch ($print['period_month']) {
 				case 'Январь':
-					$print['print_date'] = "2016-01-31";
+					$print['print_date'] = "2018-01-31";
 					break;
 				case 'Февраль':
-					$print['print_date'] = "2016-02-28";
+					$print['print_date'] = "2018-02-28";
 					break;
 				case 'Март':
-					$print['print_date'] = "2016-03-31";
+					$print['print_date'] = "2018-03-31";
 					break;
 				case 'Апрель':
-					$print['print_date'] = "2016-04-30";
+					$print['print_date'] = "2018-04-30";
 					break;
 				case 'Май':
-					$print['print_date'] = "2016-05-31";
+					$print['print_date'] = "2018-05-31";
 					break;
 				case 'Июнь':
-					$print['print_date'] = "2016-06-30";
+					$print['print_date'] = "2018-06-30";
 					break;
 				case 'Июль':
-					$print['print_date'] = "2016-07-31";
+					$print['print_date'] = "2018-07-31";
 					break;
 				case 'Август':
-					$print['print_date'] = "2016-08-31";
+					$print['print_date'] = "2018-08-31";
 					break;
 				case 'Сентябрь':
-					$print['print_date'] = "2016-09-30";
+					$print['print_date'] = "2018-09-30";
 					break;
 				case 'Октябрь':
-					$print['print_date'] = "2016-10-31";
+					$print['print_date'] = "2018-10-31";
 					break;
 				case 'Ноябрь':
-					$print['print_date'] = "2016-11-30";
+					$print['print_date'] = "2018-11-30";
 					break;
 				case 'Декабрь':
-					$print['print_date'] = "2016-12-31";
+					$print['print_date'] = "2018-12-31";
 					break;
 				
 				default:
 					$print['print_date'] = "0000-00-00";
 					break;
-			}
+            }
+           
+             
 		}
 
 		// Если Документы счет-фактура
 		elseif ($ind == 'sf') {
-			$print = Q("SELECT `sf`.`id` as `sf_id`, `sf`.`number` as `sf_number`,
+			$print = Q("SELECT 
 
-						`invoice`.`period_year`, `invoice`.`period_month`, `invoice`.`amount` as `invoice_amount`,
-						`invoice`.`summa` as `invoice_summa`,
+                        `invoice`.`period_year`, 
+                        `invoice`.`period_month`, 
+                        `invoice`.`amount` as `invoice_amount`,
+                        `invoice`.`summa` as `invoice_summa`,
 
-						`contract`.`id` as `contract_id`, `contract`.`number` as `contract_number`, `contract`.`date` as `contract_date`,
-						`contract`.`summa` as `contract_summa`, `contract`.`ground` as `contract_ground`, `contract`.`discount`,
+                        `contract`.`id` as `contract_id`, 
+                        `contract`.`number` as `contract_number`,
+                        `contract`.`date` as `contract_date`,
+                        `contract`.`summa` as `contract_summa`, 
+                        `contract`.`ground` as `contract_ground`, 
+                        `contract`.`discoint`,
 
-						`ground`.`id` as `ground_id`, `ground`.`desc` as `ground_desc`, `ground`.`price` as `ground_price`,
-						`ground`.`ed` as `ground_ed`, `ground`.`code_ed` as `ground_code`,
+                        `ground`.`id` as `ground_id`, 
+                        `ground`.`desc` as `ground_desc`, 
+                        `ground`.`price` as `ground_price`,
+                        `ground`.`ed` as `ground_ed`, 
+                        `ground`.`code_ed` as `ground_code`,
 
-						`renter`.`id` as `renter_id`, `renter`.`full_name` as `renter_name`, `renter`.`short_name`,
-						`renter`.`uridich_address` as `renter_address`, `renter`.`inn`, `renter`.`kpp`,
+                        `renter`.`id` as `renter_id`, 
+                        `renter`.`full_name` as `renter_name`, 
+                        `renter`.`short_name`,
+                        `renter`.`uridich_address` as `renter_address`, 
+                        `renter`.`inn`, `renter`.`kpp`,
 
-						`room`.`id` as `room_id`, `room`.`number` as `room_number`
+                        `room`.`id` as `room_id`, 
+                        `room`.`number` as `room_number`
 
+						FROM `#_mdd_invoice` as `invoice`
 
-						FROM `#_mdd_sfarenda` as `sf`
-
-						LEFT JOIN `#_mdd_aktarenda` as `akt`
-						ON `sf`.`akt_id` = `akt`.`id`
-
-						LEFT JOIN `#_mdd_invocearenda` as `invoice`
-						ON `akt`.`schet_id` = `invoice`.`id`
-
-						LEFT JOIN `#_mdd_contracts` as `contract`
+                        LEFT JOIN `#_mdd_contracts` as `contract`
 						ON `invoice`.`contract_id` = `contract`.`id`
 
-						LEFT JOIN `#_mdd_grounds` as `ground` 
+						LEFT JOIN `#_mdd_grounds` as `ground`
 						ON `contract`.`ground` = `ground`.`id`
 
 						LEFT JOIN `#_mdd_renters` as `renter`
@@ -254,55 +258,57 @@ class printformsModule extends Module
 						LEFT JOIN `#_mdd_rooms` as `room`
 						ON `contract`.`rooms` = `room`.`id`
 
-						WHERE `sf`.`id` = ?i", array($id))->row();
+                        WHERE `invoice`.`contract_number` = ?i", array($id))->row();                            
 
-			$discount_summ = $print['contract_summa'] - $print['discount'];
+			$discount_summ = $print['contract_summa'] - $print['discoint'];
 			$discount_summ = number_format($discount_summ, 2, '.', '');
 
-			switch ($print['period_month']) {
+             // exit (__($print));
+
+             switch ($print['period_month']) {
 				case 'Январь':
-					$print['print_date'] = "2016-01-31";
+					$print['print_date'] = "2018-01-31";
 					break;
 				case 'Февраль':
-					$print['print_date'] = "2016-02-28";
+					$print['print_date'] = "2018-02-28";
 					break;
 				case 'Март':
-					$print['print_date'] = "2016-03-31";
+					$print['print_date'] = "2018-03-31";
 					break;
 				case 'Апрель':
-					$print['print_date'] = "2016-04-30";
+					$print['print_date'] = "2018-04-30";
 					break;
 				case 'Май':
-					$print['print_date'] = "2016-05-31";
+					$print['print_date'] = "2018-05-31";
 					break;
 				case 'Июнь':
-					$print['print_date'] = "2016-06-30";
+					$print['print_date'] = "2018-06-30";
 					break;
 				case 'Июль':
-					$print['print_date'] = "2016-07-31";
+					$print['print_date'] = "2018-07-31";
 					break;
 				case 'Август':
-					$print['print_date'] = "2016-08-31";
+					$print['print_date'] = "2018-08-31";
 					break;
 				case 'Сентябрь':
-					$print['print_date'] = "2016-09-30";
+					$print['print_date'] = "2018-09-30";
 					break;
 				case 'Октябрь':
-					$print['print_date'] = "2016-10-31";
+					$print['print_date'] = "2018-10-31";
 					break;
 				case 'Ноябрь':
-					$print['print_date'] = "2016-11-30";
+					$print['print_date'] = "2018-11-30";
 					break;
 				case 'Декабрь':
-					$print['print_date'] = "2016-12-31";
+					$print['print_date'] = "2018-12-31";
 					break;
 				
 				default:
 					$print['print_date'] = "0000-00-00";
 					break;
-			}			
+            }
 		}
-
+        // exit (__($print));
 		// Преобразование числового представление месяца в строчное
 			$date = explode("-", $print['print_date']);
 			
@@ -349,6 +355,55 @@ class printformsModule extends Module
 					break;
 			}			
 
+
+            function num2str($num) {
+                $nul='ноль';
+                $ten=array(
+                    array('','один','два','три','четыре','пять','шесть','семь', 'восемь','девять'),
+                    array('','одна','две','три','четыре','пять','шесть','семь', 'восемь','девять'),
+                );
+                $a20=array('десять','одиннадцать','двенадцать','тринадцать','четырнадцать' ,'пятнадцать','шестнадцать','семнадцать','восемнадцать','девятнадцать');
+                $tens=array(2=>'двадцать','тридцать','сорок','пятьдесят','шестьдесят','семьдесят' ,'восемьдесят','девяносто');
+                $hundred=array('','сто','двести','триста','четыреста','пятьсот','шестьсот', 'семьсот','восемьсот','девятьсот');
+                $unit=array( // Units
+                    array('копейка' ,'копейки' ,'копеек',	 1),
+                    array('рубль'   ,'рубля'   ,'рублей'    ,0),
+                    array('тысяча'  ,'тысячи'  ,'тысяч'     ,1),
+                    array('миллион' ,'миллиона','миллионов' ,0),
+                    array('миллиард','милиарда','миллиардов',0),
+                );
+                //
+                list($rub,$kop) = str_split(sprintf("%015.2f", floatval($num)));
+                $out = array();
+                if (intval($rub)>0) {
+                    foreach(str_split($rub,3) as $uk=>$v) { // by 3 symbols
+                        if (!intval($v)) continue;
+                        $uk = sizeof($unit)-$uk-1; // unit key
+                        $gender = $unit[$uk][3];
+                        list($i1,$i2,$i3) = array_map('intval',str_split($v,1));
+                        // mega-logic
+                        $out[] = $hundred[$i1]; # 1xx-9xx
+                        if ($i2>1) $out[]= $tens[$i2].' '.$ten[$gender][$i3]; # 20-99
+                        else $out[]= $i2>0 ? $a20[$i3] : $ten[$gender][$i3]; # 10-19 | 1-9
+                        // units without rub & kop
+                        if ($uk>1) $out[]= morph($v,$unit[$uk][0],$unit[$uk][1],$unit[$uk][2]);
+                    } //foreach
+                }
+                else $out[] = $nul;
+                $out[] = morph(intval($rub), $unit[1][0],$unit[1][1],$unit[1][2]); // rub
+                $out[] = $kop.' '.morph($kop,$unit[0][0],$unit[0][1],$unit[0][2]); // kop
+                return trim(preg_replace('/ {2,}/', ' ', join(' ',$out)));
+            }
+            
+            function morph($n, $f1, $f2, $f5) {
+                $n = abs(intval($n)) % 100;
+                if ($n>10 && $n<20) return $f5;
+                $n = $n % 10;
+                if ($n>1 && $n<5) return $f2;
+                if ($n==1) return $f1;
+                return $f5;
+            }
+
 		// Проверяем сколько оснований указано в Договоре
 			$grounds_count = strstr($print['contract_ground'], ",");
 
@@ -374,7 +429,7 @@ class printformsModule extends Module
 				$print['contract_summa_string'] = num2str($print['invoice_summa']);
 			}
 			else {
-				$print['contract_summa_string'] = num2str($print['discount']);	
+				$print['contract_summa_string'] = num2str($print['discoint']);	
 			}
 						
 				
@@ -390,6 +445,5 @@ class printformsModule extends Module
 			'discount' => $disc,
 			'discount_summ' => $discount_summ
 		);
-	}
+    }
 }
-

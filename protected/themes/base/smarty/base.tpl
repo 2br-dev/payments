@@ -1,5 +1,6 @@
 {strip}
 
+
 {include file="./components/meta.tpl"}
 {include file="./components/main.tpl"}
 

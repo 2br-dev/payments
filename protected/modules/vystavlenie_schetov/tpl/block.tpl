@@ -3,17 +3,16 @@
     <form id="vystavlenie-schetov" method="POST" action="/ajax/write">
       <div class="vystavlenie-schetov-date">
         <p class="date-error">Выберите дату:</p>
-        <input type="date" name="date">
+        <input type="date" name="date" value="2018-01-01">
       </div>
       <hr style="margin-bottom: 40px">
       <p class="error renter-error">Выберите одного или более арендодателей:</p>
       {foreach from=$renters item=renter}
       <div class="vystavlenie-schetov-item">
         <label class="container-checkbox">{$renter.full_name} - {$renter.contract_number}
-          <input type="checkbox" name="renter" value="{$renter.contract_id}">
+          <input type="checkbox" name="renter" value="{$renter.renter_id}">
           <span class="checkmark"></span>
         </label>
-        <!-- <input type="text"> -->
       </div>
       {/foreach}
       <p class="mb0">Год</p><span class="error year-error">Выберите год:</span>
@@ -52,7 +51,7 @@
             <input name="month" type="radio" value="Февраль">
             <span class="checkmark"></span>
           </label>
-          <label class="container-radio">Июнь
+          <label class="container-radio" >Июнь
             <input name="month" type="radio" value="Июнь">
             <span class="checkmark"></span>
           </label>
@@ -92,10 +91,11 @@
       </div>
       <hr>
       <label class="container-checkbox">Начать нумерацию с 1
-        <input type="checkbox" name="from-first">
+        <input type="checkbox" name="from_first">
         <span class="checkmark"></span>
       </label>
       <input type="submit" value="Отправить">
     </form>
   </div>
 {/strip}
+
