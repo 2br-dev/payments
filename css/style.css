@@ -1,10 +1,7 @@
 body {
   background: #ADA996;
-  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996);
-  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996);
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   background: #EAEAEA;
   color: #000;
   font-family: 'Varela Round', sans-serif;
@@ -24,6 +21,7 @@ body {
 .navigation {
   height: 60px;
   display: flex;
+  margin-top: 30px;
   background: #f95252;
   justify-content: center;
   align-items: center;
@@ -47,11 +45,32 @@ body {
 .navigation a:hover {
   text-decoration: underline;
 }
-.logout-btn {
-  font-size: 10px;
+.logout-btn-web {
+  align-items: center;
+  height: 30px;
+  display: flex;
+  top: 0;
+  font-size: 12px;
   font-weight: normal;
   position: absolute;
-  right: 1%;
+  justify-content: flex-end;
+  color: white;
+  background: #383838;
+  width: 100%;
+  padding-right: 30px;
+}
+.logout-btn-web a {
+  margin-left: 20px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding-left: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  border-left: 3px solid white;
+}
+.logout-btn-web a:hover {
+  text-decoration: underline;
 }
 .navigation-main {
   background: #EAEAEA;
@@ -86,27 +105,32 @@ body {
   background: white;
   border-radius: 20px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  color: #f95252;
 }
 .navigation-main .logout-btn:hover {
+  background: #f95252;
+  transition: all .5s ease;
+  color: white;
   cursor: pointer;
   box-shadow: 1px 3px 9px rgba(0, 0, 0, 0.12), 1px 3px 6px rgba(0, 0, 0, 0.24);
 }
-.navigation-main .logout-btn h1 {
-  margin: 0;
-  padding: 5px 65px;
-}
-.navigation-main .logout-btn h1 a {
-  font-size: 16px;
+.navigation-main .logout-btn a {
+  font-size: 18px;
+  padding: 0 70px;
   line-height: 40px;
-  color: #f95252;
+  text-transform: uppercase;
 }
-.navigation-main .logout-btn h1 a:hover {
+.navigation-main .logout-btn a:hover {
   text-decoration: none;
+  color: white;
+}
+.page-schet-pechatnaya-forma .logout-btn-web {
+  display: none;
 }
 .renters {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   margin-top: 30px;
-  padding-left: 100px;
+  padding-left: 20%;
   font-size: 18px;
 }
 .renters-header {
@@ -150,7 +174,7 @@ body {
   background: white;
   display: flex;
   flex-direction: column;
-  width: 450px;
+  width: 650px;
   padding: 40px 30px;
   border-radius: 20px;
   margin: 30px auto 0;
@@ -195,7 +219,7 @@ body {
 }
 .vystavlenie-schetov {
   background: white;
-  width: 650px;
+  width: 850px;
   padding: 20px 30px 80px;
   border-radius: 20px;
   margin: 30px auto 0;
@@ -309,8 +333,9 @@ body {
   margin: 0 auto 30px;
   padding: 5px 0 20px 30px;
   background: white;
-  width: fit-content;
+  width: 850px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  border-radius: 20px;
 }
 .renters-list hr {
   border-radius: 50%;

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-21 18:56:51
+/* Smarty version 3.1.32, created on 2018-11-23 17:54:25
   from 'C:\OpenServer\domains\authorization.local\protected\modules\oplaty\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5bf58043145002_69858621',
+  'unifunc' => 'content_5bf814a1363215_23050918',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '288a0fb8efb7528f973a3212d76f5aa539a3408f' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\modules\\oplaty\\tpl\\block.tpl',
-      1 => 1542812539,
+      1 => 1542815974,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5bf58043145002_69858621 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5bf814a1363215_23050918 (Smarty_Internal_Template $_smarty_tpl) {
 ?><div class="payments"><form id="payments" method='post' action=''><?php if ($_smarty_tpl->tpl_vars['payments_docs']->value == false) {?><select name="sources" id="sources" name="renter_name" class="custom-select sources" placeholder="Выберите арендатора"><?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['payments']->value, 'renter');
 if ($_from !== null) {

@@ -1,6 +1,5 @@
 {strip}
 
-
 {include file="./components/meta.tpl"}
 {include file="./components/main.tpl"}
 
@@ -9,7 +8,7 @@
   {foreach $_sitemenu.main as $e}
     {if $uri[0] == $e.system}
       <div>
-        <h1  class='renters-header'>{$e.name}</h1>
+        <h1 class='renters-header'>{$e.name}</h1>
       </div> 
     {/if}
   {/foreach} 

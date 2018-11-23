@@ -87,9 +87,15 @@ $(document).ready(function() {
   
   // этот кусочек кода создает "видимость get-запроса", 
   //такой сложный селектор для того чтобы не срабатывал скрипт на другие инпуты, а только на первый.
-  $("#payments div:first-child span.custom-option.undefined").click(function() {
+  $("#payments .custom-select-wrapper:first-child span.custom-option.undefined").click(function() {
     var value = $(this).attr('data-value');
+    localStorage.setItem("renter",value);
     window.location.href = `/oplaty?renter=${value}`;
+  })
+
+  $("#payments .custom-select-wrapper:nth-child(2) span.custom-option.undefined").click(function() {
+    var value = $(this).attr('data-value');
+    localStorage.setItem("renter_document",value);
   })
 
   $("#payments").submit(function(e){
@@ -100,8 +106,8 @@ $(document).ready(function() {
       summa:       $("input[name='summa']").val(),
       date:       $("input[name='date']").val(),
       number:     $("input[name='document_number']").val(),
-      renter_name:       $("option[name='renter_name']:checked").val(),
-      renter_document:     $("option[name='renter_document']:checked").val()
+      renter_name:       localStorage.getItem("renter"),
+      renter_document:     localStorage.getItem("renter_document"),
     };
     
     console.log(data);

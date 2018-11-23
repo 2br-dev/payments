@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-21 17:36:44
+/* Smarty version 3.1.32, created on 2018-11-23 17:37:13
   from 'C:\OpenServer\domains\authorization.local\protected\modules\reestr\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5bf56d7c204044_64852352',
+  'unifunc' => 'content_5bf8109976c291_51161323',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5bf56d7c204044_64852352 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5bf8109976c291_51161323 (Smarty_Internal_Template $_smarty_tpl) {
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['reestr']->value, 'renter');
 if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['renter']->value) {

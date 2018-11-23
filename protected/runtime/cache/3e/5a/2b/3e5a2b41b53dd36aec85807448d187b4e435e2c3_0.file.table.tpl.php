@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-20 12:42:18
+/* Smarty version 3.1.32, created on 2018-11-23 15:56:36
   from 'C:\OpenServer\domains\authorization.local\protected\app\core\admin-template\view\meta\module\table.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5bf3d6fa38ecc0_14369090',
+  'unifunc' => 'content_5bf7f9041ba576_99118768',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:system/controll.tpl' => 2,
   ),
 ),false)) {
-function content_5bf3d6fa38ecc0_14369090 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5bf7f9041ba576_99118768 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\OpenServer\\domains\\authorization.local\\protected\\app\\libs\\smarty.plugins\\modifier.count_array.php','function'=>'smarty_modifier_count_array',),1=>array('file'=>'C:\\OpenServer\\domains\\authorization.local\\protected\\app\\vendors\\smarty\\smarty\\libs\\plugins\\function.math.php','function'=>'smarty_function_math',),));
 ?><table class="module-table" id="meta_data"><?php if (!empty($_smarty_tpl->tpl_vars['meta_list']->value)) {?><colgroup><col width="30"><?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['meta_fields']->value, 'item');

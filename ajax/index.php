@@ -30,13 +30,24 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		//$password = md5($password);
 	
 		$query = "SELECT * FROM db_mdd_renters WHERE login='$login' AND password='$password' ";
+		$get_login = Q("SELECT * FROM `#_mdd_renters` WHERE `login`=?s AND `password`= ?s", array($login, $password))->row();
+		$username_login = $get_login['short_name'];
+		
+
 		$result = mysqli_query($conn,$query);
 			
 		if (mysqli_num_rows($result) == 1) {
 			session_start();
-			$_SESSION['authorization'] = 'true';
-			header('location:index.php');  
+			$_SESSION['authorization'] = true;
+			$_SESSION['login'] = $username_login;
+
+				if($_SESSION['login'] == "Господь") {
+					$_SESSION['admin'] = 'true';
+				} else {
+					$_SESSION['admin'] = 'false';
+				}		 
 		} 
+		
 		else {
 			echo 'fail';
 		}
@@ -44,40 +55,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 
 	if ($controller == 'write')
 	{
-			/* $allcontracts = Q("SELECT * FROM `#_mdd_contracts`")->all();
-			list($tday, $tmonth, $tyear) = explode('.', date("j.n.Y"));
-			
-			foreach ($allcontracts as $key => $value) {
-				//получаем день, месяц, и год начала договора		
-				$allcontracts[$key]['sday'] 				= date('j', strtotime($value['start_date']));
-				$allcontracts[$key]['smonth'] 			= date('n', strtotime($value['start_date']));
-				$allcontracts[$key]['syear'] 				= date('Y', strtotime($value['start_date']));
-				list($sday, $smonth, $syear) 				= explode('.', date("j.n.Y", strtotime($value['start_date'])));
-
-				//получаем день, месяц, год окончания договора
-				$allcontracts[$key]['eday'] 				= date('j', strtotime($value['end_date']));
-				$allcontracts[$key]['emonth'] 			= date('n', strtotime($value['end_date']));
-				$allcontracts[$key]['eyear'] 				= date('Y', strtotime($value['end_date']));
-						
-				// Метка времени текущей даты, даты начала догоовра, даты окончания договора
-				$allcontracts[$key]['tmetka'] 			= mktime(0, 0, 0, $tmonth, $tday, $tyear);
-				$allcontracts[$key]['smetka'] 			= mktime(0, 0, 0, $allcontracts[$key]['smonth'], $allcontracts[$key]['sday'], $allcontracts[$key]['syear']);
-				$allcontracts[$key]['emetka'] 			= mktime(0, 0, 0, $allcontracts[$key]['emonth'], $allcontracts[$key]['eday'], $allcontracts[$key]['eyear']);
-
-				//Проверка - является ли договор действующим.
-				if ((($allcontracts[$key]['tmetka'] >= $allcontracts[$key]['smetka']) && ($allcontracts[$key]['tmetka'] <= $allcontracts[$key]['emetka'])) || $allcontracts[$key]['end_date'] == ''){
-					$status = 1;
-				}
-				else {
-					$status = 0;
-				}
-				O("_mdd_contracts", $allcontracts[$key]['id'])->update(array(
-					'status' => $status
-				));
-			} //end foreach */
-
-		//exit(__debug($allcontracts));
-
+		
 		$renters = Q("SELECT 
 
 				`renter`.`id` as `renter_id`, `renter`.`short_name`, `renter`.`full_name`, `contract`.`number` as `contract_number`, `contract`.`id` as `contract_id`
@@ -208,18 +186,6 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				else {
 					$amount = 1;
 				}
-
-				//$schet_last_id = get_last_id(); // Получаем id последнего добавленного счета
-
-				// Получаем последний добавленный счет - для вычисления поля по которому будет определяться номер следующего счета.
-				/*$schet_last = Q("SELECT * FROM `#_mdd_invoice` WHERE `id` = ?i", array($schet_last_id))->row();
-				$schet_index = str_replace('-', '', $schet_last['contract_date']);// Преобразуем дату счета - убераме символы "-"
-				$schet_last_number_index = $schet_last['id'] + $schet_index;
-				O('_mdd_invoice', $schet_last['id'])->update(array(						
-					'number_index' => $schet_last_number_index								
-				));*/
-				
-				//$akt_last_id = 1; //mysqli_insert_id(); // Получаем id последнего добавленного акта
 		
 				$summa = $contracts_for_schet['summa'] * $amount;
 				$summa = number_format($summa, 2, '.', '');
@@ -248,9 +214,11 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				$number_schet++;					
 			}				
 		}			
-	}
+	} 
+
 	if ($controller == 'payment')
 	{
+		
 		if(isset($_POST['summa']) && isset($_POST['renter_document'])) {
 			$summa = Q("SELECT `rest` FROM `#_mdd_invoice` WHERE `renter` = ?s", array($_POST['renter_name']))->row();
 
@@ -258,28 +226,49 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				$result_sum = $sum; //сумма в договоре
 			}
 			
-			$rest = $result_sum - $_POST['summa'];
-			echo $rest; //разница
+			$rest = $result_sum - $_POST['summa']; // $_POST_SUMMA  = берется из REST INVOICE
 		} 
-/* 		$schet_last = Q("SELECT * FROM `#_mdd_invoice` WHERE `id` = ?i", array($schet_last_id))->row();
+		 
+		 $update_rest = Q("SELECT * FROM `#_mdd_contracts` as `contracts`
+			LEFT JOIN `#_mdd_invoice` as `invoice`
+			ON `contracts`.`summa` = `invoice`.`summa`
+			WHERE `contracts`.`number` = ?s
+			", array($_POST['renter_document']))->row(); 
 
+		$id = intval($update_rest['id']);
 
-		$update_debet = Q("SELECT * FROM `#_mdd_invoice` WHERE ")
+		$servername = "localhost";
+		$username = "root";
+		$password = "";
+		$dbname = "authorization";
 
-		O("_mdd_contracts", $update_debet)->update(array(
-			'rest' => $rest
-		)); */
+		// Create connection
+		$conn = new mysqli($servername, $username, $password, $dbname);
+		// Check connection
+		if ($conn->connect_error) {
+				die("Connection failed: " . $conn->connect_error);
+		} 
+
+		$sql = "UPDATE `db_mdd_invoice` SET `rest` = '$rest' WHERE `db_mdd_invoice`.`id` = '$id'";
+
+		if ($conn->query($sql) === TRUE) {
+				echo "Record updated successfully";
+		} else {
+				echo "Error updating record: " . $conn->error;
+		}
+
+		$conn->close();
 
 		if(isset($_POST['summa']) && isset($_POST['date']) && isset($_POST['renter_name']) && isset($_POST['renter_document']) && isset($_POST['number'])) {
 			O('_mdd_payments')->create(array(
 				'renter_name' => $_POST['renter_name'],
 				'date' => $_POST['date'],
 				'summa' => $_POST['summa'],
-				'document_number' => $_POST['number'],
+				'document' => $_POST['number'],
 				'payment_info' => $_POST['renter_document'],
-				//'rest' => $rest								
+				'rest' => $rest								
 			));
-		}
+		}  
 
 	}
 

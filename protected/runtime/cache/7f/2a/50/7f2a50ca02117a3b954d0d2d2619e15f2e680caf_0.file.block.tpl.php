@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-21 17:36:45
+/* Smarty version 3.1.32, created on 2018-11-23 17:37:12
   from 'C:\OpenServer\domains\authorization.local\protected\modules\vystavlenie_schetov\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5bf56d7d869e69_95446059',
+  'unifunc' => 'content_5bf8109843e791_82228253',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5bf56d7d869e69_95446059 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5bf8109843e791_82228253 (Smarty_Internal_Template $_smarty_tpl) {
 ?><div class="vystavlenie-schetov"><form id="vystavlenie-schetov" method="POST" action="/ajax/write"><div class="vystavlenie-schetov-date"><p class="date-error">Выберите дату:</p><input type="date" name="date" value="2018-01-01"></div><hr style="margin-bottom: 40px"><p class="error renter-error">Выберите одного или более арендодателей:</p><?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['renters']->value, 'renter');
 if ($_from !== null) {

@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-21 17:36:47
+/* Smarty version 3.1.32, created on 2018-11-23 17:56:42
   from 'C:\OpenServer\domains\authorization.local\protected\modules\pechat_schetov\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5bf56d7fc20a19_37172699',
+  'unifunc' => 'content_5bf8152a18da74_82277929',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5bf56d7fc20a19_37172699 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5bf8152a18da74_82277929 (Smarty_Internal_Template $_smarty_tpl) {
 ?>  <div class="vystavlenie-schetov pechat-schetov">
     <form id="pechat-schetov" action="" method="post">
       <p class="mb0">Год</p><span class="error year-error">Выберите год:</span>

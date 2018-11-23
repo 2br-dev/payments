@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-21 18:30:46
+/* Smarty version 3.1.32, created on 2018-11-23 15:54:50
   from 'C:\OpenServer\domains\authorization.local\protected\app\core\admin-template\view\modules\_fields_module_edit.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5bf57a26060364_27943515',
+  'unifunc' => 'content_5bf7f89a13b946_86246466',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -22,7 +22,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:system/controll.tpl' => 5,
   ),
 ),false)) {
-function content_5bf57a26060364_27943515 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5bf7f89a13b946_86246466 (Smarty_Internal_Template $_smarty_tpl) {
 ?><table class="t1 table module-table" id="mdd_fields"><col><col width="150"><col width="240"><col width="330"><col width="85"><col width="80"><col width="35"><col width="35"><col width="35"><thead><tr><th colspan="9">Редактирование полей</th></tr></thead><tbody><tr><td class="h">Название поля</td><td class="h">Системное имя</td><td class="h">Тип поля</td><td class="h">Дополнительно</td><td class="h">Порядок</td><td class="h">В списке</td><td class="h"><span class="mysql-index"></span></td><td class="h"><span class="mysql-unique"></span></td><td class="h"></td></tr><?php $_smarty_tpl->_assignInScope('zindex', 1000);
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['mdd_fields']->value, 'it', false, NULL, 'i', array (
   'iteration' => true,

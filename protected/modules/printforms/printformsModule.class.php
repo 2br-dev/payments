@@ -32,7 +32,7 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 
                         `contract`.`id` as `contract_id`, 
                         `contract`.`number` as `contract_number`,
-                        `contract`.`date` as `contract_date`,
+                        `contract`.`datetime` as `contract_date`,
                         `contract`.`summa` as `contract_summa`, 
                         `contract`.`ground` as `contract_ground`, 
                         `contract`.`discoint`,
@@ -127,7 +127,7 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 
                         `contract`.`id` as `contract_id`, 
                         `contract`.`number` as `contract_number`,
-                        `contract`.`date` as `contract_date`,
+                        `contract`.`datetime` as `contract_date`,
                         `contract`.`summa` as `contract_summa`, 
                         `contract`.`ground` as `contract_ground`, 
                         `contract`.`discoint`,
@@ -224,7 +224,7 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 
                         `contract`.`id` as `contract_id`, 
                         `contract`.`number` as `contract_number`,
-                        `contract`.`date` as `contract_date`,
+                        `contract`.`datetime` as `contract_date`,
                         `contract`.`summa` as `contract_summa`, 
                         `contract`.`ground` as `contract_ground`, 
                         `contract`.`discoint`,
