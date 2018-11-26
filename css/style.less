@@ -286,7 +286,7 @@ body {
   }
   &-item {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     span {
       display: flex;
@@ -302,7 +302,6 @@ body {
   }
   .month-error, .renter-error, .year-error {
     color: @red;
-    position: absolute;
     font-weight: bold;
     display: none;
   }
@@ -316,6 +315,59 @@ body {
   .month-error {
     left: 50px;
     top: 253px;
+  }
+  .black-wrapper {
+    display: none;
+  }
+  .period-sum {
+    margin: 0 10px;
+  }
+  .success-message {
+    display: none;
+    z-index: 10;
+    position: fixed;
+    z-index: 10;
+    background: #008b00;
+    border-radius: 20px;
+    box-shadow: 1px 1px black;
+    top: 40%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 420px;
+    min-height: 100px;
+    padding: 20px 30px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    p {
+      opacity: 0.8;
+      color: white;
+      padding-right: 0;
+      margin-top: 20px;
+      font-size: 20px;
+    }
+    .close {
+      top: 16px;
+      cursor: pointer;
+    }
+  }
+  &-hidden {
+    display: none;
+    &-btn {
+      background: @red;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+      border: none;
+      color: white;
+      text-transform: uppercase;
+      border-radius: 20px;
+      padding: 10px 20px;
+      width: fit-content;
+      &:hover {
+        transition: .3s ease;
+        background: lighten(@red, 10%);
+        cursor: pointer;
+        box-shadow: 1px 3px 9px rgba(0, 0, 0, 0.12), 1px 3px 6px rgba(0, 0, 0, 0.24);
+      }
+    }
   }
   input[type="submit"] {
     background: @red;
@@ -426,15 +478,6 @@ body {
 }
 
 
-
-
-
-
-
-
-
-
-
 // custom date
 input[type="date"]::-webkit-clear-button {
   display: none;
@@ -483,6 +526,7 @@ input[type="date"], focus {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  margin-right: 25px;
   .checkmark {
     position: absolute;
     top: 0;
@@ -495,6 +539,23 @@ input[type="date"], focus {
     content: "";
     position: absolute;
     display: none;
+  }
+}
+
+.invoice-table {
+  background: white;
+  margin: 0 auto 50px;
+  width: 850px;
+  border-radius: 20px;
+  padding: 10px 40px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  td {
+    text-align: center;
+    height: 40px;
+  }
+  th {
+    padding: 10px 0;
+    border-bottom: 1.5px solid lightgray;
   }
 }
 

@@ -28,8 +28,7 @@ final class vystavlenie_schetovModule extends \Fastest\Core\Modules\Module
             
             FROM `#_mdd_contracts` as `contract`					
             LEFT JOIN `#_mdd_rooms` as `room` ON `contract`.`rooms` = `room`.`id`
-            LEFT JOIN `#_mdd_renters` as `renter` ON `contract`.`renter` = `renter`.`id`
-            WHERE `contract`.`status` = ?i", array(1))->all();
+            LEFT JOIN `#_mdd_renters` as `renter` ON `contract`.`renter` = `renter`.`id`", array())->all();
                  
                 
         // exit(__($renters));

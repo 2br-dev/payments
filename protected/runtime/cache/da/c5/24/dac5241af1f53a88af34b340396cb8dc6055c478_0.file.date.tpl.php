@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-22 13:51:15
+/* Smarty version 3.1.32, created on 2018-11-26 12:54:28
   from 'C:\OpenServer\domains\authorization.local\protected\app\core\admin-template\fields\date.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5bf68a23a37ff9_21376985',
+  'unifunc' => 'content_5bfbc2d47b41b6_58080428',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5bf68a23a37ff9_21376985 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5bfbc2d47b41b6_58080428 (Smarty_Internal_Template $_smarty_tpl) {
 ?><div class="calendar input-group"><input name="<?php echo $_smarty_tpl->tpl_vars['name']->value;?>
 " value="<?php echo htmlspecialchars($_smarty_tpl->tpl_vars['value']->value, ENT_QUOTES, 'UTF-8', true);?>
 " <?php if (isset($_smarty_tpl->tpl_vars['onchange']->value)) {?> onchange="<?php echo $_smarty_tpl->tpl_vars['onchange']->value;?>

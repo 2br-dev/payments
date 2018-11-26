@@ -166,7 +166,7 @@
 			<p>Адрес: 666784, Иркутская обл, Усть-Кут г., Кирова ул, 12, кв. 14</p>
 		</div>
 		<div class="schet-number">
-			<p>Акт № A-{$print.akt_number} от {$date.2} {$month_string} {$print.period_year} года</p>
+			<p>Акт № A-{$print.document_number} от {$date.2} {$month_string} {$print.period_year} года</p>
 		</div>
 		<div class="arendator-name">
 			<p>Заказчик: {$print.renter_name}</p>
@@ -290,7 +290,7 @@
 		<div style="clear: both;"></div>
 		
 		<div class="sf-number">
-			<p>Счет-фактура № A-{$print.sf_number} от {$date.2} {$month_string} {$print.period_year} года</p>
+			<p>Счет-фактура № A-{$print.document_number} от {$date.2} {$month_string} {$print.period_year} года</p>
 			<p style="font-size: 16px; font-weight: normal;">Исправление № ---- от ----</p>
 		</div>
 		

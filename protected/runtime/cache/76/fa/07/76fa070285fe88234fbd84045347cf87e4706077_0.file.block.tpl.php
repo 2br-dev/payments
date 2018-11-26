@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-23 16:11:59
+/* Smarty version 3.1.32, created on 2018-11-26 15:05:50
   from 'C:\OpenServer\domains\authorization.local\protected\modules\printforms\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5bf7fc9f594ac1_36452562',
+  'unifunc' => 'content_5bfbe19e0f1482_69324049',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '76fa070285fe88234fbd84045347cf87e4706077' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\modules\\printforms\\tpl\\block.tpl',
-      1 => 1542787926,
+      1 => 1543233933,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5bf7fc9f594ac1_36452562 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5bfbe19e0f1482_69324049 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html class="no-js" itemscope="itemscope" itemtype="http://schema.org/<?php if (!isset($_smarty_tpl->tpl_vars['uri']->value[1])) {?>WebPage<?php } else { ?>ItemPage<?php }?>" lang="<?php echo $_smarty_tpl->tpl_vars['_page']->value['lang'];?>
 "><head><title></title><link rel="stylesheet" href="/css/printform.css"></head><body><?php if ($_smarty_tpl->tpl_vars['document']->value == 'sch') {?><div class="wrapper-schet"><div class="arendodatel-name"><p>Индивидуальный предприниматель Кононович Галина Павловна</p></div><div class="arendodatel-address"><p>Адрес: 666784, Иркутская обл, Усть-Кут г., Кирова ул, 12, кв. 14</p></div><div class="arendodatel-bank"><p>Образец заполнения платежного поручения</p><table border="1" cellspacing="0"><tr><td>ИНН 381800677995</td><td>КПП</td><td rowspan="2">Сч. №</td><td rowspan="2">40802810130000045576</td></tr><tr><td colspan="2">Получатель<br>Индивидуальный предприниматель Кононович Галина Павловна</td></tr><tr><td rowspan="2" colspan="2">Банк Получателя<br>КРАСНОДАРСКОЕ ОТДЕЛЕНИЕ N8619 ПАО СБЕРБАНК</td><td>БИК</td><td colspan="2">040349602</td></tr><tr><td>Сч. №</td><td colspan="2">30101810100000000602</td></tr></table></div><div class="schet-number"><p>Счет № A-<?php echo $_smarty_tpl->tpl_vars['print']->value['invoice_numb'];?>
@@ -74,7 +74,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?></table><table s
 ">)</strong></p></div><?php }?></div><div class="sign"><p>Руководитель ______________________ (Гавриленко Н.В.)</p><!--<p>Руководитель ______________________ (Глазков С.А.)</p>--><p style="font-style: italic; font-size: 12px;">Действующая за Кононович Галину Павловну по Доверенности от 09.09.2016 г.<br>Бланк доверенности: 23АА6203810</p><!--<p style="font-style: italic; font-size: 12px;">Действующий за Кононович Галину Павловну по Доверенности от 07.02.2014 г.<br>Бланк доверенности: 23АА3453154</p>--><?php if ($_smarty_tpl->tpl_vars['pr']->value == 1) {?><div class="akt-sign-img"><img src="/images/sign.png" width="100"><!--<img src="/images/sign-glazkov.png" width="100" style="padding-top: 20px;">--></div><div class="akt-print"><img src="/images/print.png" width="146"></div><?php }
 if ($_smarty_tpl->tpl_vars['discount']->value == 1) {?><p style="margin-top: 50px; width: 100%; text-align: center; font-size: 18px;">Счет действителен до "05" <?php echo $_smarty_tpl->tpl_vars['month_string']->value;?>
  <?php echo $_smarty_tpl->tpl_vars['date']->value[0];?>
- года</p><?php }?></div></div><?php } elseif ($_smarty_tpl->tpl_vars['document']->value == 'akt') {?><div class="wrapper-akt"><div class="arendodatel-name"><p>Индивидуальный предприниматель Кононович Галина Павловна</p></div><div class="arendodatel-address"><p>Адрес: 666784, Иркутская обл, Усть-Кут г., Кирова ул, 12, кв. 14</p></div><div class="schet-number"><p>Акт № A-<?php echo $_smarty_tpl->tpl_vars['print']->value['akt_number'];?>
+ года</p><?php }?></div></div><?php } elseif ($_smarty_tpl->tpl_vars['document']->value == 'akt') {?><div class="wrapper-akt"><div class="arendodatel-name"><p>Индивидуальный предприниматель Кононович Галина Павловна</p></div><div class="arendodatel-address"><p>Адрес: 666784, Иркутская обл, Усть-Кут г., Кирова ул, 12, кв. 14</p></div><div class="schet-number"><p>Акт № A-<?php echo $_smarty_tpl->tpl_vars['print']->value['document_number'];?>
  от <?php echo $_smarty_tpl->tpl_vars['date']->value[2];?>
  <?php echo $_smarty_tpl->tpl_vars['month_string']->value;?>
  <?php echo $_smarty_tpl->tpl_vars['print']->value['period_year'];?>
@@ -116,7 +116,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?></table><table s
 "></td></tr><?php } else { ?><tr><td style="text-align: right; font-weight: bold; border: none;">Всего:</td><td style="border: 1px solid #000000;"><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['invoice_summa'];?>
 "></td></tr><?php }?></table><div style="clear: both;"></div><div class="podval"><?php if ($_smarty_tpl->tpl_vars['discount']->value == 1) {?><p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму<strong><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['contract_summa_string'];?>
 "></strong>, в т.ч.: НДС - Ноль рублей 00 копеек</p><?php } else { ?><p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму<strong><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['contract_summa_string'];?>
-"></strong>, в т.ч.: НДС - Ноль рублей 00 копеек</p><?php }?><p style="font-style: italic; font-size: 12px;">Вышеперечисленные услуги выполненые полностью и в срок. Заказчик претензий по объему, качеству и срокам оказания услуг не имеет</p></div><?php }?></div><div class="sign"><p style="display: inline-block; margin-right: 120px;">Исполнитель: _____________(Гавриленко Н.В.)</p><!--<p style="display: inline-block; margin-right: 120px;">Исполнитель: _____________(Глазков С.А.)</p>--><p style="display: inline-block;">Заказчик: ________________________</p><p style="font-style: italic; font-size: 12px;">за Кононович Галину Павловну по доверенности от 09.09.2016 г.<br>Бланк доверенности: 23АА6203810</p><!--<p style="font-style: italic; font-size: 12px;">за Кононович Галину Павловну по доверенности от 07.02.2014 г.<br>Бланк доверенности: 23АА 3453154</p>--><?php if ($_smarty_tpl->tpl_vars['pr']->value == 1) {?><div class="akt-print"><img src="/images/print.png" width="146"></div><div class="akt-sign-img"><img src="/images/sign.png" width="100"><!--<img src="/images/sign-glazkov.png" width="100" style="padding-top: 20px;">--></div><?php }?></div></div><?php } elseif ($_smarty_tpl->tpl_vars['document']->value == 'sf') {?><div class="wrapper-sf"><div class="forma"><p>Приложение № 1<br>к постановлению Правительства Российской Федерации<br>от 26 декабря 2011 г.  № 1137</p></div><div style="clear: both;"></div><div class="sf-number"><p>Счет-фактура № A-<?php echo $_smarty_tpl->tpl_vars['print']->value['sf_number'];?>
+"></strong>, в т.ч.: НДС - Ноль рублей 00 копеек</p><?php }?><p style="font-style: italic; font-size: 12px;">Вышеперечисленные услуги выполненые полностью и в срок. Заказчик претензий по объему, качеству и срокам оказания услуг не имеет</p></div><?php }?></div><div class="sign"><p style="display: inline-block; margin-right: 120px;">Исполнитель: _____________(Гавриленко Н.В.)</p><!--<p style="display: inline-block; margin-right: 120px;">Исполнитель: _____________(Глазков С.А.)</p>--><p style="display: inline-block;">Заказчик: ________________________</p><p style="font-style: italic; font-size: 12px;">за Кононович Галину Павловну по доверенности от 09.09.2016 г.<br>Бланк доверенности: 23АА6203810</p><!--<p style="font-style: italic; font-size: 12px;">за Кононович Галину Павловну по доверенности от 07.02.2014 г.<br>Бланк доверенности: 23АА 3453154</p>--><?php if ($_smarty_tpl->tpl_vars['pr']->value == 1) {?><div class="akt-print"><img src="/images/print.png" width="146"></div><div class="akt-sign-img"><img src="/images/sign.png" width="100"><!--<img src="/images/sign-glazkov.png" width="100" style="padding-top: 20px;">--></div><?php }?></div></div><?php } elseif ($_smarty_tpl->tpl_vars['document']->value == 'sf') {?><div class="wrapper-sf"><div class="forma"><p>Приложение № 1<br>к постановлению Правительства Российской Федерации<br>от 26 декабря 2011 г.  № 1137</p></div><div style="clear: both;"></div><div class="sf-number"><p>Счет-фактура № A-<?php echo $_smarty_tpl->tpl_vars['print']->value['document_number'];?>
  от <?php echo $_smarty_tpl->tpl_vars['date']->value[2];?>
  <?php echo $_smarty_tpl->tpl_vars['month_string']->value;?>
  <?php echo $_smarty_tpl->tpl_vars['print']->value['period_year'];?>

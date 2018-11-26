@@ -29,6 +29,7 @@ final class printformsModule extends \Fastest\Core\Modules\Module
                         `invoice`.`period_month`, 
                         `invoice`.`amount` as `invoice_amount`,
                         `invoice`.`summa` as `invoice_summa`,
+												`invoice`.`contract_number` as `document_number`,
 
                         `contract`.`id` as `contract_id`, 
                         `contract`.`number` as `contract_number`,
@@ -124,6 +125,7 @@ final class printformsModule extends \Fastest\Core\Modules\Module
                         `invoice`.`period_month`, 
                         `invoice`.`amount` as `invoice_amount`,
                         `invoice`.`summa` as `invoice_summa`,
+												`invoice`.`contract_number` as `document_number`,
 
                         `contract`.`id` as `contract_id`, 
                         `contract`.`number` as `contract_number`,
@@ -221,6 +223,7 @@ final class printformsModule extends \Fastest\Core\Modules\Module
                         `invoice`.`period_month`, 
                         `invoice`.`amount` as `invoice_amount`,
                         `invoice`.`summa` as `invoice_summa`,
+												`invoice`.`contract_number` as `document_number`,
 
                         `contract`.`id` as `contract_id`, 
                         `contract`.`number` as `contract_number`,
@@ -433,7 +436,7 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 			}
 						
 				
-		//exit(__debug($print));
+		//exit(__($print));
 
 		return array(
 			'print' => $print,

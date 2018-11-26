@@ -42,10 +42,14 @@ $(document).ready(function() {
     $("input[name='renter_id']").each(function() {
       allRentersId.push($(this).val());
     });
+    var allMonths = [];
+    $("input[name='month']:checked").each(function() {
+      allMonths.push($(this).val());
+    });
 
     var data = {
       year:         $("input[name='year']:checked").val(),
-      month:        $("input[name='month']:checked").val(),
+      month:        allMonths,
       renter:       allRenters,
       from_first:   $("input[name='from_first']:checked").val(),
       date:         $("input[name='date']").val(),
@@ -63,12 +67,13 @@ $(document).ready(function() {
     if(!data.year) {
       $(".year-error").show();
     } 
-    if(!data.month) {
+    if(data.month.length === 0) {
       $(".month-error").show();
     } 
 
-    if (data.date && data.year && data.month && data.renter) {
-                 
+    if (data.date && data.year && data.month && data.renter && data.renter_id) {
+      $('.success-message').fadeIn(); 
+      $('.black-wrapper').fadeIn();         
       $.ajax({
         type: "POST",
         url: "/ajax/write",
@@ -165,11 +170,19 @@ $(document).ready(function() {
 
 });
 
+$(".vystavlenie-schetov-hidden-btn").click(function() {
+  $(".vystavlenie-schetov-hidden").slideToggle();
+})
 
 $(".close").click(function() {
   $(".print-error").fadeOut();
   $(".black-wrapper").fadeOut();
+  $(".success-message").fadeOut();
 })
+
+$("input[name='period_sum']").click(function() {
+  $(this).val('');
+});
 
 $("input[name='year']").click(function() {
   $(".year-error").hide();
