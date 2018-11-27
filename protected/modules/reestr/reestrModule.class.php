@@ -30,12 +30,14 @@ final class reestrModule extends \Fastest\Core\Modules\Module
             LEFT JOIN `#_mdd_rooms` as `room` ON `contract`.`rooms` = `room`.`id`
             LEFT JOIN `#_mdd_renters` as `renter` ON `contract`.`renter` = `renter`.`id`", array())->all();
                  
-                
-        // exit(__($reestr));
+        
+        $renters = Q("SELECT * FROM `#_mdd_renters` WHERE `login` != 'admin'", array())->all();
+        // exit(__($renters));
 
         return [
-            'template' => 'block',
-            'reestr' => $reestr
+            'template'  => 'block',
+            'reestr'    => $reestr,
+            'renters'   => $renters
         ];
     }
 }

@@ -128,66 +128,11 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		if (!empty($_POST['renter']) && !empty($_POST['date']) && !empty($_POST['year']) && !empty($_POST['month'])){
 		//exit(__debug($_POST));
 		
-		switch ($_POST['month']) {
-			case 'Январь':
-				$month_number = '01';
-				$days = 31;
-				break;
-			case 'Февраль':
-				$month_number = '02';
-				$days = 28;
-				break;
-			case 'Март':
-				$month_number = '03';
-				$days = 31;
-				break;
-			case 'Апрель':
-				$month_number = '04';
-				$days = 30;
-				break;
-			case 'Май':
-				$month_number = '05';
-				$days = 31;
-				break;
-			case 'Июнь':
-				$month_number = '06';
-				$days = 30;
-				break;
-			case 'Июль':
-				$month_number = '07';
-				$days = 31;
-				break;
-			case 'Август':
-				$month_number = '08';
-				$days = 31;
-				break;
-			case 'Сентябрь':
-				$month_number = '09';
-				$days = 30;
-				break;
-			case 'Октябрь':
-				$month_number = '10';
-				$days = 31;
-				break;
-			case 'Ноябрь':
-				$month_number = '11';
-				$days = 30;
-				break;
-			case 'Декабрь':
-				$month_number = '12';
-				$days = 31;
-				break;
-			
-			default:
-				$month_number = '00';
-				$days = 0;
-				break;
-			}				
 
 			foreach ($_POST['renter'] as $key => $value) {	
 				
 				foreach ($_POST['month'] as $month) {
-					$contracts_for_schet = Q("SELECT * from `#_mdd_contracts` as `contract` WHERE `contract`.`renter` = ?i AND `status` = ?i ", array($value, 1))->row();
+					$contracts_for_schet = Q("SELECT * from `#_mdd_contracts` as `contract` WHERE `contract`.`renter` = ?i", array($value))->row();
 					$renter = Q("SELECT * from `#_mdd_renters` as `renter` WHERE `renter`.`id` = ?i", array($value))->row();
 					
 					$start_arenda = explode('.', $contracts_for_schet['start_arenda']); // Парсим дату начала аренды из договора
@@ -214,6 +159,61 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 					$summa = number_format($summa, 2, '.', '');
 	
 					// переменная в виде строки с последним днем месяца для СФ и АКТА:
+					switch ($month) {
+						case 'Январь':
+							$month_number = '01';
+							$days = 31;
+							break;
+						case 'Февраль':
+							$month_number = '02';
+							$days = 28;
+							break;
+						case 'Март':
+							$month_number = '03';
+							$days = 31;
+							break;
+						case 'Апрель':
+							$month_number = '04';
+							$days = 30;
+							break;
+						case 'Май':
+							$month_number = '05';
+							$days = 31;
+							break;
+						case 'Июнь':
+							$month_number = '06';
+							$days = 30;
+							break;
+						case 'Июль':
+							$month_number = '07';
+							$days = 31;
+							break;
+						case 'Август':
+							$month_number = '08';
+							$days = 31;
+							break;
+						case 'Сентябрь':
+							$month_number = '09';
+							$days = 30;
+							break;
+						case 'Октябрь':
+							$month_number = '10';
+							$days = 31;
+							break;
+						case 'Ноябрь':
+							$month_number = '11';
+							$days = 30;
+							break;
+						case 'Декабрь':
+							$month_number = '12';
+							$days = 31;
+							break;
+						
+						default:
+							$month_number = '00';
+							$days = 0;
+							break;
+						}		
 					$lastdaydate  = $_POST['year'] . '-' . $month_number . '-' . $days;
 	
 	
@@ -239,7 +239,28 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 						'sf_date' => $lastdaydate						
 					));	
 				}
-			
+
+				// перезаписываем частичную сумму если она существует
+				if (isset($_POST['period_sum'])) {
+					$host='localhost';
+					$user='root';
+					$pass='';
+					$db='authorization';
+					$conn = mysqli_connect($host, $user, $pass, $db);
+
+					for ($index = 0; $index < count($_POST['period_sum']); $index++) {
+						$period_sum =  $_POST['period_sum'][$index];					
+						$summa_id =  $_POST['summa_id'][$index];
+	
+						$sql = "UPDATE `db_mdd_invoice` SET `summa` = '$period_sum', `rest` = '$period_sum'
+										 WHERE `db_mdd_invoice`.`contract_id` = '$summa_id'";
+
+						$result = mysqli_query($conn,$sql);				 
+					}
+
+					$conn->close();
+				}
+
 				$number_schet++;					
 			}				
 		}			
@@ -258,13 +279,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			$rest = $result_sum - $_POST['summa']; // $_POST_SUMMA  = берется из REST INVOICE
 		} 
 		 
-		 $update_rest = Q("SELECT * FROM `#_mdd_contracts` as `contracts`
-			LEFT JOIN `#_mdd_invoice` as `invoice`
-			ON `contracts`.`summa` = `invoice`.`summa`
-			WHERE `contracts`.`number` = ?s
-			", array($_POST['renter_document']))->row(); 
-
-		$id = intval($update_rest['id']);
+		$id = $_POST['id'];
 
 		$servername = "localhost";
 		$username = "root";
@@ -278,7 +293,12 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				die("Connection failed: " . $conn->connect_error);
 		} 
 
-		$sql = "UPDATE `db_mdd_invoice` SET `rest` = '$rest' WHERE `db_mdd_invoice`.`id` = '$id'";
+		if ($rest <= 0 ) {
+			$sql = "UPDATE `db_mdd_invoice` SET `rest` = '$rest', `status` = 0 WHERE `db_mdd_invoice`.`id` = '$id'";
+		} else {
+			$sql = "UPDATE `db_mdd_invoice` SET `rest` = '$rest' WHERE `db_mdd_invoice`.`id` = '$id'";
+		}
+
 
 		if ($conn->query($sql) === TRUE) {
 				echo "Record updated successfully";

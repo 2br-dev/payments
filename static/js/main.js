@@ -38,14 +38,20 @@ $(document).ready(function() {
     $("input[name='renter']:checked").each(function() {
       allRenters.push($(this).val());
     });
-    var allRentersId = [];
-    $("input[name='renter_id']").each(function() {
-      allRentersId.push($(this).val());
-    });
     var allMonths = [];
     $("input[name='month']:checked").each(function() {
       allMonths.push($(this).val());
     });
+    var allSum = [];
+    var allId = [];
+    $("input[name='period_sum']").each(function() {
+      if ($(this).val() != '') {
+        allSum.push($(this).val());
+        allId.push($(this).data('id'));
+      }
+    });
+
+    
 
     var data = {
       year:         $("input[name='year']:checked").val(),
@@ -53,7 +59,8 @@ $(document).ready(function() {
       renter:       allRenters,
       from_first:   $("input[name='from_first']:checked").val(),
       date:         $("input[name='date']").val(),
-      renter_id:    allRentersId,
+      summa_id:     allId,
+      period_sum:   allSum,
     };
     
     console.log(data);
@@ -71,7 +78,7 @@ $(document).ready(function() {
       $(".month-error").show();
     } 
 
-    if (data.date && data.year && data.month && data.renter && data.renter_id) {
+    if (data.date && data.year && data.month && data.renter) {
       $('.success-message').fadeIn(); 
       $('.black-wrapper').fadeIn();         
       $.ajax({
@@ -99,7 +106,9 @@ $(document).ready(function() {
   })
 
   $("#payments .custom-select-wrapper:nth-child(2) span.custom-option.undefined").click(function() {
-    var value = $(this).attr('data-value');
+    var value   = $(this).attr('data-value');
+    var id      = $(this).data('id');
+    localStorage.setItem("id",id);
     localStorage.setItem("renter_document",value);
   })
 
@@ -108,15 +117,19 @@ $(document).ready(function() {
     var self = this;
 
     var data = {
-      summa:       $("input[name='summa']").val(),
-      date:       $("input[name='date']").val(),
-      number:     $("input[name='document_number']").val(),
-      renter_name:       localStorage.getItem("renter"),
-      renter_document:     localStorage.getItem("renter_document"),
+      summa:              $("input[name='summa']").val(),
+      date:               $("input[name='date']").val(),
+      number:             $("input[name='document_number']").val(),
+      renter_name:        localStorage.getItem("renter"),
+      renter_document:    localStorage.getItem("renter_document"),
+      id:                 localStorage.getItem("id"),
     };
     
     console.log(data);
  
+    if(data.summa && data.date && data.number && data.renter_name && data.renter_document) {
+      $('.success-message').fadeIn(); 
+      $('.black-wrapper').fadeIn();  
       $.ajax({
         type: "POST",
         data: data,
@@ -129,6 +142,10 @@ $(document).ready(function() {
           console.log(err);
         }
       });
+    } else {
+      $('.error-message').fadeIn(); 
+      $('.black-wrapper').fadeIn();
+    }
   }); 
 
   /// cабмит для печать счетов
@@ -178,6 +195,7 @@ $(".close").click(function() {
   $(".print-error").fadeOut();
   $(".black-wrapper").fadeOut();
   $(".success-message").fadeOut();
+  $(".error-message").fadeOut();
 })
 
 $("input[name='period_sum']").click(function() {
@@ -217,7 +235,7 @@ $(".custom-select").each(function() {
       template += '<span class="custom-select-trigger" style="margin-top: 5px;">' + $(this).attr("placeholder") + '</span>';
       template += '<div class="custom-options">';
       $(this).find("option").each(function() {
-        template += '<span class="custom-option ' + $(this).attr("class") + '" data-value="' + $(this).attr("value") + '">' + $(this).html() + '</span>';
+        template += '<span class="custom-option ' + $(this).attr("class") + '" data-value="' + $(this).attr("value") + '" data-id="' + $(this).attr("data-id") + '">' + $(this).html() + '</span>';
       });
   template += '</div></div>';
   

@@ -18,6 +18,11 @@ body {
 * {
   box-sizing: border-box;
 }
+*:focus,
+*:active {
+  outline: none;
+  border: none;
+}
 .navigation {
   height: 60px;
   display: flex;
@@ -129,16 +134,19 @@ body {
 }
 .renters {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  margin-top: 30px;
-  padding-left: 20%;
+  width: 600px;
+  margin: 30px auto 0;
   font-size: 18px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  padding-bottom: 15px;
+  border-radius: 20px;
+  background: white;
 }
 .renters-header {
   text-align: center;
 }
 .renters .renter {
   text-align: center;
-  width: fit-content;
   font-size: 22px;
   margin-bottom: 10px;
   background: #f95252;
@@ -146,6 +154,8 @@ body {
   border-radius: 20px;
   color: white;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
 .renters .renter:hover {
   cursor: pointer;
@@ -153,7 +163,7 @@ body {
   transition: all .3s ease;
 }
 .renters .renter-contract-header {
-  padding-left: 10px;
+  padding-left: 20px;
 }
 .renters .renter-contract-header:hover {
   cursor: pointer;
@@ -166,6 +176,9 @@ body {
 .renters-details,
 .renters-schet {
   display: none;
+}
+.renters-details {
+  padding: 0 13px;
 }
 .renters-schet {
   padding-left: 20px;
@@ -226,8 +239,8 @@ body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 .vystavlenie-schetov hr {
-  height: 1px #232323;
   border-radius: 50%;
+  margin-bottom: 30px;
 }
 .vystavlenie-schetov form {
   position: relative;
@@ -290,6 +303,7 @@ body {
 }
 .vystavlenie-schetov .period-sum {
   margin: 0 10px;
+  width: 180px;
 }
 .vystavlenie-schetov .success-message {
   display: none;
@@ -357,6 +371,41 @@ body {
   background: #fb8383;
   cursor: pointer;
   box-shadow: 1px 3px 9px rgba(0, 0, 0, 0.12), 1px 3px 6px rgba(0, 0, 0, 0.24);
+}
+.payments .black-wrapper {
+  display: none;
+}
+.payments .success-message,
+.payments .error-message {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  background: #008b00;
+  border-radius: 20px;
+  top: 40%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 420px;
+  min-height: 100px;
+  padding: 20px 30px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+.payments .success-message p,
+.payments .error-message p {
+  opacity: 0.8;
+  color: white;
+  padding-right: 0;
+  margin-top: 20px;
+  font-size: 20px;
+}
+.payments .success-message .close,
+.payments .error-message .close {
+  top: 16px;
+  cursor: pointer;
+}
+.payments .error-message {
+  background: #f95252;
 }
 .pechat-schetov .year-error {
   top: 0;
@@ -471,7 +520,7 @@ focus {
   display: block;
   position: relative;
   padding-left: 35px;
-  margin-bottom: 12px;
+  margin-bottom: 25px;
   cursor: pointer;
   font-size: 14px;
   line-height: 24px;

@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-26 15:05:50
+/* Smarty version 3.1.32, created on 2018-11-27 16:27:23
   from 'C:\OpenServer\domains\authorization.local\protected\modules\printforms\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5bfbe19e0f1482_69324049',
+  'unifunc' => 'content_5bfd463b5ba339_68552825',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5bfbe19e0f1482_69324049 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5bfd463b5ba339_68552825 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html class="no-js" itemscope="itemscope" itemtype="http://schema.org/<?php if (!isset($_smarty_tpl->tpl_vars['uri']->value[1])) {?>WebPage<?php } else { ?>ItemPage<?php }?>" lang="<?php echo $_smarty_tpl->tpl_vars['_page']->value['lang'];?>
 "><head><title></title><link rel="stylesheet" href="/css/printform.css"></head><body><?php if ($_smarty_tpl->tpl_vars['document']->value == 'sch') {?><div class="wrapper-schet"><div class="arendodatel-name"><p>Индивидуальный предприниматель Кононович Галина Павловна</p></div><div class="arendodatel-address"><p>Адрес: 666784, Иркутская обл, Усть-Кут г., Кирова ул, 12, кв. 14</p></div><div class="arendodatel-bank"><p>Образец заполнения платежного поручения</p><table border="1" cellspacing="0"><tr><td>ИНН 381800677995</td><td>КПП</td><td rowspan="2">Сч. №</td><td rowspan="2">40802810130000045576</td></tr><tr><td colspan="2">Получатель<br>Индивидуальный предприниматель Кононович Галина Павловна</td></tr><tr><td rowspan="2" colspan="2">Банк Получателя<br>КРАСНОДАРСКОЕ ОТДЕЛЕНИЕ N8619 ПАО СБЕРБАНК</td><td>БИК</td><td colspan="2">040349602</td></tr><tr><td>Сч. №</td><td colspan="2">30101810100000000602</td></tr></table></div><div class="schet-number"><p>Счет № A-<?php echo $_smarty_tpl->tpl_vars['print']->value['invoice_numb'];?>

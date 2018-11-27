@@ -3,35 +3,35 @@
     <form id="vystavlenie-schetov" method="POST" action="/ajax/write">
       <div class="vystavlenie-schetov-date">
         <p class="date-error">Выберите дату:</p>
-        <input type="date" name="date" value="2018-01-01">
+        <input type="date" name="date" value="2018-01-01" id="date">
       </div>
       <hr style="margin-bottom: 40px">
       <p class="error renter-error">Выберите одного или более арендодателей:</p>
 
-      <p><b style="font-size: 18px">C действующими договорами:</p></b>
+      <p><b style="font-size: 18px">Действующие договора:</p></b>
       {foreach from=$renters item=renter}
         {if $renter.status == 1}
         <div class="vystavlenie-schetov-item">
-          <label class="container-checkbox">{$renter.full_name} - {$renter.contract_number}
+          <label class="container-checkbox" style="width: 80%">{$renter.short_name} - {$renter.contract_number}
             <input type="checkbox" name="renter" value="{$renter.renter_id}">
             <span class="checkmark"></span>
           </label>
-          <label class="period-sum" for="period_sum">сумма:</label>
-          <input type="text" value="{$renter.summa}" name="period_sum" style="width: 130px; color: gray; border: none; border-bottom: 1px solid #f95252; padding-left: 5px;">
+           <label class="period-sum" for="period_sum">сумма по договору: <i>{$renter.summa}</i></label><br>
+            <input type="text" data-id="{$renter.contract_id}" name="period_sum" style="width: 130px; color: gray; border: none; border-bottom: 1px solid; padding-left: 5px;">
         </div>
         {/if}
       {/foreach}
-      <p class="vystavlenie-schetov-hidden-btn">Показать с недействующими договорами</p>
+      <p class="vystavlenie-schetov-hidden-btn">Показать недействующие договора</p>
       <div class="vystavlenie-schetov-hidden">
         {foreach from=$renters item=renter}
           {if $renter.status == 0}
           <div class="vystavlenie-schetov-item">
-            <label class="container-checkbox">{$renter.full_name} - {$renter.contract_number}
+            <label class="container-checkbox" style="width: 80%">{$renter.short_name} - {$renter.contract_number}
               <input type="checkbox" name="renter" value="{$renter.renter_id}">
               <span class="checkmark"></span>
             </label>
-            <label class="period-sum" for="period_sum">сумма:</label>
-            <input type="text" value="{$renter.summa}" name="period_sum" style="width: 130px; color: gray; border: none; border-bottom: 1px solid #f95252; padding-left: 5px;">
+            <label class="period-sum" for="period_sum">сумма по договору: <i>{$renter.summa}</i></label><br>
+            <input type="text" data-id="{$renter.contract_id}" name="period_sum" style="width: 130px; color: gray; border: none; border-bottom: 1px solid; padding-left: 5px;">
           </div>
           {/if}
         {/foreach}
@@ -125,5 +125,13 @@
     <div class="black-wrapper"></div>
   </div>
 
+  <script>
+  var d = new Date();
+  var date = d.getDate();
+  var month = d.getMonth() + 1;
+  var year = d.getFullYear();
+  var x = year + "-" + month + "-" + date;
+  document.getElementById('date').value = x;
+  </script>
 {/strip}
 

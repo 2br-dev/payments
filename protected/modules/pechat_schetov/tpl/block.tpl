@@ -116,9 +116,8 @@
   {/if}
 {/if}
 
-{if $smarty.session.admin == 'false'} {* // if not admin *}
+{if $smarty.session.admin == "false"} {* // if not admin *}
 
-  {if $allinvoices}
     <div class="renters-list">
       <div class='pechat-schetov-result'>
 
@@ -128,24 +127,30 @@
         {/foreach}
 
         <table class="invoice-table">
-        <tr>
+        <tr style="text-align: left">
           <th>N% Документа</th>
           <th>Сумма к оплате</th> 
           <th>Задолженность</th>
-          <th>Статус</th>
+          <th style="text-align: center">Статус</th>
         </tr>
         {foreach from=$allinvoices item=i}
           <tr>
-            <td>{$i.document_number}</td>
-            <td>{$i.invoice_summa}</td> 
-            <td>{$i.invoice_rest}</td>
+            <td style="text-align: left"><b>{$i.document_number}</b> - <i>{$i.month}, {$i.year}</i></td>
+            <td style="text-align: left" class="invoice_summa">{$i.invoice_summa}</td> 
+            <td style="text-align: left" class="invoice_rest">{$i.invoice_rest}</td>
             {if $i.status == 1}
               <td>Действующий</td>
               {else}
               <td>Завершенный</td>
             {/if}
           </tr>
-        {/foreach}  
+        {/foreach}
+        <tr>
+          <td></td>
+          <td style="text-align: left"><b>Итого:</b> <i id="period_sum"></i></td> 
+          <td style="text-align: left"><b>Итого:</b> <i id="debet_sum"></i></td>
+          <td></td>
+        </tr>  
         </table>
       </div>
     {foreach from=$allinvoices item=i}	
@@ -159,8 +164,22 @@
           </div>
     {/foreach}
     </div>
-  {/if}  
 
+    <script>
+      var x = document.getElementsByClassName("invoice_summa");
+      var y = document.getElementsByClassName("invoice_rest");
+      var periodSum = 0;
+      var periodRest = 0;
+      for (var i = 0; i< x.length; i++) {
+        periodSum += +(x[i].innerHTML);
+      }
+      for (var i = 0; i< y.length; i++) {
+        periodRest += +(y[i].innerHTML);
+      }
+      document.getElementById('period_sum').innerHTML = periodSum;
+      document.getElementById('debet_sum').innerHTML = periodRest;
+    </script>
+ 
 {/if} {* end noadmin  *}
 
 {*  error  *}

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-26 16:19:34
+/* Smarty version 3.1.32, created on 2018-11-27 16:55:33
   from 'C:\OpenServer\domains\authorization.local\protected\modules\pechat_schetov\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5bfbf2e606fdf7_08441831',
+  'unifunc' => 'content_5bfd4cd5d152f1_51597812',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '5c9ef855284c3459aac2f387664e9f33ec89e13c' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\modules\\pechat_schetov\\tpl\\block.tpl',
-      1 => 1543222641,
+      1 => 1543325335,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5bfbf2e606fdf7_08441831 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5bfd4cd5d152f1_51597812 (Smarty_Internal_Template $_smarty_tpl) {
 if ($_SESSION['admin'] == 'true') {?>
   <div class="vystavlenie-schetov pechat-schetov">
     <form id="pechat-schetov" action="" method="post">
@@ -163,8 +163,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
   <?php }
 }?>
 
-<?php if ($_SESSION['admin'] == 'false') {?> 
-  <?php if ($_smarty_tpl->tpl_vars['allinvoices']->value) {?>
+<?php if ($_SESSION['admin'] == "false") {?> 
     <div class="renters-list">
       <div class='pechat-schetov-result'>
 
@@ -182,11 +181,11 @@ foreach ($_from as $_smarty_tpl->tpl_vars['i']->value) {
 $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 
         <table class="invoice-table">
-        <tr>
+        <tr style="text-align: left">
           <th>N% Документа</th>
           <th>Сумма к оплате</th> 
           <th>Задолженность</th>
-          <th>Статус</th>
+          <th style="text-align: center">Статус</th>
         </tr>
         <?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['allinvoices']->value, 'i');
@@ -194,11 +193,13 @@ if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['i']->value) {
 ?>
           <tr>
-            <td><?php echo $_smarty_tpl->tpl_vars['i']->value['document_number'];?>
-</td>
-            <td><?php echo $_smarty_tpl->tpl_vars['i']->value['invoice_summa'];?>
+            <td style="text-align: left"><b><?php echo $_smarty_tpl->tpl_vars['i']->value['document_number'];?>
+</b> - <i><?php echo $_smarty_tpl->tpl_vars['i']->value['month'];?>
+, <?php echo $_smarty_tpl->tpl_vars['i']->value['year'];?>
+</i></td>
+            <td style="text-align: left" class="invoice_summa"><?php echo $_smarty_tpl->tpl_vars['i']->value['invoice_summa'];?>
 </td> 
-            <td><?php echo $_smarty_tpl->tpl_vars['i']->value['invoice_rest'];?>
+            <td style="text-align: left" class="invoice_rest"><?php echo $_smarty_tpl->tpl_vars['i']->value['invoice_rest'];?>
 </td>
             <?php if ($_smarty_tpl->tpl_vars['i']->value['status'] == 1) {?>
               <td>Действующий</td>
@@ -209,7 +210,13 @@ foreach ($_from as $_smarty_tpl->tpl_vars['i']->value) {
         <?php
 }
 }
-$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>  
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+        <tr>
+          <td></td>
+          <td style="text-align: left"><b>Итого:</b> <i id="period_sum"></i></td> 
+          <td style="text-align: left"><b>Итого:</b> <i id="debet_sum"></i></td>
+          <td></td>
+        </tr>  
         </table>
       </div>
     <?php
@@ -237,8 +244,24 @@ foreach ($_from as $_smarty_tpl->tpl_vars['i']->value) {
 }
 $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
     </div>
-  <?php }?>  
 
+    <?php echo '<script'; ?>
+>
+      var x = document.getElementsByClassName("invoice_summa");
+      var y = document.getElementsByClassName("invoice_rest");
+      var periodSum = 0;
+      var periodRest = 0;
+      for (var i = 0; i< x.length; i++) {
+        periodSum += +(x[i].innerHTML);
+      }
+      for (var i = 0; i< y.length; i++) {
+        periodRest += +(y[i].innerHTML);
+      }
+      document.getElementById('period_sum').innerHTML = periodSum;
+      document.getElementById('debet_sum').innerHTML = periodRest;
+    <?php echo '</script'; ?>
+>
+ 
 <?php }?> 
 <?php if ($_smarty_tpl->tpl_vars['error']->value) {?> 
   <div class="print-error">

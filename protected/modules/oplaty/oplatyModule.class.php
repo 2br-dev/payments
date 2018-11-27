@@ -27,25 +27,6 @@ final class oplatyModule extends \Fastest\Core\Modules\Module
          
         WHERE `contract`.`status` = ?i", array(1))->all();
 
-
-
-/* $host='localhost';
-$user='root';
-$pass='';
-$db='authorization';
-$conn=mysqli_connect($host,$user,$pass,$db);
-
-$get_login = Q("SELECT * FROM `#_mdd_renters` WHERE `login`='admin' AND `password`= '123213'", array())->row();
-$username_login = $get_login['short_name'];
-
-if($_SESSION['login'] == "Господь") {
-    $_SESSION['admin'] = 'true';
-} else {
-    $_SESSION['admin'] = 'false';
-}
-
-exit(__($_SESSION)); */
-
         if (isset($_GET['renter'])) {
             $renter_name = $_GET['renter'];
      
@@ -58,10 +39,12 @@ exit(__($_SESSION)); */
                 ON `contract`.`renter` = `renters`.`id`
 
                 LEFT JOIN `#_mdd_invoice` as `invoice`
-                ON `contract`.`summa` = `invoice`.`rest`
+                ON `contract`.`id` = `invoice`.`contract_id`
                  
                 WHERE `renters`.`full_name` = ?s AND `contract`.`status` = ?i", array($renter_name, 1))->all();
         } 
+
+        // exit(__($payments));
 
         return [
             'template' => 'block',

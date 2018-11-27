@@ -6,16 +6,16 @@
       {if $payments_docs == false}
       <select name="sources" id="sources" name="renter_name" class="custom-select sources" placeholder="Выберите арендатора">
         {foreach from=$payments item=renter}
-        <option name="renter_name" value="{$renter.full_name}">{$renter.full_name}</option>
+        <option name="renter_name" value="{$renter.full_name}">{$renter.short_name}</option>
         {/foreach}
       </select>
       {else}
         {foreach from=$payments_docs item=renter}
-        <select name="sources" id="sources" name="renter_document" class="custom-select sources" placeholder="{$renter.full_name}">
+        <select name="sources" id="sources" name="renter_document" class="custom-select sources" placeholder="{$renter.short_name}">
         {break}
         {/foreach}
           {foreach from=$payments item=renter}
-          <option name="renter_name" value="{$renter.full_name}">{$renter.full_name}</option>
+          <option name="renter_name" value="{$renter.full_name}">{$renter.short_name}</option>
           {/foreach}
         </select>
       {/if}
@@ -23,7 +23,9 @@
       {if $payments_docs}
           <select name="sources" id="sources" class="custom-select sources" placeholder="Выберите счёт">
             {foreach from=$payments_docs item=renter}
-            <option name="renter_document" value="{$renter.number}">№ документа: {$renter.number}, Сумма: {$renter.rest}</option>
+              {if $renter.status != 0}
+              <option name="renter_document" data-id="{$renter.id}" value="{$renter.number}">{$renter.period_year}, {$renter.period_month}, № документа: {$renter.number}, Сумма: {$renter.rest}</option>
+              {/if}
             {/foreach}
           </select>
       {/if}
@@ -36,7 +38,16 @@
       <label for="number">Номер платежа:</label>
       <input type="text" id="number" name="document_number">
       <button type="submit">Отправить</button>
-    </form>  
+    </form>
+    <div class="success-message">
+      <div class="close"></div>
+      <p>Успех.</p>
+    </div>
+    <div class="error-message">
+      <div class="close"></div>
+      <p>Заполните все поля.</p>
+    </div>
+    <div class="black-wrapper"></div>  
   </div>
 
 {/strip}

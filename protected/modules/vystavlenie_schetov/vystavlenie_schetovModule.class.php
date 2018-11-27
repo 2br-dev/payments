@@ -17,7 +17,7 @@ final class vystavlenie_schetovModule extends \Fastest\Core\Modules\Module
          $renters = Q("SELECT 
             `contract`.`id` as `contract_id`, `contract`.`number` as `contract_number`, `contract`.`datetime`,
             `contract`.`status`, `contract`.`summa`, `contract`.`start_date`, `contract`.`end_date`, `contract`.`peni`,
-            `contract`.`start_arenda`, 
+            `contract`.`start_arenda`,
             
             `room`.`id` as `room_id`, `room`.`number` as `room_number`, `room`.`floor`, `room`.`square`,
             `room`.`number_scheme`, 
@@ -28,10 +28,9 @@ final class vystavlenie_schetovModule extends \Fastest\Core\Modules\Module
             
             FROM `#_mdd_contracts` as `contract`					
             LEFT JOIN `#_mdd_rooms` as `room` ON `contract`.`rooms` = `room`.`id`
-            LEFT JOIN `#_mdd_renters` as `renter` ON `contract`.`renter` = `renter`.`id`", array())->all();
-                 
-                
-        // exit(__($renters));
+            LEFT JOIN `#_mdd_renters` as `renter` ON `contract`.`renter` = `renter`.`id` ORDER BY `renter`.`short_name` ASC", array())->all();
+                  
+         // exit(__($renters));
 
         return [
             'template' => 'block',

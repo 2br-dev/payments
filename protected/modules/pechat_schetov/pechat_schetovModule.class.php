@@ -53,6 +53,7 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 				$allinvoices[$key]['sf_number'] = $akt['contract_number'];
 			}
 
+			// exit(__($_SESSION[;]))
 		 // exit(__($allinvoices));
 
 		if (!empty($_POST['year']) && !empty($_POST['month'])) {
@@ -109,7 +110,7 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 			$month = 0;
 			$error = false;
 		} 
-		// exit(__($_SESSION));
+		// exit(__($allinvoices));
 		return array(
 			'inv' => $invoices,
 			'year' => $year,

@@ -1,6 +1,7 @@
 {strip}
 
-{foreach from=$reestr item=renter}
+<div>
+{foreach from=$renters item=renter}
   <div class='renters'>
     <h2 class="renter">{$renter.short_name}</h2>
     <div class='renters-details'>
@@ -16,19 +17,25 @@
       <p><b>Кор. счет:</b> {$renter.bank_ks}</p>
       <p><b>Расчетный счет:</b> {$renter.bank_rs}</p>
     </div>
-    <div class='renter-contract'>
-      <p class='renter-contract-header'>{$renter.contract_number} от {$renter.datetime}</p>
-      <div class='renters-schet'>
-        <p><b>Помещение:</b> {$renter.room_number}</p>
-        <p><b>Номер на схеме:</b> {$renter.number_scheme}</p>
-        <p><b>Площадь:</b> {$renter.square}</p>
-        <p><b>Сумма договора:</b> {$renter.summa}</p>
-        <p><b>Срок Аренды:</b> с {$renter.start_date} по {$renter.end_date}</p>
-        <p><b>Размер пени:</b> {$renter.peni}</p>
-        <p><b>Аренда начисляется с:</b> {$renter.start_date}</p>
+    {foreach from=$reestr item=item}
+    
+      {if $item.short_name == $renter.short_name}
+      <div class='renter-contract'>
+        <p class='renter-contract-header'>{$item.contract_number} от {$item.datetime}</p>
+        <div class='renters-schet'>
+          <p><b>Помещение:</b> {$item.room_number}</p>
+          <p><b>Номер на схеме:</b> {$item.number_scheme}</p>
+          <p><b>Площадь:</b> {$item.square}</p>
+          <p><b>Сумма договора:</b> {$item.summa}</p>
+          <p><b>Срок Аренды:</b> с {$item.start_date} по {$item.end_date}</p>
+          <p><b>Размер пени:</b> {$item.peni}</p>
+          <p><b>Аренда начисляется с:</b> {$item.start_date}</p>
+        </div>
       </div>
-    </div>
+      {/if}
+    {/foreach}
   </div>
 {/foreach}
+</div>
 
 {/strip}
