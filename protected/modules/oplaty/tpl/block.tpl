@@ -3,32 +3,54 @@
   <div class="payments">
     <form id="payments" method='post' action=''>
 
-      {if $payments_docs == false}
-      <select name="sources" id="sources" name="renter_name" class="custom-select sources" placeholder="Выберите арендатора">
-        {foreach from=$payments item=renter}
-        <option name="renter_name" value="{$renter.full_name}">{$renter.short_name}</option>
-        {/foreach}
-      </select>
-      {else}
-        {foreach from=$payments_docs item=renter}
-        <select name="sources" id="sources" name="renter_document" class="custom-select sources" placeholder="{$renter.short_name}">
+    <select name="sources" id="sources" name="renter_name" class="custom-select sources" 
+      {if $contracts}
+        {foreach from=$contracts item=ren}
+        placeholder="{$ren.short_name}"
         {break}
         {/foreach}
-          {foreach from=$payments item=renter}
-          <option name="renter_name" value="{$renter.full_name}">{$renter.short_name}</option>
+      {else}
+        placeholder="Выберите арендатора"
+      {/if}
+        >
+      {foreach from=$renters item=renter}
+        <option name="renter_name" value="{$renter.id}">{$renter.short_name}</option>
+      {/foreach}
+    </select>
+     
+    {if $contracts}
+      <select name="sources" id="sources" class="custom-select sources" 
+        {if $invoices}
+          {foreach from=$contracts item=num}
+          placeholder="№: {$num.number}, от {$num.datetime}, <i>на сумму: {$num.summa}</i>, {if $contract.status == 0} завершенный {else} действующий {/if}"
+          {break}
           {/foreach}
-        </select>
-      {/if}
-
-      {if $payments_docs}
-          <select name="sources" id="sources" class="custom-select sources" placeholder="Выберите счёт">
-            {foreach from=$payments_docs item=renter}
-              {if $renter.status != 0}
-              <option name="renter_document" data-id="{$renter.id}" value="{$renter.number}">{$renter.period_year}, {$renter.period_month}, № документа: {$renter.number}, Сумма: {$renter.rest}</option>
+        {else}
+          placeholder="Выберите счёт"
+        {/if}
+        >
+        {foreach from=$contracts item=contract}
+            <option name="renter_document" data-id="{$contract.id}" value="{$contract.number}">
+              №: {$contract.number}, от {$contract.datetime}, <i>на сумму: {$contract.summa}</i>, 
+              {if $contract.status == 0} завершенный
+                {else} действующий
               {/if}
-            {/foreach}
-          </select>
-      {/if}
+            </option>
+        {/foreach}
+      </select>
+    {/if}
+
+    {if $invoices}
+      <a id="helper"></a>
+      {foreach from=$invoices item=invoice}
+      <label class="container-checkbox" style="margin-bottom: 0">{$invoice.period_month}, {$invoice.period_year}, остаток по счёту: <b>{$invoice.rest}</b>
+        <input name="invoice_number" type="checkbox" value="{$invoice.invoice_number}">
+        <span class="checkmark"></span>
+      </label>
+      {/foreach}
+       
+    {/if}
+    <p id="error-empty">За данный период нет выставленных счетов.</p>  
 
       <p class="payments-data"><b>Данные платежа</b></p>
       <label for="sum">Сумма платежа:</label>
@@ -49,5 +71,16 @@
     </div>
     <div class="black-wrapper"></div>  
   </div>
+
+  <script>
+    var elem = document.getElementById("helper");
+    var form = document.getElementById("payments").contains(elem);
+    var url = window.location.href.split('=');
+    if (form || url.length != 3) {
+      document.getElementById("error-empty").style.display = 'none';
+    } else {
+      document.getElementById("error-empty").style.display = 'block';
+    }
+  </script>
 
 {/strip}

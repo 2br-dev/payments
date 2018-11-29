@@ -35,23 +35,17 @@ $(document).ready(function() {
     var self = this;
 
     var allRenters = [];
+    var allId = [];
+    var allSum = [];
     $("input[name='renter']:checked").each(function() {
       allRenters.push($(this).val());
+      allId.push($(this).data('id'));
+      allSum.push($(this).data('sum'));
     });
     var allMonths = [];
     $("input[name='month']:checked").each(function() {
       allMonths.push($(this).val());
     });
-    var allSum = [];
-    var allId = [];
-    $("input[name='period_sum']").each(function() {
-      if ($(this).val() != '') {
-        allSum.push($(this).val());
-        allId.push($(this).data('id'));
-      }
-    });
-
-    
 
     var data = {
       year:         $("input[name='year']:checked").val(),
@@ -62,7 +56,17 @@ $(document).ready(function() {
       summa_id:     allId,
       period_sum:   allSum,
     };
-    
+
+    var index = 0;
+    $("input[name='period_sum']:enabled").each(function() {
+      if ($(this).val() == '') {
+        index++;
+      } else {
+        allSum[index] = $(this).val();
+        index++;
+      }
+    }); 
+
     console.log(data);
     //валидация
     if(data.renter.length === 0) {
@@ -108,6 +112,8 @@ $(document).ready(function() {
   $("#payments .custom-select-wrapper:nth-child(2) span.custom-option.undefined").click(function() {
     var value   = $(this).attr('data-value');
     var id      = $(this).data('id');
+    var renter  = localStorage.getItem("renter");
+    window.location.href = `/oplaty?renter=${renter}&id=${id}`;
     localStorage.setItem("id",id);
     localStorage.setItem("renter_document",value);
   })
@@ -116,6 +122,11 @@ $(document).ready(function() {
     e.preventDefault();
     var self = this;
 
+    var invoices = [];
+    $("input[name='contract_number']:checked").each(function() {
+      invoices.push($(this).val());
+    });
+
     var data = {
       summa:              $("input[name='summa']").val(),
       date:               $("input[name='date']").val(),
@@ -123,6 +134,7 @@ $(document).ready(function() {
       renter_name:        localStorage.getItem("renter"),
       renter_document:    localStorage.getItem("renter_document"),
       id:                 localStorage.getItem("id"),
+      invoices:           invoices,
     };
     
     console.log(data);
@@ -225,6 +237,19 @@ $( ".renter" ).click(function() {
 $( ".renter-contract p" ).click(function() {
   $(this).siblings('.renters-schet').slideToggle();
 });
+
+// позволяет вводить частичную сумму только для отмеченных договоров, во избежании ошибок скрипта
+$("input[name='period_sum']").prop('disabled', true);
+$("input[name='renter']").click(function() {
+  var makeEnabled = $(this).data('id');
+  
+  if ( $(this).prop('checked') ) {
+    $(`input[name='period_sum'][data-id=${makeEnabled}]`).prop('disabled', false);
+  } else {
+    $(`input[name='period_sum'][data-id=${makeEnabled}]`).prop('disabled', true);
+  }
+})
+
 
 // custom select
 $(".custom-select").each(function() {

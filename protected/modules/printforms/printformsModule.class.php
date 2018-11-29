@@ -29,7 +29,7 @@ final class printformsModule extends \Fastest\Core\Modules\Module
                         `invoice`.`period_month`, 
                         `invoice`.`amount` as `invoice_amount`,
                         `invoice`.`summa` as `invoice_summa`,
-												`invoice`.`contract_number` as `document_number`,
+												`invoice`.`invoice_number` as `document_number`,
 
                         `contract`.`id` as `contract_id`, 
                         `contract`.`number` as `contract_number`,
@@ -67,7 +67,7 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 						LEFT JOIN `#_mdd_rooms` as `room`
 						ON `contract`.`rooms` = `room`.`id`
 
-                        WHERE `invoice`.`contract_number` = ?i", array($id))->row();
+                        WHERE `invoice`.`invoice_number` = ?i", array($id))->row();
             
  
 			$discount_summ = $print['contract_summa'] - $print['discoint'];	
@@ -125,7 +125,7 @@ final class printformsModule extends \Fastest\Core\Modules\Module
                         `invoice`.`period_month`, 
                         `invoice`.`amount` as `invoice_amount`,
                         `invoice`.`summa` as `invoice_summa`,
-												`invoice`.`contract_number` as `document_number`,
+												`invoice`.`invoice_number` as `document_number`,
 
                         `contract`.`id` as `contract_id`, 
                         `contract`.`number` as `contract_number`,
@@ -163,7 +163,7 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 						LEFT JOIN `#_mdd_rooms` as `room`
 						ON `contract`.`rooms` = `room`.`id`
 
-                        WHERE `invoice`.`contract_number` = ?i", array($id))->row();
+                        WHERE `invoice`.`invoice_number` = ?i", array($id))->row();
                         
 
 			$discount_summ = $print['contract_summa'] - $print['discoint'];
@@ -223,7 +223,7 @@ final class printformsModule extends \Fastest\Core\Modules\Module
                         `invoice`.`period_month`, 
                         `invoice`.`amount` as `invoice_amount`,
                         `invoice`.`summa` as `invoice_summa`,
-												`invoice`.`contract_number` as `document_number`,
+												`invoice`.`invoice_number` as `document_number`,
 
                         `contract`.`id` as `contract_id`, 
                         `contract`.`number` as `contract_number`,
@@ -261,7 +261,7 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 						LEFT JOIN `#_mdd_rooms` as `room`
 						ON `contract`.`rooms` = `room`.`id`
 
-                        WHERE `invoice`.`contract_number` = ?i", array($id))->row();                            
+                        WHERE `invoice`.`invoice_number` = ?i", array($id))->row();                            
 
 			$discount_summ = $print['contract_summa'] - $print['discoint'];
 			$discount_summ = number_format($discount_summ, 2, '.', '');

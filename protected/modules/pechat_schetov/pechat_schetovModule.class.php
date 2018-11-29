@@ -18,7 +18,7 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 					// query for not admin
 					$allinvoices = Q("SELECT 
 	
-					`invoice`.`contract_number` as `contract_number`, `invoice`.`summa` as `invoice_summa`,
+					`invoice`.`invoice_number` as `invoice_number`, `invoice`.`summa` as `invoice_summa`,
 					`invoice`.`rest` as `invoice_rest`, `invoice`.`status` as `status`,
 					`invoice`.`period_month` as `month`, `invoice`.`period_year` as `year`,
 					`renter`.`short_name` as `renter_name`, `renter`.`id` as `renter_id`,
@@ -45,12 +45,12 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 
 			foreach ($allinvoices as $key => $value) {
 				$akt = Q("SELECT * FROM `#_mdd_invoice` WHERE `schet_id` = ?i", 
-				array($value['contract_number']))->row();
+				array($value['invoice_number']))->row();
 
-				$allinvoices[$key]['akt_id'] = $akt['contract_number'];
-				$allinvoices[$key]['sf_id'] = $akt['contract_number'];
-				$allinvoices[$key]['schet_id'] = $akt['contract_number'];
-				$allinvoices[$key]['sf_number'] = $akt['contract_number'];
+				$allinvoices[$key]['akt_id'] = $akt['invoice_number'];
+				$allinvoices[$key]['sf_id'] = $akt['invoice_number'];
+				$allinvoices[$key]['schet_id'] = $akt['invoice_number'];
+				$allinvoices[$key]['sf_number'] = $akt['invoice_number'];
 			}
 
 			// exit(__($_SESSION[;]))
@@ -59,7 +59,7 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 		if (!empty($_POST['year']) && !empty($_POST['month'])) {
 			$invoices = Q("SELECT 
 
-							`invoice`.`contract_number` as `contract_number`, `invoice`.`summa` as `invoice_summa`,
+							`invoice`.`invoice_number` as `invoice_number`, `invoice`.`summa` as `invoice_summa`,
 							`invoice`.`rest` as `invoice_rest`, 
 							`renter`.`short_name` as `renter_name`, `renter`.`id` as `renter_id`,
 							`contract`.`number` as `document_number`							  
@@ -85,12 +85,12 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 
 			foreach ($invoices as $key => $value) {
 				$akt = Q("SELECT * FROM `#_mdd_invoice` WHERE `schet_id` = ?i", 
-				array($value['contract_number']))->row();
+				array($value['invoice_number']))->row();
 
-				$invoices[$key]['akt_id'] = $akt['contract_number'];
-				$invoices[$key]['sf_id'] = $akt['contract_number'];
-				$invoices[$key]['schet_id'] = $akt['contract_number'];
-				$invoices[$key]['sf_number'] = $akt['contract_number'];
+				$invoices[$key]['akt_id'] = $akt['invoice_number'];
+				$invoices[$key]['sf_id'] = $akt['invoice_number'];
+				$invoices[$key]['schet_id'] = $akt['invoice_number'];
+				$invoices[$key]['sf_number'] = $akt['invoice_number'];
 			}
 
 			$year = $_POST['year'];

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-27 16:56:12
+/* Smarty version 3.1.32, created on 2018-11-29 18:09:47
   from 'C:\OpenServer\domains\authorization.local\protected\modules\vystavlenie_schetov\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5bfd4cfcc9f266_78485570',
+  'unifunc' => 'content_5c00013be98293_56791481',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '7f2a50ca02117a3b954d0d2d2619e15f2e680caf' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\modules\\vystavlenie_schetov\\tpl\\block.tpl',
-      1 => 1543326531,
+      1 => 1543498875,
       2 => 'file',
     ),
   ),
@@ -20,14 +20,16 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5bfd4cfcc9f266_78485570 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c00013be98293_56791481 (Smarty_Internal_Template $_smarty_tpl) {
 ?><div class="vystavlenie-schetov"><form id="vystavlenie-schetov" method="POST" action="/ajax/write"><div class="vystavlenie-schetov-date"><p class="date-error">Выберите дату:</p><input type="date" name="date" value="2018-01-01" id="date"></div><hr style="margin-bottom: 40px"><p class="error renter-error">Выберите одного или более арендодателей:</p><p><b style="font-size: 18px">Действующие договора:</p></b><?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['renters']->value, 'renter');
 if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['renter']->value) {
 if ($_smarty_tpl->tpl_vars['renter']->value['status'] == 1) {?><div class="vystavlenie-schetov-item"><label class="container-checkbox" style="width: 80%"><?php echo $_smarty_tpl->tpl_vars['renter']->value['short_name'];?>
  - <?php echo $_smarty_tpl->tpl_vars['renter']->value['contract_number'];?>
-<input type="checkbox" name="renter" value="<?php echo $_smarty_tpl->tpl_vars['renter']->value['renter_id'];?>
+<input type="checkbox" name="renter" data-sum="<?php echo $_smarty_tpl->tpl_vars['renter']->value['summa'];?>
+" data-id="<?php echo $_smarty_tpl->tpl_vars['renter']->value['contract_id'];?>
+" value="<?php echo $_smarty_tpl->tpl_vars['renter']->value['renter_id'];?>
 "><span class="checkmark"></span></label><label class="period-sum" for="period_sum">сумма по договору: <i><?php echo $_smarty_tpl->tpl_vars['renter']->value['summa'];?>
 </i></label><br><input type="text" data-id="<?php echo $_smarty_tpl->tpl_vars['renter']->value['contract_id'];?>
 " name="period_sum" style="width: 130px; color: gray; border: none; border-bottom: 1px solid; padding-left: 5px;"></div><?php }
@@ -39,7 +41,9 @@ if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['renter']->value) {
 if ($_smarty_tpl->tpl_vars['renter']->value['status'] == 0) {?><div class="vystavlenie-schetov-item"><label class="container-checkbox" style="width: 80%"><?php echo $_smarty_tpl->tpl_vars['renter']->value['short_name'];?>
  - <?php echo $_smarty_tpl->tpl_vars['renter']->value['contract_number'];?>
-<input type="checkbox" name="renter" value="<?php echo $_smarty_tpl->tpl_vars['renter']->value['renter_id'];?>
+<input type="checkbox" name="renter" data-sum="<?php echo $_smarty_tpl->tpl_vars['renter']->value['summa'];?>
+" data-id="<?php echo $_smarty_tpl->tpl_vars['renter']->value['contract_id'];?>
+" value="<?php echo $_smarty_tpl->tpl_vars['renter']->value['renter_id'];?>
 "><span class="checkmark"></span></label><label class="period-sum" for="period_sum">сумма по договору: <i><?php echo $_smarty_tpl->tpl_vars['renter']->value['summa'];?>
 </i></label><br><input type="text" data-id="<?php echo $_smarty_tpl->tpl_vars['renter']->value['contract_id'];?>
 " name="period_sum" style="width: 130px; color: gray; border: none; border-bottom: 1px solid; padding-left: 5px;"></div><?php }

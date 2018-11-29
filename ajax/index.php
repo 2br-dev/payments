@@ -31,7 +31,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		
 		//проверка статусов договоров
 		// 1. берём все договора в массив
-		$contracts = Q("SELECT `start_date`, `end_date`, `id` FROM `#_mdd_contracts` where `visible` = ?i", array(1))->all();
+		$contracts = Q("SELECT `start_date`, `end_date`, `id` FROM `#_mdd_contracts` WHERE `visible` = ?i AND `status` = ?i", array(1, 1))->all();
 		
 		//2. ф-я проверки, входит ли текущая дата в заданный интервал
 		function check_in_range($start_date, $end_date)	{
@@ -92,7 +92,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		
 		$renters = Q("SELECT 
 
-				`renter`.`id` as `renter_id`, `renter`.`short_name`, `renter`.`full_name`, `contract`.`number` as `contract_number`, `contract`.`id` as `contract_id`
+				`renter`.`id` as `renter_id`, `renter`.`short_name`, `renter`.`full_name`, `contract`.`number` as `invoice_number`, `contract`.`id` as `contract_id`
 
 				FROM `#_mdd_contracts` as  `contract`
 				LEFT JOIN `#_mdd_renters` as `renter`
@@ -100,7 +100,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				WHERE `contract`.`status` = ?i", array(1))->all();
 		
 		$max_prev_number_schet = Q("SELECT MAX(`id`) as `number` FROM `#_mdd_invoice`")->row('number'); // Получаем макс. индекс для определения номера следующего счета. Номер текущего элемента - последний.
-		$schet_prev_number = Q("SELECT `contract_number` FROM `#_mdd_invoice` WHERE `id` = ?i", array($max_prev_number_schet))->row('contract_number');
+		$schet_prev_number = Q("SELECT `invoice_number` FROM `#_mdd_invoice` WHERE `id` = ?i", array($max_prev_number_schet))->row('invoice_number');
 		$max_prev_number_akt = Q("SELECT MAX(`akt_number`) as `number` FROM `#_mdd_invoice`")->row('number');
 		$max_prev_number_sf = Q("SELECT MAX(`sf_number`) as `number` FROM `#_mdd_invoice`")->row('number');		
 		
@@ -126,18 +126,21 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 
 
 		if (!empty($_POST['renter']) && !empty($_POST['date']) && !empty($_POST['year']) && !empty($_POST['month'])){
-		//exit(__debug($_POST));
-		
+			
+
+			$index = 0;
 
 			foreach ($_POST['renter'] as $key => $value) {	
 				
 				foreach ($_POST['month'] as $month) {
-					$contracts_for_schet = Q("SELECT * from `#_mdd_contracts` as `contract` WHERE `contract`.`renter` = ?i", array($value))->row();
+
+					$contracts_for_schet = Q("SELECT * from `#_mdd_contracts` as `contract` WHERE `contract`.`renter` = ?i", array($_POST['renter'][$index]))->row();
+
 					$renter = Q("SELECT * from `#_mdd_renters` as `renter` WHERE `renter`.`id` = ?i", array($value))->row();
 					
-					$start_arenda = explode('.', $contracts_for_schet['start_arenda']); // Парсим дату начала аренды из договора
+					/* $start_arenda = explode('.', $contracts_for_schet['start_arenda']); // Парсим дату начала аренды из договора
 				
-				// Проверяем совпадают ли месяц начала аренды (меньше или равно) в договоре с месяцем выставляемого счета и равен ли год
+				  // Проверяем совпадают ли месяц начала аренды (меньше или равно) в договоре с месяцем выставляемого счета и равен ли год
 					if (($start_arenda[1] == $month_number) && ($start_arenda[2] == $_POST['year'])){
 	
 						// Если да, и день начала аренды ревен 1 то колличество в счете = 1	
@@ -153,8 +156,9 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 					}
 					else {
 						$amount = 1;
-					}
-			
+					} */
+					
+					$amount = 1;
 					$summa = $contracts_for_schet['summa'] * $amount;
 					$summa = number_format($summa, 2, '.', '');
 	
@@ -215,21 +219,20 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 							break;
 						}		
 					$lastdaydate  = $_POST['year'] . '-' . $month_number . '-' . $days;
-	
-	
+					
 					// Добавляем запись в таблицу Счета
 					O('_mdd_invoice')->create(array(
 						'renter' => $renter['full_name'],
-						'contract_date' => $_POST['date'],
+						'invoice_date' => $_POST['date'],
 						's:period_year' => $_POST['year'],
 						's:period_month' => $month,
-						'contract_id' => $contracts_for_schet['id'],
-						'contract_number' => $number_schet,
+						'contract_id' => $_POST['summa_id'][$index],
+						'invoice_number' => $number_schet,
 						'status' => 1,
 						'payment_info' => '',
-						'summa'	=> $summa,
+						'summa'	=> $_POST['period_sum'][$index],
 						'amount' => $amount,
-						'rest' => $summa, 
+						'rest' => $_POST['period_sum'][$index], 
 						'number_index' => 0,
 						'schet_id' => $number_schet,
 						'sf_number' => $number_schet,
@@ -238,11 +241,16 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 						'akt_date' => $lastdaydate,
 						'sf_date' => $lastdaydate						
 					));	
+					$index++;
+					if ( $index == count($_POST['summa_id'])) {
+						$index = 0;
+					}
+					$number_schet++;		
 				}
 
 				// перезаписываем частичную сумму если она существует
-				if (isset($_POST['period_sum'])) {
-					$host='localhost';
+				// 				if (isset($_POST['period_sum'])) {
+				/*	$host='localhost';
 					$user='root';
 					$pass='';
 					$db='authorization';
@@ -253,15 +261,13 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 						$summa_id =  $_POST['summa_id'][$index];
 	
 						$sql = "UPDATE `db_mdd_invoice` SET `summa` = '$period_sum', `rest` = '$period_sum'
-										 WHERE `db_mdd_invoice`.`contract_id` = '$summa_id'";
+										 WHERE `db_mdd_invoice`.`contract_id` = '$summa_id' AND `db_mdd_invoice`.`period_month` = '$month'";
 
 						$result = mysqli_query($conn,$sql);				 
 					}
 
 					$conn->close();
-				}
-
-				$number_schet++;					
+				 }		*/				
 			}				
 		}			
 	} 
@@ -318,7 +324,6 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				'rest' => $rest								
 			));
 		}  
-
 	}
 
 	return true ;

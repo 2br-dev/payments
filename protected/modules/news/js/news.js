@@ -1,3 +1,0 @@
-(function(){
-    alert("news info");
-})();

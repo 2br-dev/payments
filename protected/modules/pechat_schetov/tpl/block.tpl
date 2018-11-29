@@ -90,22 +90,22 @@
         <hr>
         <div class="documents-block" data-block="{$i.renter_id}">
           <div class="without-print">
-            <a href="/schet-pechatnaya-forma?num={$i.contract_number}&ind=sch&pr=0&disc=0" target="_blank" >Счет</a>
+            <a href="/schet-pechatnaya-forma?num={$i.invoice_number}&ind=sch&pr=0&disc=0" target="_blank" >Счет</a>
             <a href="/schet-pechatnaya-forma?num={$i.akt_id}&ind=akt&pr=0&disc=0" target="_blank" >Акт</a>
             <a href="/schet-pechatnaya-forma?num={$i.sf_id}&ind=sf&pr=0&disc=0" target="_blank" >Счет-фактура</a>
           </div>
           <div class="with-print">
-            <a href="/schet-pechatnaya-forma?num={$i.contract_number}&ind=sch&pr=1&disc=0" target="_blank" >Счет+печать</a>
+            <a href="/schet-pechatnaya-forma?num={$i.invoice_number}&ind=sch&pr=1&disc=0" target="_blank" >Счет+печать</a>
             <a href="/schet-pechatnaya-forma?num={$i.akt_id}&ind=akt&pr=1&disc=0" target="_blank" >Акт+печать</a>
             <a href="/schet-pechatnaya-forma?num={$i.sf_id}&ind=sf&pr=1&disc=0" target="_blank" >Счет-фактура+печать</a>
           </div>
           <div class="with-discount">
-            <a href="/schet-pechatnaya-forma?num={$i.contract_number}&ind=sch&pr=0&disc=1" target="_blank" >Счет (со скидкой)</a>
+            <a href="/schet-pechatnaya-forma?num={$i.invoice_number}&ind=sch&pr=0&disc=1" target="_blank" >Счет (со скидкой)</a>
             <a href="/schet-pechatnaya-forma?num={$i.akt_id}&ind=akt&pr=0&disc=1" target="_blank" >Акт (со скидкой)</a>
             <a href="/schet-pechatnaya-forma?num={$i.sf_id}&ind=sf&pr=0&disc=1" target="_blank" >Счет-фактура (со скидкой)</a>
           </div>
           <div class="with-discount">
-            <a href="/schet-pechatnaya-forma?num={$i.contract_number}&ind=sch&pr=1&disc=1" target="_blank" >Счет (со скидкой)+печать</a>
+            <a href="/schet-pechatnaya-forma?num={$i.invoice_number}&ind=sch&pr=1&disc=1" target="_blank" >Счет (со скидкой)+печать</a>
             <a href="/schet-pechatnaya-forma?num={$i.akt_id}&ind=akt&pr=1&disc=1" target="_blank" >Акт (со скидкой)+печать</a>
             <a href="/schet-pechatnaya-forma?num={$i.sf_id}&ind=sf&pr=1&disc=1" target="_blank" >Счет-фактура (со скидкой)+печать</a>
           </div>

@@ -15,42 +15,41 @@ final class oplatyModule extends \Fastest\Core\Modules\Module
     public function blockMethod()
     {
 
-        $renter_name = false;
-        $payments_docs = false;
+        $renter_name    = false;
+        $payments_docs  = false;
+        $checkbox       = false;
+        $contracts      = false;
+        $invoices       = false;
 
-        $payments = Q("SELECT  
-        *         
-        FROM `#_mdd_contracts` as `contract`
+        // получаем список арендаторов
+        $renters = Q("SELECT * FROM `#_mdd_renters` WHERE `visible` = ?i", array(1))->all();
 
-        LEFT JOIN `#_mdd_renters` as `renters`
-        ON `contract`.`renter` = `renters`.`id`
-         
-        WHERE `contract`.`status` = ?i", array(1))->all();
-
-        if (isset($_GET['renter'])) {
-            $renter_name = $_GET['renter'];
-     
-                $payments_docs = Q("SELECT 
-            
-                *         
-                FROM `#_mdd_contracts` as `contract`
-        
-                LEFT JOIN `#_mdd_renters` as `renters`
-                ON `contract`.`renter` = `renters`.`id`
-
-                LEFT JOIN `#_mdd_invoice` as `invoice`
-                ON `contract`.`id` = `invoice`.`contract_id`
-                 
-                WHERE `renters`.`full_name` = ?s AND `contract`.`status` = ?i", array($renter_name, 1))->all();
+        // получаем список договоров исходя из RENTER в GET-запросе
+        if (isset($_GET['renter'])) { 
+            $renter_id = $_GET['renter'];
+            $contracts = Q("SELECT * FROM `#_mdd_renters`
+                AS `renters`
+                LEFT JOIN `#_mdd_contracts` AS `contracts`
+                ON `renters`.`id` = `contracts`.`renter`
+                WHERE `contracts`.`renter` = ?i", array($renter_id))->all();
         } 
 
-        // exit(__($payments));
+        // получаем список cчетов исходя из ID в GET-запросе
+        if (isset($_GET['id'])) {
+            $id = $_GET['id'];
+            $invoices = Q("SELECT * FROM `#_mdd_invoice` WHERE `contract_id` = $id AND `rest` > 0")->all();
+        }  
+
+        // exit(__($invoices));
+        // exit(__($contracts_id));
+        // exit(__($payments_docs));
 
         return [
-            'template' => 'block',
-            'payments' => $payments,
-            'payments_docs' => $payments_docs,
-            'renter_name' => $renter_name
+            'template'      => 'block',
+            'renters'       => $renters,
+            'contracts'     => $contracts,
+            'checkbox'      => $checkbox,
+            'invoices'      => $invoices
         ];
     }
 }

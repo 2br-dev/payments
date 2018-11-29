@@ -13,7 +13,7 @@
         {if $renter.status == 1}
         <div class="vystavlenie-schetov-item">
           <label class="container-checkbox" style="width: 80%">{$renter.short_name} - {$renter.contract_number}
-            <input type="checkbox" name="renter" value="{$renter.renter_id}">
+            <input type="checkbox" name="renter" data-sum="{$renter.summa}" data-id="{$renter.contract_id}" value="{$renter.renter_id}">
             <span class="checkmark"></span>
           </label>
            <label class="period-sum" for="period_sum">сумма по договору: <i>{$renter.summa}</i></label><br>
@@ -27,7 +27,7 @@
           {if $renter.status == 0}
           <div class="vystavlenie-schetov-item">
             <label class="container-checkbox" style="width: 80%">{$renter.short_name} - {$renter.contract_number}
-              <input type="checkbox" name="renter" value="{$renter.renter_id}">
+              <input type="checkbox" name="renter" data-sum="{$renter.summa}" data-id="{$renter.contract_id}" value="{$renter.renter_id}">
               <span class="checkmark"></span>
             </label>
             <label class="period-sum" for="period_sum">сумма по договору: <i>{$renter.summa}</i></label><br>

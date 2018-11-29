@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-27 16:55:33
+/* Smarty version 3.1.32, created on 2018-11-29 11:32:45
   from 'C:\OpenServer\domains\authorization.local\protected\modules\pechat_schetov\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5bfd4cd5d152f1_51597812',
+  'unifunc' => 'content_5bffa42d173872_59528628',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '5c9ef855284c3459aac2f387664e9f33ec89e13c' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\modules\\pechat_schetov\\tpl\\block.tpl',
-      1 => 1543325335,
+      1 => 1543480259,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5bfd4cd5d152f1_51597812 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5bffa42d173872_59528628 (Smarty_Internal_Template $_smarty_tpl) {
 if ($_SESSION['admin'] == 'true') {?>
   <div class="vystavlenie-schetov pechat-schetov">
     <form id="pechat-schetov" action="" method="post">
@@ -122,7 +122,7 @@ foreach ($_from as $_smarty_tpl->tpl_vars['i']->value) {
         <div class="documents-block" data-block="<?php echo $_smarty_tpl->tpl_vars['i']->value['renter_id'];?>
 ">
           <div class="without-print">
-            <a href="/schet-pechatnaya-forma?num=<?php echo $_smarty_tpl->tpl_vars['i']->value['contract_number'];?>
+            <a href="/schet-pechatnaya-forma?num=<?php echo $_smarty_tpl->tpl_vars['i']->value['invoice_number'];?>
 &ind=sch&pr=0&disc=0" target="_blank" >Счет</a>
             <a href="/schet-pechatnaya-forma?num=<?php echo $_smarty_tpl->tpl_vars['i']->value['akt_id'];?>
 &ind=akt&pr=0&disc=0" target="_blank" >Акт</a>
@@ -130,7 +130,7 @@ foreach ($_from as $_smarty_tpl->tpl_vars['i']->value) {
 &ind=sf&pr=0&disc=0" target="_blank" >Счет-фактура</a>
           </div>
           <div class="with-print">
-            <a href="/schet-pechatnaya-forma?num=<?php echo $_smarty_tpl->tpl_vars['i']->value['contract_number'];?>
+            <a href="/schet-pechatnaya-forma?num=<?php echo $_smarty_tpl->tpl_vars['i']->value['invoice_number'];?>
 &ind=sch&pr=1&disc=0" target="_blank" >Счет+печать</a>
             <a href="/schet-pechatnaya-forma?num=<?php echo $_smarty_tpl->tpl_vars['i']->value['akt_id'];?>
 &ind=akt&pr=1&disc=0" target="_blank" >Акт+печать</a>
@@ -138,7 +138,7 @@ foreach ($_from as $_smarty_tpl->tpl_vars['i']->value) {
 &ind=sf&pr=1&disc=0" target="_blank" >Счет-фактура+печать</a>
           </div>
           <div class="with-discount">
-            <a href="/schet-pechatnaya-forma?num=<?php echo $_smarty_tpl->tpl_vars['i']->value['contract_number'];?>
+            <a href="/schet-pechatnaya-forma?num=<?php echo $_smarty_tpl->tpl_vars['i']->value['invoice_number'];?>
 &ind=sch&pr=0&disc=1" target="_blank" >Счет (со скидкой)</a>
             <a href="/schet-pechatnaya-forma?num=<?php echo $_smarty_tpl->tpl_vars['i']->value['akt_id'];?>
 &ind=akt&pr=0&disc=1" target="_blank" >Акт (со скидкой)</a>
@@ -146,7 +146,7 @@ foreach ($_from as $_smarty_tpl->tpl_vars['i']->value) {
 &ind=sf&pr=0&disc=1" target="_blank" >Счет-фактура (со скидкой)</a>
           </div>
           <div class="with-discount">
-            <a href="/schet-pechatnaya-forma?num=<?php echo $_smarty_tpl->tpl_vars['i']->value['contract_number'];?>
+            <a href="/schet-pechatnaya-forma?num=<?php echo $_smarty_tpl->tpl_vars['i']->value['invoice_number'];?>
 &ind=sch&pr=1&disc=1" target="_blank" >Счет (со скидкой)+печать</a>
             <a href="/schet-pechatnaya-forma?num=<?php echo $_smarty_tpl->tpl_vars['i']->value['akt_id'];?>
 &ind=akt&pr=1&disc=1" target="_blank" >Акт (со скидкой)+печать</a>
