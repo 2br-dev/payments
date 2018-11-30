@@ -14,7 +14,8 @@
       {/if}
         >
       {foreach from=$renters item=renter}
-        <option name="renter_name" value="{$renter.id}">{$renter.short_name}</option>
+        <option name="renter_id" data-id="{$renter.id}" value="{$renter.full_name}">{$renter.short_name}</option>
+        
       {/foreach}
     </select>
      
@@ -22,11 +23,15 @@
       <select name="sources" id="sources" class="custom-select sources" 
         {if $invoices}
           {foreach from=$contracts item=num}
-          placeholder="№: {$num.number}, от {$num.datetime}, <i>на сумму: {$num.summa}</i>, {if $contract.status == 0} завершенный {else} действующий {/if}"
-          {break}
+            {if $smarty.get.id != $num.id} 
+              {continue}
+              {else}
+              placeholder="№: {$num.number}, от {$num.datetime}, <i>на сумму: {$num.summa}</i>, {if $contract.status == 0} завершенный {else} действующий {/if}"
+              {break}
+            {/if}
           {/foreach}
         {else}
-          placeholder="Выберите счёт"
+          placeholder="Выберите договор"
         {/if}
         >
         {foreach from=$contracts item=contract}

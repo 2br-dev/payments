@@ -37,12 +37,9 @@ final class oplatyModule extends \Fastest\Core\Modules\Module
         // получаем список cчетов исходя из ID в GET-запросе
         if (isset($_GET['id'])) {
             $id = $_GET['id'];
-            $invoices = Q("SELECT * FROM `#_mdd_invoice` WHERE `contract_id` = $id AND `rest` > 0")->all();
+            $invoices = Q("SELECT * FROM `#_mdd_invoice` WHERE `contract_id` = $id AND `rest` > 0 AND `status` != 0 ORDER BY `id` ASC")->all();
         }  
-
-        // exit(__($invoices));
-        // exit(__($contracts_id));
-        // exit(__($payments_docs));
+        //exit(__($invoices));
 
         return [
             'template'      => 'block',

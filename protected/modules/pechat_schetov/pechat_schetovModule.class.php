@@ -14,6 +14,7 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
     public function blockMethod()
     {
 
+			// exit(__($contracts));
        // include_once 'define.php';
 					// query for not admin
 					$allinvoices = Q("SELECT 
@@ -78,7 +79,8 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 							LEFT JOIN `#_mdd_rooms` as `room`
 							ON `contract`.`rooms` = `room`.`id`
 
-							WHERE `invoice`.`period_year` = ?s AND `invoice`.`period_month` = ?s",
+							WHERE `invoice`.`period_year` = ?s AND `invoice`.`period_month` = ?s
+							ORDER BY `invoice`.`invoice_number` ASC",
 							array($_POST['year'], $_POST['month']))->all();
 			
 							 
@@ -87,10 +89,10 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 				$akt = Q("SELECT * FROM `#_mdd_invoice` WHERE `schet_id` = ?i", 
 				array($value['invoice_number']))->row();
 
-				$invoices[$key]['akt_id'] = $akt['invoice_number'];
-				$invoices[$key]['sf_id'] = $akt['invoice_number'];
-				$invoices[$key]['schet_id'] = $akt['invoice_number'];
-				$invoices[$key]['sf_number'] = $akt['invoice_number'];
+				$invoices[$key]['akt_id'] 		= $akt['invoice_number'];
+				$invoices[$key]['sf_id'] 			= $akt['invoice_number'];
+				$invoices[$key]['schet_id'] 	= $akt['invoice_number'];
+				$invoices[$key]['sf_number'] 	= $akt['invoice_number'];
 			}
 
 			$year = $_POST['year'];
@@ -112,12 +114,12 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 		} 
 		// exit(__($allinvoices));
 		return array(
-			'inv' => $invoices,
-			'year' => $year,
-			'month' => $month,
-			'template' => 'block',
-			'error' => $error,
-			'allinvoices' => $allinvoices	
+			'inv' 				=> 	$invoices,
+			'year' 				=> 	$year,
+			'month' 			=> 	$month,
+			'template' 		=> 	'block',
+			'error' 			=> 	$error,
+			'allinvoices' => 	$allinvoices
 		);
     }
 }

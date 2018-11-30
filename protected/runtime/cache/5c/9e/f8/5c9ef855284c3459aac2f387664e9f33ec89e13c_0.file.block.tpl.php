@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-29 11:32:45
+/* Smarty version 3.1.32, created on 2018-11-30 17:36:52
   from 'C:\OpenServer\domains\authorization.local\protected\modules\pechat_schetov\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5bffa42d173872_59528628',
+  'unifunc' => 'content_5c014b045f1384_10506750',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '5c9ef855284c3459aac2f387664e9f33ec89e13c' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\modules\\pechat_schetov\\tpl\\block.tpl',
-      1 => 1543480259,
+      1 => 1543587005,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5bffa42d173872_59528628 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c014b045f1384_10506750 (Smarty_Internal_Template $_smarty_tpl) {
 if ($_SESSION['admin'] == 'true') {?>
   <div class="vystavlenie-schetov pechat-schetov">
     <form id="pechat-schetov" action="" method="post">
@@ -115,9 +115,17 @@ if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['i']->value) {
 ?>	
       <div class="renters-list-item">
-        <a href="#" data-arendator = "<?php echo $_smarty_tpl->tpl_vars['i']->value['renter_id'];?>
-" class="renters-list-link"><p><?php echo $_smarty_tpl->tpl_vars['i']->value['renter_name'];?>
-</p></a>
+        <div class="renters-list-container">
+          <a data-arendator="<?php echo $_smarty_tpl->tpl_vars['i']->value['renter_id'];?>
+" class="renters-list-link">
+            <p><?php echo $_smarty_tpl->tpl_vars['i']->value['renter_name'];?>
+, № счёта: <?php echo $_smarty_tpl->tpl_vars['i']->value['invoice_number'];?>
+, на сумму: <?php echo $_smarty_tpl->tpl_vars['i']->value['invoice_summa'];?>
+</p>
+          </a>
+          <span data-invoice="<?php echo $_smarty_tpl->tpl_vars['i']->value['invoice_number'];?>
+" class="renters-list-delete">удалить<span class="renters-list-delete-img"></span></span>
+        </div>
         <hr>
         <div class="documents-block" data-block="<?php echo $_smarty_tpl->tpl_vars['i']->value['renter_id'];?>
 ">

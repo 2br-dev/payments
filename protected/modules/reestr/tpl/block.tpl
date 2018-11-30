@@ -3,7 +3,7 @@
 <div>
 {foreach from=$renters item=renter}
   <div class='renters'>
-    <h2 class="renter">{$renter.short_name}</h2>
+    <h2 class="renter">{$renter.short_name} — Баланс: {$renter.balance} ₽</h2>
     <div class='renters-details'>
       <p><b>{$renter.full_name}</b></p>
       <p><b>ИНН:</b> {$renter.inn} / <b>КПП:</b> {$renter.kpp}</p>

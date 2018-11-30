@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-29 18:10:26
+/* Smarty version 3.1.32, created on 2018-11-30 16:23:59
   from 'C:\OpenServer\domains\authorization.local\protected\modules\oplaty\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c000162498a80_40918292',
+  'unifunc' => 'content_5c0139ef05e3b3_05371825',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '288a0fb8efb7528f973a3212d76f5aa539a3408f' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\modules\\oplaty\\tpl\\block.tpl',
-      1 => 1543492144,
+      1 => 1543567985,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c000162498a80_40918292 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c0139ef05e3b3_05371825 (Smarty_Internal_Template $_smarty_tpl) {
 ?><div class="payments"><form id="payments" method='post' action=''><select name="sources" id="sources" name="renter_name" class="custom-select sources"<?php if ($_smarty_tpl->tpl_vars['contracts']->value) {
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['contracts']->value, 'ren');
 if ($_from !== null) {
@@ -34,7 +34,8 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['renters']->value, 'renter');
 if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['renter']->value) {
-?><option name="renter_name" value="<?php echo $_smarty_tpl->tpl_vars['renter']->value['id'];?>
+?><option name="renter_id" data-id="<?php echo $_smarty_tpl->tpl_vars['renter']->value['id'];?>
+" value="<?php echo $_smarty_tpl->tpl_vars['renter']->value['full_name'];?>
 "><?php echo $_smarty_tpl->tpl_vars['renter']->value['short_name'];?>
 </option><?php
 }
@@ -43,14 +44,17 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?></select><?php i
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['contracts']->value, 'num');
 if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['num']->value) {
-?>placeholder="№: <?php echo $_smarty_tpl->tpl_vars['num']->value['number'];?>
+if ($_GET['id'] != $_smarty_tpl->tpl_vars['num']->value['id']) {
+continue 1;
+} else { ?>placeholder="№: <?php echo $_smarty_tpl->tpl_vars['num']->value['number'];?>
 , от <?php echo $_smarty_tpl->tpl_vars['num']->value['datetime'];?>
 , <i>на сумму: <?php echo $_smarty_tpl->tpl_vars['num']->value['summa'];?>
 </i>, <?php if ($_smarty_tpl->tpl_vars['contract']->value['status'] == 0) {?> завершенный <?php } else { ?> действующий <?php }?>"<?php break 1;
 }
 }
+}
 $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);
-} else { ?>placeholder="Выберите счёт"<?php }?>><?php
+} else { ?>placeholder="Выберите договор"<?php }?>><?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['contracts']->value, 'contract');
 if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['contract']->value) {

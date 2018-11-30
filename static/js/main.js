@@ -1,3 +1,7 @@
+function sortNumber(a,b) {
+  return a - b;
+}
+
 $(document).ready(function() { 
 
   $("#authorization").submit(function(e){
@@ -84,7 +88,8 @@ $(document).ready(function() {
 
     if (data.date && data.year && data.month && data.renter) {
       $('.success-message').fadeIn(); 
-      $('.black-wrapper').fadeIn();         
+      $('.black-wrapper').fadeIn();
+      $("input[name='period_sum']").prop('disabled', true);         
       $.ajax({
         type: "POST",
         url: "/ajax/write",
@@ -105,14 +110,16 @@ $(document).ready(function() {
   //такой сложный селектор для того чтобы не срабатывал скрипт на другие инпуты, а только на первый.
   $("#payments .custom-select-wrapper:first-child span.custom-option.undefined").click(function() {
     var value = $(this).attr('data-value');
-    localStorage.setItem("renter",value);
-    window.location.href = `/oplaty?renter=${value}`;
+    var id = $(this).attr('data-id');
+    localStorage.setItem("renter_name",value);
+    localStorage.setItem("renter_id",id);
+    window.location.href = `/oplaty?renter=${id}`;
   })
 
   $("#payments .custom-select-wrapper:nth-child(2) span.custom-option.undefined").click(function() {
     var value   = $(this).attr('data-value');
     var id      = $(this).data('id');
-    var renter  = localStorage.getItem("renter");
+    var renter  = localStorage.getItem("renter_id");
     window.location.href = `/oplaty?renter=${renter}&id=${id}`;
     localStorage.setItem("id",id);
     localStorage.setItem("renter_document",value);
@@ -123,17 +130,19 @@ $(document).ready(function() {
     var self = this;
 
     var invoices = [];
-    $("input[name='contract_number']:checked").each(function() {
+    $("input[name='invoice_number']:checked").each(function() {
       invoices.push($(this).val());
     });
+    invoices.sort(sortNumber);
 
     var data = {
       summa:              $("input[name='summa']").val(),
       date:               $("input[name='date']").val(),
       number:             $("input[name='document_number']").val(),
-      renter_name:        localStorage.getItem("renter"),
+      renter_id:          localStorage.getItem("renter_id"),
+      renter_name:        localStorage.getItem("renter_name"),
       renter_document:    localStorage.getItem("renter_document"),
-      id:                 localStorage.getItem("id"),
+      contract_id:        localStorage.getItem("id"),
       invoices:           invoices,
     };
     
@@ -287,3 +296,25 @@ $(".custom-option").on("click", function() {
   $(this).parents(".custom-select").removeClass("opened");
   $(this).parents(".custom-select").find(".custom-select-trigger").text($(this).text());
 });
+
+$(".renters-list-delete").click(function() {
+
+  var data = {
+    invoice:  $(this).data('invoice'),
+  }
+  console.log(data);
+
+  $.ajax({
+    type: "POST",
+    url: "/ajax/delete",
+    data: data,
+    success: function(res){
+      console.log(res);
+    },
+    error: function(err) {
+      console.log(err);
+    }
+  });
+
+  location.reload();
+})
