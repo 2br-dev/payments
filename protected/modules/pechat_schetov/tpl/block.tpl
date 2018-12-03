@@ -15,6 +15,14 @@
           <input name="year" type="radio" value="2018">
           <span class="checkmark"></span>
         </label>
+        <label class="container-radio">2019
+          <input name="year" type="radio" value="2019">
+          <span class="checkmark"></span>
+        </label>
+        <label class="container-radio">2020
+          <input name="year" type="radio" value="2020">
+          <span class="checkmark"></span>
+        </label>        
       </div>
       <p class="mb0">Месяц</p><span class="error month-error">Выберите месяц:</span>
       <div class="vystavlenie-schetov-month">
@@ -133,57 +141,44 @@
 
         <table class="invoice-table">
         <tr style="text-align: left">
-          <th>N% Документа</th>
-          <th>Сумма к оплате</th> 
-          <th>Задолженность</th>
-          <th style="text-align: center">Статус</th>
+          <th>N% Договора</th>
+          <th style="width: 20%; text-align: center">На сумму</th>
         </tr>
-        {foreach from=$allinvoices item=i}
+        {foreach from=$contracts item=contract}
           <tr>
-            <td style="text-align: left"><b>{$i.document_number}</b> - <i>{$i.month}, {$i.year}</i></td>
-            <td style="text-align: left" class="invoice_summa">{$i.invoice_summa}</td> 
-            <td style="text-align: left" class="invoice_rest">{$i.invoice_rest}</td>
-            {if $i.status == 1}
-              <td>Действующий</td>
-              {else}
-              <td>Завершенный</td>
-            {/if}
+            <td style="text-align: left"><b>{$contract.number}</b> на период: <i>{$contract.start_date} - {$contract.end_date}</i></td>
+            <td class="invoice_summa">{$contract.summa}</td> 
           </tr>
         {/foreach}
-        <tr>
-          <td></td>
-          <td style="text-align: left"><b>Итого:</b> <i id="period_sum"></i></td> 
-          <td style="text-align: left"><b>Итого:</b> <i id="debet_sum"></i></td>
-          <td></td>
-        </tr>  
         </table>
       </div>
-    {foreach from=$allinvoices item=i}	
+      <div class="renters-invoices">
+      <h2>Все выставленные счета</h2>
+      {foreach from=$allinvoices item=i}	
           <div class="renters-list-item">
-            <a href="#" data-arendator = "{$i.renter_id}" class="renters-list-link"><p style="word-spacing: 10px;">{$i.document_number} - {$i.month}, {$i.year}</p></a>
+            <p class="renters-list-link">№ счёта: {$i.invoice_number} за {$i.month}, {$i.year}, на сумму: {$i.invoice_summa}</p>
             <hr>
-            <div class="documents-block" data-block="{$i.renter_id}">
-                <a href="/schet-pechatnaya-forma?num={$i.akt_id}&ind=akt&pr=0&disc=0" target="_blank" >Акт</a>
-                <a href="/schet-pechatnaya-forma?num={$i.akt_id}&ind=akt&pr=1&disc=0" target="_blank" >Акт+печать</a>
+            <div class="documents-block documents-block-renter" data-block="{$i.renter_id}">
+              {if $i.discount == 0}
+              <p>Счет <a href="/schet-pechatnaya-forma?num={$i.invoice_number}&ind=sch&pr=0&disc=0" target="_blank" >Распечатать</a></p>
+              <p>Акт <a href="/schet-pechatnaya-forma?num={$i.akt_id}&ind=akt&pr=0&disc=0" target="_blank" >Распечатать</a></p>
+              <p>Счет-фактура <a href="/schet-pechatnaya-forma?num={$i.sf_id}&ind=sf&pr=0&disc=0" target="_blank" >Распечатать</a></p>
+              <p>Счет+печать <a href="/schet-pechatnaya-forma?num={$i.invoice_number}&ind=sch&pr=1&disc=0" target="_blank" >Распечатать</a></p>
+              <p>Акт+печать <a href="/schet-pechatnaya-forma?num={$i.akt_id}&ind=akt&pr=1&disc=0" target="_blank" >Распечатать</a></p>
+              <p>Счет-фактура+печать <a href="/schet-pechatnaya-forma?num={$i.sf_id}&ind=sf&pr=1&disc=0" target="_blank" >Распечатать</a></p>
+              {else}
+              <p>Счет <a href="/schet-pechatnaya-forma?num={$i.invoice_number}&ind=sch&pr=0&disc=1" target="_blank" >Распечатать</a></p>
+              <p>Акт <a href="/schet-pechatnaya-forma?num={$i.akt_id}&ind=akt&pr=0&disc=1" target="_blank" >Распечатать</a></p>
+              <p>Счет-фактура <a href="/schet-pechatnaya-forma?num={$i.sf_id}&ind=sf&pr=0&disc=1" target="_blank" >Распечатать</a></p>
+              <p>Счет+печать <a href="/schet-pechatnaya-forma?num={$i.invoice_number}&ind=sch&pr=1&disc=1" target="_blank" >Распечатать</a></p>
+              <p>Акт+печать <a href="/schet-pechatnaya-forma?num={$i.akt_id}&ind=akt&pr=1&disc=1" target="_blank" >Распечатать</a></p>
+              <p>Счет-фактура+печать <a href="/schet-pechatnaya-forma?num={$i.sf_id}&ind=sf&pr=1&disc=1" target="_blank" >Распечатать</a></p>
+              {/if}
             </div>
           </div>
-    {/foreach}
+      {/foreach}
+      </div>
     </div>
-
-    <script>
-      var x = document.getElementsByClassName("invoice_summa");
-      var y = document.getElementsByClassName("invoice_rest");
-      var periodSum = 0;
-      var periodRest = 0;
-      for (var i = 0; i< x.length; i++) {
-        periodSum += +(x[i].innerHTML);
-      }
-      for (var i = 0; i< y.length; i++) {
-        periodRest += +(y[i].innerHTML);
-      }
-      document.getElementById('period_sum').innerHTML = periodSum;
-      document.getElementById('debet_sum').innerHTML = periodRest;
-    </script>
  
 {/if} {* end noadmin  *}
 

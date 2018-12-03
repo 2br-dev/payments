@@ -17,9 +17,8 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 			$ind = $_GET['ind']; // Идентефикатор документа из ГЕТ запроса: sch - счет, akt - акт, sf - счет-фактура
 			$pr = $_GET['pr']; // С печатью или без - из ГЕТ запроса: pr = 0 - без печати, pr = 1 - с печатью
 			$disc = $_GET['disc']; // Со скидкой или без - из ГЕТ запроса: disc = 0 - без скидки, disc = 1 - со скидкой
-      $discount_summ = 0;
-        
-        //exit(__($ind));
+			$discount_summ = 0;
+			
 		
 		// Если Документ - Счет
 		if ($ind == 'sch') {
@@ -435,7 +434,7 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 			}
 						
 				
-		//exit(__(num2str(100.99)));
+		//exit(__($print));
 
 		return array(
 			'print' => $print,
@@ -444,7 +443,7 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 			'document' => $ind,
 			'pr' => $pr,
 			'template' => 'block',
-			'discount' => $disc,
+			'disc' => $disc,
 			'discount_summ' => $discount_summ
 		);
     }

@@ -14,13 +14,10 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
     public function blockMethod()
     {
 
-			// exit(__($contracts));
-       // include_once 'define.php';
-					// query for not admin
 					$allinvoices = Q("SELECT 
 	
 					`invoice`.`invoice_number` as `invoice_number`, `invoice`.`summa` as `invoice_summa`,
-					`invoice`.`rest` as `invoice_rest`, `invoice`.`status` as `status`,
+					`invoice`.`rest` as `invoice_rest`, `invoice`.`status` as `status`, `invoice`.`akt_date`,
 					`invoice`.`period_month` as `month`, `invoice`.`period_year` as `year`,
 					`renter`.`short_name` as `renter_name`, `renter`.`id` as `renter_id`,
 					`contract`.`number` as `document_number`							  
@@ -39,7 +36,7 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 					LEFT JOIN `#_mdd_rooms` as `room`
 					ON `contract`.`rooms` = `room`.`id`
 
-					WHERE `renter`.`short_name` = ?s",
+					WHERE `renter`.`short_name` = ?s ORDER BY `invoice_number` DESC",
 					array($_SESSION['login']))->all();
 	
 					 
@@ -112,14 +109,37 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 			$month = 0;
 			$error = false;
 		} 
-		// exit(__($allinvoices));
+
+		// LOGIN NAME в этой сессии для получения списка договоров
+		$login = $_SESSION['login'];
+		// получем ID авторизованного пользователя
+		$clientID = Q("SELECT `id` FROM `#_mdd_renters` WHERE `visible` = 1 AND `short_name` = '$login'")->row('id');
+		// запрос для получения списка всех договор арендатора
+		$contracts = Q("SELECT * FROM `#_mdd_contracts` WHERE `visible` = 1 AND `renter` = '$clientID'", array())->all();
+
+		// если сегодняшняя дата скидки до присваем ключу дискаунт - 1, если нет то 0
+		$today = getdate();
+		for($i = 0; $i < count($allinvoices); $i++) {
+			$invoice_date = explode('-', $allinvoices[$i]['akt_date']);
+			$invoice_month = $invoice_date[1];
+			$invoice_year = $invoice_date[0];
+
+			if($today['mday'] <= 5 && $today['mon'] == $invoice_month && $today['year'] == $invoice_year) {
+				$allinvoices[$i]['discount'] = 1;
+			} else {
+				$allinvoices[$i]['discount'] = 0;
+			}
+		}
+
+		//exit(__($allinvoices));
 		return array(
 			'inv' 				=> 	$invoices,
 			'year' 				=> 	$year,
 			'month' 			=> 	$month,
 			'template' 		=> 	'block',
 			'error' 			=> 	$error,
-			'allinvoices' => 	$allinvoices
+			'allinvoices' => 	$allinvoices,
+			'contracts'		=>	$contracts
 		);
     }
 }

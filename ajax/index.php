@@ -126,22 +126,8 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 	
 			foreach ($_POST['month'] as $month) {
 
-				/* $this_contract_id = $_POST['summa_id'][$index]; */
-
 				foreach ($_POST['renter'] as $key => $value) {
 						
-				/* 	//проверяем если счёт в БД
-					// проверяем если счет с таким месяцем, годом, и ID договора в таблице счетов
-					$is_exists = Q("SELECT * FROM `#_mdd_invoice` 
-					WHERE `period_month` = ?s AND `period_year` = ?s AND `contract_id` = ?i
-					",array($month, $_POST['year'], $this_contract_id))->row();
-	
-					// если есть такая запись, то возвращаем 'exists' в AJAX и начинаем новую итерацию foreach
-					if(isset($is_exists)) {
-						echo 'exists';
-						continue;
-					} echo 'not'; */
-
 					$contracts_for_schet = Q("SELECT * from `#_mdd_contracts` as `contract` WHERE `contract`.`renter` = ?i", array($_POST['renter'][$index]))->row();
 					$status = 1;
 					$renter = Q("SELECT * from `#_mdd_renters` as `renter` WHERE `renter`.`id` = ?i", array($value))->row();
@@ -149,16 +135,29 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 					// изменяем баланс
 					// сумма по счету
 					$period_sum = $_POST['period_sum'][$index];
+					
 					// ID арендодателя
 					$renter_id = $_POST['renter'][$index];
+					// ID текущего договора 
+					$contract_id = $_POST['summa_id'][$index];
+
 					//находим текущий баланс и считаем разницу между текущим и суммой по счету
 					$balance = Q("SELECT `balance` FROM `#_mdd_renters` WHERE `id` = ?i",array($renter_id))->row('balance');
+					$contract_balance = Q("SELECT `balance` FROM `#_mdd_contracts` WHERE `id` = ?i", array($contract_id))->row('balance');
+					// ихсодные балансы договора и арендодателя для апдейта в будущем
 					$starting_balance = Q("SELECT `balance` FROM `#_mdd_renters` WHERE `id` = ?i",array($renter_id))->row('balance');
-					$balance = $balance - $period_sum;
+					$contract_str_balance = Q("SELECT `balance`	FROM `#_mdd_contracts` WHERE `id` = ?i", array($contract_id))->row('balance');
+					// считаем баланс
+					$balance -= $period_sum;
+					$contract_balance -= $period_sum;
 					
+					// апдейтим баланс у арендодателя
 					$sql = "UPDATE `db_mdd_renters` SET `balance` = $balance WHERE `db_mdd_renters`.`id` = $renter_id";
+					// апдейтим баланс у договора
+					$update_contract_balance = "UPDATE `db_mdd_contracts` SET `balance` = $contract_balance WHERE `db_mdd_contracts`.`id` = $contract_id";
 					
 					$conn->query($sql);
+					$conn->query($update_contract_balance);
 					
 
 					// еще раз првоеряем баланс, если положительный то..
@@ -171,36 +170,18 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 							$rest = 0;
 							$status = 0;
 							// вычитаем из баланса всю сумму счета
-							$starting_balance = $starting_balance - $_POST['period_sum'][$index];
+							$starting_balance -= $period_sum;
+							$contract_str_balance -= $period_sum;
 							// меняем баланс у арендодателя
 							$update_balance = "UPDATE `db_mdd_renters` SET `balance` = $starting_balance WHERE `db_mdd_renters`.`id` = $renter_id";
+							$update_ctr_balance = "UPDATE `db_mdd_contracts` SET `balance` = $contract_str_balance WHERE `db_mdd_contracts`.`id` = $contract_id";
 							$conn->query($update_balance);
+							$conn->query($update_ctr_balance);
 						}
 					}
-					/* $start_arenda = explode('.', $contracts_for_schet['start_arenda']); // Парсим дату начала аренды из договора
+
+					$start_arenda = explode('.', $contracts_for_schet['start_arenda']); // Парсим дату начала аренды из договора
 				
-				  // Проверяем совпадают ли месяц начала аренды (меньше или равно) в договоре с месяцем выставляемого счета и равен ли год
-					if (($start_arenda[1] == $month_number) && ($start_arenda[2] == $_POST['year'])){
-	
-						// Если да, и день начала аренды ревен 1 то колличество в счете = 1	
-						if ($start_arenda[0] == '01') {
-							$summa = $contracts_for_schet['summa'];
-							$amount = 1;
-						}
-						// Если день начала аренды больше 1, то колличество дней аренды в текущем месяце в счете вычисляется
-						else {
-							$days_arenda = $days - $start_arenda[0];
-							$amount = $days_arenda/$days;			
-						}
-					}
-					else {
-						$amount = 1;
-					} */
-					
-					$amount = 1;
-					$summa = $contracts_for_schet['summa'] * $amount;
-					$summa = number_format($summa, 2, '.', '');
-	
 					// переменная в виде строки с последним днем месяца для СФ и АКТА:
 					switch ($month) {
 						case 'Январь':
@@ -256,9 +237,34 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 							$month_number = '00';
 							$days = 0;
 							break;
-						}		
+						}	
+						
+					// Проверяем совпадают ли месяц начала аренды (меньше или равно) в договоре с месяцем выставляемого счета и равен ли год
+					if (($start_arenda[1] == $month_number) && ($start_arenda[2] == $_POST['year'])){
+	
+						// Если да, и день начала аренды ревен 1 то колличество в счете = 1	
+						if ($start_arenda[0] == '01') {
+							$summa = $rest = $_POST['period_sum'][$index];
+							$amount = 1;
+						}
+						// Если день начала аренды больше 1, то колличество дней аренды в текущем месяце в счете вычисляется
+						else {
+							$days_arenda = $days - $start_arenda[0] + 1;
+							$amount = $days_arenda/$days;	
+							$rest = $_POST['period_sum'][$index] * $amount;		
+						}
+
+					}
+					else {
+						$amount = 1;
+					} 
+										
+					$summa = $_POST['period_sum'][$index] * $amount;
+					$summa = number_format($summa, 2, '.', '');
+						
 					$lastdaydate  = $_POST['year'] . '-' . $month_number . '-' . $days;
 					
+					$discount = Q("SELECT `discoint` FROM `#_mdd_contracts` WHERE `id` = ?i",array($_POST['summa_id'][$index]))->row('discoint');
 					
 					// Добавляем запись в таблицу Счета
 					O('_mdd_invoice')->create(array(
@@ -270,8 +276,9 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 						'invoice_number' => $number_schet,
 						'status' => $status,
 						'payment_info' => '',
-						'summa'	=> $_POST['period_sum'][$index],
+						'summa'	=> $summa,
 						'amount' => $amount,
+						'discount' => $discount,
 						'rest' => $rest, 
 						'number_index' => 0,
 						'schet_id' => $number_schet,
@@ -295,9 +302,14 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 	if ($controller == 'payment')
 	{
 		
+		$payment_date  = explode('-', $_POST['date']);	
+		$payment_year  = $payment_date[0];
+		$payment_month = $payment_date[1];
+		$payment_day   = $payment_date[2];
+
 		if(isset($_POST['summa']) && isset($_POST['renter_document'])) {
 
-			$summa = Q("SELECT `rest` FROM `#_mdd_invoice` WHERE `renter` = ?s", array($_POST['contract_id']))->all();
+
 			$id = $_POST['contract_id'];
 			$index = 0;
 			$renter_id = $_POST['renter_id'];
@@ -313,18 +325,56 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			if ($conn->connect_error) {
 					die("Connection failed: " . $conn->connect_error);
 			} 
-
+			// берем общий баланс арендодателя и баланс контракта	
 			$balance = Q("SELECT `balance` FROM `#_mdd_renters` WHERE `id` = ?i",array($renter_id))->row('balance');
-			$balance = $balance + $_POST['summa'];
+			$contract_balance = Q("SELECT `balance` FROM `#_mdd_contracts` WHERE `id` = ?i", array($id))->row('balance');
+			// прибавляем им сумму
+			$balance += $_POST['summa'];
+			$contract_balance  += $_POST['summa'];
 			
 			$sql_balance = "UPDATE `db_mdd_renters` SET `balance` = $balance WHERE `db_mdd_renters`.`id` = $renter_id";
+			$sql_cont_balance = "UPDATE `db_mdd_contracts` SET `balance` = $contract_balance WHERE `db_mdd_contracts`.`id` = $id";
+
 			$conn->query($sql_balance);
+			$conn->query($sql_cont_balance);
 
 			// записываем в переменную сумму
 			$period_sum = $_POST['summa'];
 			for($i = 0; $i < count($_POST['invoices']); $i++) {
 
 				$invoice = $_POST['invoices'][$i];
+
+				//парсим дату счета
+				$invoice_date = Q("SELECT * FROM `#_mdd_invoice` WHERE `invoice_number` = $invoice", array())->row('akt_date');
+				$invoice_date = explode('-', $invoice_date);
+				$invoice_month = $invoice_date[1];
+				$invoice_year = $invoice_date[0];
+
+				//проверяем дату когда был оплачен счёт
+				if ($payment_day <= 5 && $payment_month == $invoice_month && $payment_year == $invoice_year) {
+					
+					$discount  = Q("SELECT `discount` FROM `#_mdd_invoice` WHERE `invoice_number` = ?i",array($invoice))->row('discount');
+					$cur_summa = Q("SELECT `summa`    FROM `#_mdd_invoice` WHERE `invoice_number` = ?i",array($invoice))->row('summa');
+					$cur_rest  = Q("SELECT `rest`     FROM `#_mdd_invoice` WHERE `invoice_number` = ?i",array($invoice))->row('rest');
+
+					$rest = $discount - ($cur_summa - $cur_rest);
+					$updated_balance = $cur_summa - $discount;
+					$balance = Q("SELECT `balance` FROM `#_mdd_renters` WHERE `id` = ?i",array($renter_id))->row('balance');
+					$contract_balance = Q("SELECT `balance` FROM `#_mdd_contracts` WHERE `id` = ?i", array($id))->row('balance');
+					$balance += $updated_balance;
+					$contract_balance += $updated_balance;
+
+					$upd_summa = "UPDATE `db_mdd_invoice` SET `summa` = $discount WHERE `invoice_number` = $invoice";
+					$upd_rest =  "UPDATE `db_mdd_invoice` SET `rest` = $rest WHERE `invoice_number` = $invoice";
+					$sql_balance = "UPDATE `db_mdd_renters` SET `balance` = $balance WHERE `db_mdd_renters`.`id` = $renter_id";
+					$sql_cont_balance = "UPDATE `db_mdd_contracts` SET `balance` = $contract_balance WHERE `db_mdd_contracts`.`id` = $id";
+
+					$conn->query($upd_summa);
+					$conn->query($upd_rest);
+					$conn->query($sql_balance);
+					$conn->query($sql_cont_balance);
+				}
+
 				$invoice_number = Q("SELECT * FROM `#_mdd_invoice` WHERE `invoice_number` = $invoice AND `status` != 0", array())->row();
 				
 				// если сумма 0 выходим из цикла и идем к шагу записи оплаты в бд
@@ -341,7 +391,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 					$conn->query($sql);
 
 					// пересчитываем остаточную сумму
-					$period_sum = $period_sum - $invoice_number['rest'];
+					$period_sum -= $invoice_number['rest'];
 					//если сумма меньше остатка по счету
 					} else {
 					// высчитываем остаток и перезаписываем

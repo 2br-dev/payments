@@ -246,6 +246,26 @@ $( ".renter" ).click(function() {
 $( ".renter-contract p" ).click(function() {
   $(this).siblings('.renters-schet').slideToggle();
 });
+$( ".renters-list-link" ).click(function() {
+  $(this).siblings('.documents-block-renter').slideToggle();
+});
+$( ".documents-block-renter p").click(function() {
+  var url = $(this).children('a').attr('href');
+  var win = window.open(url, '_blank');
+  win.focus();
+})
+
+var colorOrig = $(".documents-block-renter p").css('color');
+$(".documents-block-renter p").hover(
+function() {
+    //mouse over
+    $(this).css('color','white');
+    $(this).children('.documents-block-renter a').css('color','white');
+}, function() {
+    //mouse out
+    $(this).css('color', colorOrig);
+    $(this).children('.documents-block-renter a').css('color', colorOrig);
+});
 
 // позволяет вводить частичную сумму только для отмеченных договоров, во избежании ошибок скрипта
 $("input[name='period_sum']").prop('disabled', true);

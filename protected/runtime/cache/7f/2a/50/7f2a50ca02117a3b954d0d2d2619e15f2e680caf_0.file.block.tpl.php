@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-30 17:13:01
+/* Smarty version 3.1.32, created on 2018-12-03 18:22:55
   from 'C:\OpenServer\domains\authorization.local\protected\modules\vystavlenie_schetov\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c01456d1a51a1_18228598',
+  'unifunc' => 'content_5c054a4f9a6525_37355005',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '7f2a50ca02117a3b954d0d2d2619e15f2e680caf' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\modules\\vystavlenie_schetov\\tpl\\block.tpl',
-      1 => 1543498875,
+      1 => 1543837816,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c01456d1a51a1_18228598 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c054a4f9a6525_37355005 (Smarty_Internal_Template $_smarty_tpl) {
 ?><div class="vystavlenie-schetov"><form id="vystavlenie-schetov" method="POST" action="/ajax/write"><div class="vystavlenie-schetov-date"><p class="date-error">Выберите дату:</p><input type="date" name="date" value="2018-01-01" id="date"></div><hr style="margin-bottom: 40px"><p class="error renter-error">Выберите одного или более арендодателей:</p><p><b style="font-size: 18px">Действующие договора:</p></b><?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['renters']->value, 'renter');
 if ($_from !== null) {
@@ -49,15 +49,8 @@ if ($_smarty_tpl->tpl_vars['renter']->value['status'] == 0) {?><div class="vysta
 " name="period_sum" style="width: 130px; color: gray; border: none; border-bottom: 1px solid; padding-left: 5px;"></div><?php }
 }
 }
-$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?></div><p style="display: inline">Год</p><span class="error year-error">Выберите год:</span><div class="vystavlenie-schetov-year"><label class="container-radio">2016<input name="year" type="radio" value="2016"><span class="checkmark"></span></label><label class="container-radio">2017<input name="year" type="radio" value="2017"><span class="checkmark"></span></label><label class="container-radio">2018<input name="year" type="radio" value="2018"><span class="checkmark"></span></label></div><p style="display: inline">Месяц</p><span class="error month-error">Выберите месяц:</span><div class="vystavlenie-schetov-month"><span><label class="container-checkbox">Январь<input name="month" type="checkbox" value="Январь"><span class="checkmark"></span></label><label class="container-checkbox">Май<input name="month" type="checkbox" value="Май"><span class="checkmark"></span></label><label class="container-checkbox">Сентябрь<input name="month" type="checkbox" value="Сентябрь"><span class="checkmark"></span></label></span><span><label class="container-checkbox">Февраль<input name="month" type="checkbox" value="Февраль"><span class="checkmark"></span></label><label class="container-checkbox" >Июнь<input name="month" type="checkbox" value="Июнь"><span class="checkmark"></span></label><label class="container-checkbox">Октябрь<input name="month" type="checkbox" value="Октябрь"><span class="checkmark"></span></label></span><span><label class="container-checkbox">Март<input name="month" type="checkbox" value="Март"><span class="checkmark"></span></label><label class="container-checkbox">Июль<input name="month" type="checkbox" value="Июль"><span class="checkmark"></span></label><label class="container-checkbox">Ноябрь<input name="month" type="checkbox" value="Ноябрь"><span class="checkmark"></span></label></span><span><label class="container-checkbox">Апрель<input name="month" type="checkbox" value="Апрель"><span class="checkmark"></span></label><label class="container-checkbox">Август<input name="month" type="checkbox" value="Август"><span class="checkmark"></span></label><label class="container-checkbox">Декабрь<input name="month" type="checkbox" value="Декабрь"><span class="checkmark"></span></label></span></div><hr><label class="container-checkbox">Начать нумерацию с 1<input type="checkbox" name="from_first"><span class="checkmark"></span></label><input type="submit" value="Отправить"></form><div class="success-message"><div class="close"></div><p>Счёт выставлен успешно.</p></div><div class="black-wrapper"></div></div><?php echo '<script'; ?>
->
-  var d = new Date();
-  var date = d.getDate();
-  var month = d.getMonth() + 1;
-  var year = d.getFullYear();
-  var x = year + "-" + month + "-" + date;
-  document.getElementById('date').value = x;
-  <?php echo '</script'; ?>
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?></div><p style="display: inline">Год</p><span class="error year-error">Выберите год:</span><div class="vystavlenie-schetov-year"><label class="container-radio">2016<input name="year" type="radio" value="2016"><span class="checkmark"></span></label><label class="container-radio">2017<input name="year" type="radio" value="2017"><span class="checkmark"></span></label><label class="container-radio">2018<input name="year" type="radio" value="2018"><span class="checkmark"></span></label><label class="container-radio">2019<input name="year" type="radio" value="2019"><span class="checkmark"></span></label><label class="container-radio">2020<input name="year" type="radio" value="2020"><span class="checkmark"></span></label></div><p style="display: inline">Месяц</p><span class="error month-error">Выберите месяц:</span><div class="vystavlenie-schetov-month"><span><label class="container-checkbox">Январь<input name="month" type="checkbox" value="Январь"><span class="checkmark"></span></label><label class="container-checkbox">Февраль<input name="month" type="checkbox" value="Февраль"><span class="checkmark"></span></label><label class="container-checkbox">Март<input name="month" type="checkbox" value="Март"><span class="checkmark"></span></label></span><span><label class="container-checkbox">Апрель<input name="month" type="checkbox" value="Апрель"><span class="checkmark"></span></label><label class="container-checkbox">Май<input name="month" type="checkbox" value="Май"><span class="checkmark"></span></label><label class="container-checkbox" >Июнь<input name="month" type="checkbox" value="Июнь"><span class="checkmark"></span></label></span><span><label class="container-checkbox">Июль<input name="month" type="checkbox" value="Июль"><span class="checkmark"></span></label><label class="container-checkbox">Август<input name="month" type="checkbox" value="Август"><span class="checkmark"></span></label><label class="container-checkbox">Сентябрь<input name="month" type="checkbox" value="Сентябрь"><span class="checkmark"></span></label></span><span><label class="container-checkbox">Октябрь<input name="month" type="checkbox" value="Октябрь"><span class="checkmark"></span></label><label class="container-checkbox">Ноябрь<input name="month" type="checkbox" value="Ноябрь"><span class="checkmark"></span></label><label class="container-checkbox">Декабрь<input name="month" type="checkbox" value="Декабрь"><span class="checkmark"></span></label></span></div><hr><label class="container-checkbox">Начать нумерацию с 1<input type="checkbox" name="from_first"><span class="checkmark"></span></label><input type="submit" value="Отправить"></form><div class="success-message"><div class="close"></div><p>Счёт выставлен успешно.</p></div><div class="black-wrapper"></div></div><?php echo '<script'; ?>
+>var d = new Date();var date = d.getDate();var month = d.getMonth() + 1;var year = d.getFullYear();if (date < 10) {date = '0' + date;}if (month < 10) {month = '0' + month;}var x = year + "-" + month + "-" + date;document.getElementById('date').value = x;<?php echo '</script'; ?>
 >
 
 <?php }

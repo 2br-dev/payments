@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-30 17:36:52
+/* Smarty version 3.1.32, created on 2018-12-03 19:12:25
   from 'C:\OpenServer\domains\authorization.local\protected\themes\base\smarty\components\main.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c014b04baace1_53799767',
+  'unifunc' => 'content_5c0555e93b8c69_49717755',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c014b04baace1_53799767 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c0555e93b8c69_49717755 (Smarty_Internal_Template $_smarty_tpl) {
 if ($_smarty_tpl->tpl_vars['uri']->value[0] == '') {
 if (isset($_smarty_tpl->tpl_vars['_sitemenu']->value['main'])) {?><div class="navigation navigation-main"><?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['_sitemenu']->value['main'], 'e');

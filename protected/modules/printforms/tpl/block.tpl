@@ -39,7 +39,7 @@
 			</table>
 		</div>
 		<div class="schet-number">
-			<p>Счет № A-{$print.invoice_numb} от {$date.2} {$month_string} {$date.0} года</p>
+			<p>Счет № A-{$print.document_number} от {$date.2} {$month_string} {$date.0} года</p>
 		</div> 
 		<div class="arendator-name">
 			<p>Плательщик: {$print.renter_name}</p>
@@ -105,7 +105,7 @@
 						<td style="text-align: right; font-weight: bold; border: none;">Итого:</td>
 						<td style="width: 90px; border: 1px solid #000000; border-top: none;"><input type="text" value="{$print.invoice_summa}"></td>
 					</tr>
-					{if $discount == 1}
+					{if $disc == 1}
 						<tr>
 							<td style="text-align: right; font-weight: bold; border: none;">Скидка:</td>
 							<td style="width: 90px; border: 1px solid #000000; border-top: none;"><input type="text" value="{$discount_summ}"></td>
@@ -115,10 +115,10 @@
 						<td style="text-align: right; font-weight: bold; border: none;">Без налога (НДС).</td>
 						<td style="border: 1px solid #000000;">-</td>
 					</tr>
-					{if $discount == 1}
+					{if $disc == 1}
 						<tr>
 							<td style="text-align: right; font-weight: bold; border: none;">Всего к оплате:</td>
-							<td style="border: 1px solid #000000;"><input type="text" value="{$print.discount}"></td>
+							<td style="border: 1px solid #000000;"><input type="text" value="{$print.discoint}"></td>
 						</tr>
 					{else}
 						<tr>
@@ -129,12 +129,12 @@
 				</table>
 				<div style="clear: both;"></div>
 				<div class="podval">
-					{if $discount == 1}
-						<p>Всего наименований 1 на сумму <input type="text" value="{$print.discount}"></p>
+					{if $disc == 1}
+						<p>Всего наименований 1 на сумму <input type="text" value="{$print.discoint}"></p>
 					{else}
 						<p>Всего наименований 1 на сумму <input type="text" value="{$print.invoice_summa}"></p>
 					{/if}					
-					<p><strong>(<input style="width: 97%;" type="text" value="{$print.contract_summa_string}">)</strong></p>
+					<p><input style="width: 97%;" type="text" value="( {$print.contract_summa_string} )"></p>
 				</div>
 				{/if}			
 		</div>
@@ -152,7 +152,7 @@
 				<img src="/images/print.png" width="146">
 			</div>
 			{/if}
-			{if $discount == 1}
+			{if $disc == 1}
 				<p style="margin-top: 50px; width: 100%; text-align: center; font-size: 18px;">Счет действителен до "05" {$month_string} {$date.0} года</p>
 			{/if}
 		</div>		
@@ -231,7 +231,7 @@
 						<td style="text-align: right; font-weight: bold; border: none;">Итого:</td>
 						<td style="width: 90px; border: 1px solid #000000; border-top: none;"><input type="text" value="{$print.invoice_summa}"></td>
 					</tr>
-					{if $discount == 1}
+					{if $disc == 1}
 						<tr>
 							<td style="text-align: right; font-weight: bold; border: none;">Скидка:</td>
 							<td style="width: 90px; border: 1px solid #000000; border-top: none;"><input type="text" value="{$discount_summ}"></td>
@@ -241,10 +241,10 @@
 						<td style="text-align: right; font-weight: bold; border: none;">Без налога (НДС).</td>
 						<td style="border: 1px solid #000000;">-</td>
 					</tr>					
-					{if $discount == 1}
+					{if $disc == 1}
 						<tr>
 							<td style="text-align: right; font-weight: bold; border: none;">Всего:</td>
-							<td style="border: 1px solid #000000;"><input type="text" value="{$print.discount}"></td>
+							<td style="border: 1px solid #000000;"><input type="text" value="{$print.discoint}"></td>
 						</tr>
 					{else}
 						<tr>
@@ -255,7 +255,7 @@
 				</table>
 				<div style="clear: both;"></div>
 				<div class="podval">
-					{if $discount == 1}
+					{if $disc == 1}
 						<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму<strong><input type="text" value="{$print.contract_summa_string}"></strong>, в т.ч.: НДС - Ноль рублей 00 копеек</p>
 					{else}
 						<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму<strong><input type="text" value="{$print.contract_summa_string}"></strong>, в т.ч.: НДС - Ноль рублей 00 копеек</p>
@@ -383,14 +383,14 @@
 						<td>{$print.ground_code}</td>
 						<td><input type="text" value="{$print.ground_ed}"></td>
 						<td><input type="text" value="{$print.invoice_amount}"></td>
-						{if $discount == 1}
-							<td><input type="text" value="{$print.discount}"></td>
+						{if $disc == 1}
+							<td><input type="text" value="{$print.discoint}"></td>
 						{else}
 							<td><input type="text" value="{$print.contract_summa}"></td>
 						{/if}
 						
-						{if $discount == 1}
-							<td><input type="text" value="{$print.discount}"></td>
+						{if $disc == 1}
+							<td><input type="text" value="{$print.discoint}"></td>
 						{else}
 							<td><input type="text" value="{$print.invoice_summa}"></td>
 						{/if}
@@ -398,8 +398,8 @@
 						<td>без акциза</td>
 						<td>без НДС</td>
 						<td>без НДС</td>
-						{if $discount == 1}
-							<td><input type="text" value="{$print.discount}"></td>
+						{if $disc == 1}
+							<td><input type="text" value="{$print.discoint}"></td>
 						{else}
 							<td><input type="text" value="{$print.invoice_summa}"></td>
 						{/if}
@@ -410,16 +410,16 @@
 					</tr>
 					<tr>
 						<td colspan="6" style="text-transform: uppercase;"><strong>Всего к оплате:</strong></td>
-						{if $discount == 1}
-							<td><input type="text" value="{$print.discount}"></td>
+						{if $disc == 1}
+							<td><input type="text" value="{$print.discoint}"></td>
 						{else}
 							<td><input type="text" value="{$print.invoice_summa}"></td>
 						{/if}
 						
 						<td colspan="2">X</td>
 						<td>без НДС</td>
-						{if $discount == 1}
-							<td><input type="text" value="{$print.discount}"></td>
+						{if $disc == 1}
+							<td><input type="text" value="{$print.discoint}"></td>
 						{else}
 							<td><input type="text" value="{$print.invoice_summa}"></td>
 						{/if}

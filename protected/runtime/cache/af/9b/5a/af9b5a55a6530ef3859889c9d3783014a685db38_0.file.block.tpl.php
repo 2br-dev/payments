@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-30 14:50:03
+/* Smarty version 3.1.32, created on 2018-12-03 17:59:36
   from 'C:\OpenServer\domains\authorization.local\protected\modules\reestr\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c0123eb3eb492_77969435',
+  'unifunc' => 'content_5c0544d85d3e72_69960600',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c0123eb3eb492_77969435 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c0544d85d3e72_69960600 (Smarty_Internal_Template $_smarty_tpl) {
 ?><div><?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['renters']->value, 'renter');
 if ($_from !== null) {

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-11-30 16:23:59
+/* Smarty version 3.1.32, created on 2018-12-03 18:22:50
   from 'C:\OpenServer\domains\authorization.local\protected\modules\oplaty\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c0139ef05e3b3_05371825',
+  'unifunc' => 'content_5c054a4a961665_02743424',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '288a0fb8efb7528f973a3212d76f5aa539a3408f' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\modules\\oplaty\\tpl\\block.tpl',
-      1 => 1543567985,
+      1 => 1543850529,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c0139ef05e3b3_05371825 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c054a4a961665_02743424 (Smarty_Internal_Template $_smarty_tpl) {
 ?><div class="payments"><form id="payments" method='post' action=''><select name="sources" id="sources" name="renter_name" class="custom-select sources"<?php if ($_smarty_tpl->tpl_vars['contracts']->value) {
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['contracts']->value, 'ren');
 if ($_from !== null) {
@@ -80,6 +80,6 @@ foreach ($_from as $_smarty_tpl->tpl_vars['invoice']->value) {
 }
 $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);
 }?><p id="error-empty">За данный период нет выставленных счетов.</p><p class="payments-data"><b>Данные платежа</b></p><label for="sum">Сумма платежа:</label><input type="text" id="sum" name="summa"><label for="date">Дата платежа:</label><input type="date" id="date" name="date"><label for="number">Номер платежа:</label><input type="text" id="number" name="document_number"><button type="submit">Отправить</button></form><div class="success-message"><div class="close"></div><p>Успех.</p></div><div class="error-message"><div class="close"></div><p>Заполните все поля.</p></div><div class="black-wrapper"></div></div><?php echo '<script'; ?>
->var elem = document.getElementById("helper");var form = document.getElementById("payments").contains(elem);var url = window.location.href.split('=');if (form || url.length != 3) {document.getElementById("error-empty").style.display = 'none';} else {document.getElementById("error-empty").style.display = 'block';}<?php echo '</script'; ?>
+>var elem = document.getElementById("helper");var form = document.getElementById("payments").contains(elem);var url = window.location.href.split('=');if (form || url.length != 3) {document.getElementById("error-empty").style.display = 'none';} else {document.getElementById("error-empty").style.display = 'block';}var d = new Date();var date = d.getDate();var month = d.getMonth() + 1;var year = d.getFullYear();if (date < 10) {date = '0' + date;}if (month < 10) {month = '0' + month;}var x = year + "-" + month + "-" + date;document.getElementById('date').value = x;<?php echo '</script'; ?>
 ><?php }
 }

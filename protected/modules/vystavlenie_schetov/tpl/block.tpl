@@ -50,6 +50,14 @@
           <input name="year" type="radio" value="2018">
           <span class="checkmark"></span>
         </label>
+        <label class="container-radio">2019
+          <input name="year" type="radio" value="2019">
+          <span class="checkmark"></span>
+        </label>
+        <label class="container-radio">2020
+          <input name="year" type="radio" value="2020">
+          <span class="checkmark"></span>
+        </label>
       </div>
       <p style="display: inline">Месяц</p><span class="error month-error">Выберите месяц:</span>
       <div class="vystavlenie-schetov-month">
@@ -58,52 +66,52 @@
             <input name="month" type="checkbox" value="Январь">
             <span class="checkmark"></span>
           </label>
-          <label class="container-checkbox">Май
-            <input name="month" type="checkbox" value="Май">
-            <span class="checkmark"></span>
-          </label>
-          <label class="container-checkbox">Сентябрь
-            <input name="month" type="checkbox" value="Сентябрь">
-            <span class="checkmark"></span>
-          </label>
-        </span>
-        <span>
           <label class="container-checkbox">Февраль
             <input name="month" type="checkbox" value="Февраль">
             <span class="checkmark"></span>
-          </label>
-          <label class="container-checkbox" >Июнь
-            <input name="month" type="checkbox" value="Июнь">
-            <span class="checkmark"></span>
-          </label>
-          <label class="container-checkbox">Октябрь
-            <input name="month" type="checkbox" value="Октябрь">
-            <span class="checkmark"></span>
-          </label>                    
-        </span>
-        <span>
+          </label> 
           <label class="container-checkbox">Март
             <input name="month" type="checkbox" value="Март">
             <span class="checkmark"></span>
-          </label>
-          <label class="container-checkbox">Июль
-            <input name="month" type="checkbox" value="Июль">
-            <span class="checkmark"></span>
-          </label>
-          <label class="container-checkbox">Ноябрь
-            <input name="month" type="checkbox" value="Ноябрь">
-            <span class="checkmark"></span>
-          </label>                    
+          </label>                   
         </span>
         <span>
           <label class="container-checkbox">Апрель
             <input name="month" type="checkbox" value="Апрель">
             <span class="checkmark"></span>
           </label>
+          <label class="container-checkbox">Май
+            <input name="month" type="checkbox" value="Май">
+            <span class="checkmark"></span>
+          </label>          
+          <label class="container-checkbox" >Июнь
+            <input name="month" type="checkbox" value="Июнь">
+            <span class="checkmark"></span>
+          </label>                  
+        </span>
+        <span>
+          <label class="container-checkbox">Июль
+            <input name="month" type="checkbox" value="Июль">
+            <span class="checkmark"></span>
+          </label>
           <label class="container-checkbox">Август
             <input name="month" type="checkbox" value="Август">
             <span class="checkmark"></span>
           </label>
+          <label class="container-checkbox">Сентябрь
+            <input name="month" type="checkbox" value="Сентябрь">
+            <span class="checkmark"></span>
+          </label>                                    
+        </span>
+        <span>
+          <label class="container-checkbox">Октябрь
+            <input name="month" type="checkbox" value="Октябрь">
+            <span class="checkmark"></span>
+          </label> 
+          <label class="container-checkbox">Ноябрь
+            <input name="month" type="checkbox" value="Ноябрь">
+            <span class="checkmark"></span>
+          </label>   
           <label class="container-checkbox">Декабрь
             <input name="month" type="checkbox" value="Декабрь">
             <span class="checkmark"></span>
@@ -130,6 +138,12 @@
   var date = d.getDate();
   var month = d.getMonth() + 1;
   var year = d.getFullYear();
+  if (date < 10) {
+    date = '0' + date;
+  }
+  if (month < 10) {
+    month = '0' + month;
+  }
   var x = year + "-" + month + "-" + date;
   document.getElementById('date').value = x;
   </script>
