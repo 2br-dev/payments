@@ -3,7 +3,13 @@
 <div>
 {foreach from=$renters item=renter}
   <div class='renters'>
-    <h2 class="renter">{$renter.short_name} — Баланс: {$renter.balance} ₽</h2>
+    <h2 class="renter">{$renter.short_name} — Баланс: 
+     {if $renter.balance < 0}
+     <span style="color: #d32f2f;"> {$renter.balance} ₽</span>
+     {else}
+     <span> {$renter.balance} ₽</span>
+     {/if}
+    </h2>
     <div class='renters-details'>
       <p><b>{$renter.full_name}</b></p>
       <p><b>ИНН:</b> {$renter.inn} / <b>КПП:</b> {$renter.kpp}</p>
@@ -21,7 +27,16 @@
     
       {if $item.short_name == $renter.short_name}
       <div class='renter-contract'>
-        <p class='renter-contract-header'>{$item.contract_number} от {$item.datetime}</p>
+        <div class='renter-contract-header' style="display: flex; justify-content: space-between; padding-right: 30px;">
+          <p>{$item.contract_number} от {$item.datetime}</p>
+          {if $item.status == 0}
+          <span style="color: #d32f2f">Завершенный</span>
+          {elseif $item.status == 0.5}
+          <span style="color: #ffa000">Действителен до: {$item.end_date}</span>
+          {else}
+          <span style="color: #2e7d32">Действующий</span>
+          {/if}
+        </div>
         <div class='renters-schet'>
           <p><b>Помещение:</b> {$item.room_number}</p>
           <p><b>Номер на схеме:</b> {$item.number_scheme}</p>

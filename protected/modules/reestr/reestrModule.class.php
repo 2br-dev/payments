@@ -17,7 +17,7 @@ final class reestrModule extends \Fastest\Core\Modules\Module
          $reestr = Q("SELECT 
             `contract`.`id` as `contract_id`, `contract`.`number` as `contract_number`, `contract`.`datetime`,
             `contract`.`status`, `contract`.`summa`, `contract`.`start_date`, `contract`.`end_date`, `contract`.`peni`,
-            `contract`.`start_arenda`,  
+            `contract`.`start_arenda`, `contract`.`status`, 
             
             `room`.`id` as `room_id`, `room`.`number` as `room_number`, `room`.`floor`, `room`.`square`,
             `room`.`number_scheme`, 
@@ -32,8 +32,18 @@ final class reestrModule extends \Fastest\Core\Modules\Module
                  
         
         $renters = Q("SELECT * FROM `#_mdd_renters` WHERE `login` != 'admin'", array())->all();
-        // exit(__($renters));
+         
+        $today = strtotime(date("d.m.Y"));
 
+        for ($i = 0; $i < count($reestr); $i++) {
+            $date = strtotime($reestr[$i]['end_date']);
+       
+            if ($date - $today > 0 && $date - $today < 3600 * 24 * 30) {
+                $reestr[$i]['status'] = 0.5; 
+            }
+        }
+
+        // exit(__($reestr));
         return [
             'template'  => 'block',
             'reestr'    => $reestr,

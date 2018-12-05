@@ -301,14 +301,19 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 
 	if ($controller == 'payment')
 	{
-		
+		// парсим необходимые даты
 		$payment_date  = explode('-', $_POST['date']);	
-		$payment_year  = $payment_date[0];
-		$payment_month = $payment_date[1];
-		$payment_day   = $payment_date[2];
+		$payment_year  = intval($payment_date[0]);
+		$payment_month = intval($payment_date[1]);
+		$payment_day   = intval($payment_date[2]);
+		// по дефолту значения пени равны нулю
+		$peni_summa = Q("SELECT `summa` FROM `#_mdd_contracts` WHERE `id` = ?i",array($_POST['contract_id']))->row('summa');
+		$peni_percent = Q("SELECT `peni` FROM `#_mdd_contracts` WHERE `id` = ?i", array($_POST['contract_id']))->row('peni');
+		$peni_percent *= 0.01;
+		// количество дней в месяце
+		$number_of_days = array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30 ,31);
 
 		if(isset($_POST['summa']) && isset($_POST['renter_document'])) {
-
 
 			$id = $_POST['contract_id'];
 			$index = 0;
@@ -318,13 +323,25 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			$username = "root";
 			$password = "";
 			$dbname = "authorization";
-	
+
 			// Create connection
 			$conn = new mysqli($servername, $username, $password, $dbname);
 			// Check connection
 			if ($conn->connect_error) {
 					die("Connection failed: " . $conn->connect_error);
 			} 
+
+			// ПЕНИ
+			// получаем день начисления пени
+			$start_peni = intval( Q("SELECT `start_peni` FROM `#_mdd_contracts` WHERE `id` = ?i", array($id))->row('start_peni'));
+			// парсим номер договора
+			$peni_contract = $_POST['renter_document'];
+			// имя арендателя
+			$renter_name = Q("SELECT `short_name` FROM `#_mdd_renters` WHERE `id` = ?i", array($_POST['renter_id']))->row('short_name');
+			// получаем пени по договору
+			$peni_in_contract = Q("SELECT `peni` FROM `#_mdd_contracts` WHERE `id` = ?i", array($id))->row('peni');
+
+
 			// берем общий баланс арендодателя и баланс контракта	
 			$balance = Q("SELECT `balance` FROM `#_mdd_renters` WHERE `id` = ?i",array($renter_id))->row('balance');
 			$contract_balance = Q("SELECT `balance` FROM `#_mdd_contracts` WHERE `id` = ?i", array($id))->row('balance');
@@ -347,8 +364,13 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				//парсим дату счета
 				$invoice_date = Q("SELECT * FROM `#_mdd_invoice` WHERE `invoice_number` = $invoice", array())->row('akt_date');
 				$invoice_date = explode('-', $invoice_date);
-				$invoice_month = $invoice_date[1];
-				$invoice_year = $invoice_date[0];
+				$invoice_month = intval($invoice_date[1]);
+				$invoice_year = intval($invoice_date[0]);
+			
+				// если год четный то в феврале 29 дней
+				if ( is_int(3019 % $invoice_year / 4) ) {
+					$number_of_days[1] = 29;
+				}
 
 				//проверяем дату когда был оплачен счёт
 				if ($payment_day <= 5 && $payment_month == $invoice_month && $payment_year == $invoice_year) {
@@ -373,15 +395,71 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 					$conn->query($upd_rest);
 					$conn->query($sql_balance);
 					$conn->query($sql_cont_balance);
-				}
+				} 
 
+				$peni = 0;
+				$peni_delay = 0;
+				$peni_amount = 0;
+
+				// месяц и год за которые начисляется пеня
+				if ($invoice_month == 12) {
+					$peni_month = 1;
+					$peni_year = $invoice_year + 1;
+				} else {
+					$peni_month = $invoice_month + 1;
+					$peni_year = $invoice_year;
+				}
+				// проверяем дату оплаты на предмет начиления пени
+				if ($payment_day >= $start_peni || $payment_month > $invoice_month || $payment_year > $invoice_year) {
+					$cur_rest  = Q("SELECT `rest`     FROM `#_mdd_invoice` WHERE `invoice_number` = ?i",array($invoice))->row('rest');
+					$cur_summa = Q("SELECT `summa`    FROM `#_mdd_invoice` WHERE `invoice_number` = ?i",array($invoice))->row('summa');
+					$cur_amount = Q("SELECT `amount`	FROM `#_mdd_invoice` WHERE `invoice_number` = ?i",array($invoice))->row('amount');
+					
+					if ($payment_month > $invoice_month ) {
+						
+						$dif = $payment_month - $invoice_month;
+						//$day_dif = $number_of_days[$invoice_month - 1] - $payment_day - 1; ????????
+						// если пени больше чем за 1 месяц, то нам нужно отнять стартовую сумму	
+						$peni_delay = $peni_delay - $start_peni - $day_dif;	
+
+						for ($it = 0; $it <= $dif; $it++ ) {		
+
+							if ($cur_amount == 1) {
+								$peni_delay = $peni_delay + $number_of_days[$invoice_month - 1];
+							} else {
+								$start_arenda = Q("SELECT `start_arenda` FROM `#_mdd_contracts` WHERE `id` = ?i", array($id))->row('start_arenda');	
+								$start_arenda = explode('.', $start_arenda);
+								$peni_delay = $number_of_days[$invoice_month - 1] - intval($start_arenda[0]) + 1;								
+							}
+						}
+							
+					}	else {
+						$peni_delay = $payment_day - $start_peni;
+					}		
+				} 
+
+				// за этот месяц будет начислять пени и мы можем подсчитать
+				$peni = round($peni_delay * $cur_rest  * $peni_percent);
+				$peni_amount = $peni_delay * $peni_in_contract;
+				 
 				$invoice_number = Q("SELECT * FROM `#_mdd_invoice` WHERE `invoice_number` = $invoice AND `status` != 0", array())->row();
-				
-				// если сумма 0 выходим из цикла и идем к шагу записи оплаты в бд
-				if($period_sum == 0) {
+
+				// записываем пени, так как она уже точно начисляется и все данные есть	
+				O('_mdd_peni')->create(array(
+					'contract_id' 		=> $id,
+					'contract_number' => $_POST['renter_document'],
+					'renter' 					=> $renter_name,
+					'month' 					=> $peni_month,
+					'year' 						=> $peni_year,
+					'amount' 					=> $peni_amount,
+					'summa' 					=> $cur_summa,
+					'peni' 						=> $peni,
+					'delay' 					=> $peni_delay,							
+				));	
+
+				if ($period_sum === 0) {
 					break;
 				}
-
 				// если сумма больше остатка по счету, то...
 				if($period_sum >= $invoice_number['rest']) {
 		
@@ -400,6 +478,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 					
 					$conn->query($sql);
 				}
+
 			}		
 			$conn->close();	
 		} 
@@ -410,12 +489,12 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		// записываем оплату
 		if(isset($_POST['summa']) && isset($_POST['date']) && isset($_POST['renter_name']) && isset($_POST['renter_document']) && isset($_POST['number'])) {
 			O('_mdd_payments')->create(array(
-				'renter_name' => $_POST['renter_name'],
-				'date' => $_POST['date'],
-				'summa' => $_POST['summa'],
-				'document' => $_POST['number'],
-				'payment_info' => $_POST['renter_document'],
-				'invoices' => $invoices,								
+				'renter_name' 		=> $_POST['renter_name'],
+				'date' 						=> $_POST['date'],
+				'summa' 					=> $_POST['summa'],
+				'document' 				=> $_POST['number'],
+				'payment_info' 		=> $_POST['renter_document'],
+				'invoices' 				=> $invoices,								
 			));
 		}  
 	}

@@ -23,11 +23,15 @@ body {
   outline: none;
   border: none;
 }
+.page-main,
+.page-main .navigation {
+  background: #232323 !important;
+}
 .navigation {
   height: 60px;
   display: flex;
   margin-top: 30px;
-  background: #f95252;
+  background: #8eacbb;
   justify-content: center;
   align-items: center;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -87,14 +91,14 @@ body {
   margin: 15px auto;
 }
 .navigation-main a {
-  color: #f95252;
+  color: #8eacbb;
   border: none;
   text-transform: unset;
 }
 .navigation-main hr {
   border-radius: 50%;
   height: 1px;
-  background-color: #f95252;
+  background-color: #8eacbb;
   width: 120px;
   border: none;
 }
@@ -110,10 +114,10 @@ body {
   background: white;
   border-radius: 20px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  color: #f95252;
+  color: #8eacbb;
 }
 .navigation-main .logout-btn:hover {
-  background: #f95252;
+  background: #8eacbb;
   transition: all .5s ease;
   color: white;
   cursor: pointer;
@@ -150,7 +154,7 @@ body {
   font-size: 22px;
   font-weight: normal;
   margin-bottom: 10px;
-  background: #f95252;
+  background: #8eacbb;
   padding: 5px 30px;
   border-radius: 20px;
   color: white;
@@ -160,15 +164,15 @@ body {
 }
 .renters .renter:hover {
   cursor: pointer;
-  background: #fa6b6b;
+  background: #9eb8c5;
   transition: all .3s ease;
 }
 .renters .renter-contract-header {
   padding-left: 20px;
 }
-.renters .renter-contract-header:hover {
+.renters .renter-contract-header p:hover {
   cursor: pointer;
-  color: #f72121;
+  color: #6e95a8;
   text-decoration: underline;
 }
 .renters p {
@@ -195,7 +199,7 @@ body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 #payments button {
-  background: #f95252;
+  background: #8eacbb;
   padding: 15px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   border: none;
@@ -207,7 +211,7 @@ body {
 }
 #payments button:hover {
   transition: .3s ease;
-  background: #fb8383;
+  background: #aec3ce;
   cursor: pointer;
   box-shadow: 1px 3px 9px rgba(0, 0, 0, 0.12), 1px 3px 6px rgba(0, 0, 0, 0.24);
 }
@@ -279,12 +283,12 @@ body {
 }
 .vystavlenie-schetov .error {
   font-weight: bold;
-  color: #f95252;
+  color: #8eacbb;
 }
 .vystavlenie-schetov .month-error,
 .vystavlenie-schetov .renter-error,
 .vystavlenie-schetov .year-error {
-  color: #f95252;
+  color: #8eacbb;
   font-weight: bold;
   display: none;
 }
@@ -337,7 +341,7 @@ body {
   display: none;
 }
 .vystavlenie-schetov-hidden-btn {
-  background: #f95252;
+  background: #8eacbb;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   border: none;
   color: white;
@@ -348,12 +352,12 @@ body {
 }
 .vystavlenie-schetov-hidden-btn:hover {
   transition: .3s ease;
-  background: #fb8383;
+  background: #aec3ce;
   cursor: pointer;
   box-shadow: 1px 3px 9px rgba(0, 0, 0, 0.12), 1px 3px 6px rgba(0, 0, 0, 0.24);
 }
 .vystavlenie-schetov input[type="submit"] {
-  background: #f95252;
+  background: #8eacbb;
   padding: 15px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   border: none;
@@ -369,7 +373,7 @@ body {
 }
 .vystavlenie-schetov input[type="submit"]:hover {
   transition: .3s ease;
-  background: #fb8383;
+  background: #aec3ce;
   cursor: pointer;
   box-shadow: 1px 3px 9px rgba(0, 0, 0, 0.12), 1px 3px 6px rgba(0, 0, 0, 0.24);
 }
@@ -406,7 +410,7 @@ body {
   cursor: pointer;
 }
 .payments .error-message {
-  background: #f95252;
+  background: #8eacbb;
 }
 .pechat-schetov .year-error {
   top: 0;
@@ -430,9 +434,13 @@ body {
   cursor: default;
 }
 .renters-list {
-  margin: 0 auto;
-  width: 1000px;
+  margin: 30px auto 50px;
+  width: 850px;
+  background: #fff;
+  padding: 1px 20px 50px;
+  border-radius: 20px;
   cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 .renters-list-link {
   text-decoration: underline;
@@ -478,7 +486,7 @@ body {
   width: 300px;
 }
 .renters-list .documents-block {
-  color: red;
+  color: #8eacbb;
 }
 .renters-list .documents-block a {
   margin-right: 25px;
@@ -486,7 +494,7 @@ body {
 }
 .renters-list .documents-block a:hover {
   text-decoration: none;
-  color: #f95252;
+  color: #8eacbb;
   transition: .3s ease;
 }
 .documents-block-renter {
@@ -501,8 +509,9 @@ body {
   margin-right: 30px;
 }
 .documents-block-renter p:hover {
-  background: lightcoral;
+  background: #9eb8c5;
   transition: .3s ease;
+  cursor: pointer;
 }
 .documents-block-renter a {
   position: relative;
@@ -525,7 +534,7 @@ body {
   margin: auto;
   width: 600px;
   height: 125px;
-  background: #f95252;
+  background: #8eacbb;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   border-radius: 20px;
 }
@@ -635,7 +644,7 @@ focus {
 }
 /* When the checkbox is checked, add a blue background */
 .container-checkbox input:checked ~ .checkmark {
-  background-color: #f95252;
+  background-color: #8eacbb;
 }
 /* Show the checkmark when checked */
 .container-checkbox input:checked ~ .checkmark:after {
@@ -695,7 +704,7 @@ focus {
 }
 /* When the radio button is checked, add a blue background */
 .container-radio input:checked ~ .checkmark {
-  background-color: #f95252;
+  background-color: #8eacbb;
 }
 /* Show the indicator (dot/circle) when checked */
 .container-radio input:checked ~ .checkmark:after {
@@ -732,13 +741,13 @@ focus {
   font-weight: 300;
   color: #fff;
   line-height: 45px;
-  background: #f95252;
+  background: #8eacbb;
   border-radius: 4px;
   cursor: pointer;
 }
 .custom-select-trigger:hover {
   transition: .3s ease;
-  background: #fa6b6b;
+  background: #9eb8c5;
 }
 #pechat-schetov > div.custom-select-wrapper > div {
   width: 420px;

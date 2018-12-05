@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-12-03 19:06:06
+/* Smarty version 3.1.32, created on 2018-12-05 18:55:30
   from 'C:\OpenServer\domains\authorization.local\protected\modules\pechat_schetov\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c05546ea82047_72817894',
+  'unifunc' => 'content_5c07f4f27ff1a0_74824746',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '5c9ef855284c3459aac2f387664e9f33ec89e13c' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\modules\\pechat_schetov\\tpl\\block.tpl',
-      1 => 1543852495,
+      1 => 1543923869,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c05546ea82047_72817894 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c07f4f27ff1a0_74824746 (Smarty_Internal_Template $_smarty_tpl) {
 if ($_SESSION['admin'] == 'true') {?>
   <div class="vystavlenie-schetov pechat-schetov">
     <form id="pechat-schetov" action="" method="post">
@@ -271,6 +271,15 @@ foreach ($_from as $_smarty_tpl->tpl_vars['i']->value) {
 $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
       </div>
     </div>
+
+    <style>
+      .renters-list {
+        width: unset;
+        background: unset;
+        cursor: default;
+        box-shadow: unset;
+      }
+    </style>
  
 <?php }?> 
 <?php if ($_smarty_tpl->tpl_vars['error']->value) {?> 

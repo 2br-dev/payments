@@ -179,6 +179,15 @@
       {/foreach}
       </div>
     </div>
+
+    <style>
+      .renters-list {
+        width: unset;
+        background: unset;
+        cursor: default;
+        box-shadow: unset;
+      }
+    </style>
  
 {/if} {* end noadmin  *}
 

@@ -148,7 +148,7 @@ $(document).ready(function() {
     
     console.log(data);
  
-    if(data.summa && data.date && data.number && data.renter_name && data.renter_document) {
+    if(window.location.href.indexOf('&') != -1 && data.summa && data.date && data.number && data.renter_name && data.renter_document) {
       $('.success-message').fadeIn(); 
       $('.black-wrapper').fadeIn();  
       $.ajax({
@@ -243,7 +243,7 @@ $( ".form-input" ).click(function() {
 $( ".renter" ).click(function() {
   $(this).siblings('.renters-details').slideToggle();
 });
-$( ".renter-contract p" ).click(function() {
+$( ".renter-contract-header" ).click(function() {
   $(this).siblings('.renters-schet').slideToggle();
 });
 $( ".renters-list-link" ).click(function() {
