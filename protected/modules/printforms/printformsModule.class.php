@@ -18,7 +18,65 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 			$pr = $_GET['pr']; // С печатью или без - из ГЕТ запроса: pr = 0 - без печати, pr = 1 - с печатью
 			$disc = $_GET['disc']; // Со скидкой или без - из ГЕТ запроса: disc = 0 - без скидки, disc = 1 - со скидкой
 			$discount_summ = 0;
+
+			if(isset($_GET['peni'])) {
+				$peni = $_GET['peni'];
+			} else $peni = 0;
 			
+			$allpeni = Q("SELECT * FROM `#_mdd_peni` as `peni`
+		
+			LEFT JOIN `#_mdd_grounds` as `ground`
+			ON `peni`.`ground` = `ground`.`id`
+
+			WHERE `peni` != ?i AND `peni`.`peni_invoice` = ?i ORDER BY `peni_invoice` DESC",array(0, $id))->row();
+
+			$akt = Q("SELECT * FROM `#_mdd_invoice` WHERE `schet_id` = ?i", array($allpeni['peni_invoice']))->row();
+
+			$allpeni['akt_id'] = $akt['invoice_number'];
+			$allpeni['sf_id'] = $akt['invoice_number'];
+			$allpeni['schet_id'] = $akt['invoice_number'];
+			$allpeni['sf_number'] = $akt['invoice_number'];
+		
+			if($peni == 1) {
+				switch ($allpeni['month']) {
+					case '1':
+						$allpeni['month'] = 'Января';
+						break;
+					case '2':
+						$allpeni['month'] = 'Февраля';
+						break;
+					case '3':
+					$allpeni['month'] = 'Марта';
+						break;
+					case '4':
+					$allpeni['month'] = 'Апреля';
+						break;
+					case '5':
+					$allpeni['month'] = 'Мая';
+						break;
+					case '6':
+					$allpeni['month'] = 'Июня';
+						break;
+					case '7':
+					$allpeni['month'] = 'Июля';
+						break;
+					case '8':
+					$allpeni['month'] = 'Августа';
+						break;
+					case '9':
+					$allpeni['month'] = 'Сентября';
+						break;
+					case '10':
+					$allpeni['month'] = 'Октября';
+						break;
+					case '11':
+					$allpeni['month'] = 'Ноября';
+						break;
+					case '12':
+					$allpeni['month'] = 'Декабря';
+						break;											
+				}	
+			}	
 		
 		// Если Документ - Счет
 		if ($ind == 'sch') {
@@ -432,9 +490,12 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 			else {
 				$print['contract_summa_string'] = num2str($print['discoint']);	
 			}
-						
-				
-		//exit(__($print));
+			
+			if($peni == 1) {
+				$allpeni['string'] = num2str($allpeni['peni']);
+			}
+			
+		
 
 		return array(
 			'print' => $print,
@@ -444,7 +505,9 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 			'pr' => $pr,
 			'template' => 'block',
 			'disc' => $disc,
-			'discount_summ' => $discount_summ
+			'discount_summ' => $discount_summ,
+			'peni'	=> $peni,
+			'allpeni' => $allpeni
 		);
     }
 }

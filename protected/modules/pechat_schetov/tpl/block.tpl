@@ -152,6 +152,35 @@
         {/foreach}
         </table>
       </div>
+
+      {if $peni} 
+      <div class="error-msg">      
+        <img src="/img/warning_white_48x48.png" alt="">
+        <div class="error-msg-text">
+          <p><strong>Внимание!</strong></p>
+          <p>У вас есть неоплаченные пени. <br> Следующее поступление денежных средств на счёт, будет покрывать неоплаченные пени.</p>
+        </div>
+        <div class="close"></div>
+      </div>
+
+      <div class="renters-invoices">
+      <h2>Все пени</h2>
+      {foreach from=$peni item=i}	
+          <div class="renters-list-item">
+            <p class="renters-list-link">Пени №: {$i.peni_invoice} за {$i.month}, {$i.year}, на сумму: {$i.peni} (просрочка на: {$i.delay} дней)</p>
+            <hr>
+            <div class="documents-block documents-block-renter" data-block="{$i.renter_id}">
+              <p>Счет <a href="/schet-pechatnaya-forma?num={$i.peni_invoice}&ind=sch&pr=0&disc=0&peni=1" target="_blank" >Распечатать</a></p>
+              <p>Акт <a href="/schet-pechatnaya-forma?num={$i.akt_id}&ind=akt&pr=0&disc=0&peni=1" target="_blank" >Распечатать</a></p>
+              <p>Счет-фактура <a href="/schet-pechatnaya-forma?num={$i.sf_id}&ind=sf&pr=0&disc=0&peni=1" target="_blank" >Распечатать</a></p>
+              <p>Счет+печать <a href="/schet-pechatnaya-forma?num={$i.peni_invoice}&ind=sch&pr=1&disc=0&peni=1" target="_blank" >Распечатать</a></p>
+              <p>Акт+печать <a href="/schet-pechatnaya-forma?num={$i.akt_id}&ind=akt&pr=1&disc=0&peni=1" target="_blank" >Распечатать</a></p>
+              <p>Счет-фактура+печать <a href="/schet-pechatnaya-forma?num={$i.sf_id}&ind=sf&pr=1&disc=0&peni=1" target="_blank" >Распечатать</a></p>
+            </div>
+          </div>
+      {/foreach}
+      </div> {/if}
+
       <div class="renters-invoices">
       <h2>Все выставленные счета</h2>
       {foreach from=$allinvoices item=i}	

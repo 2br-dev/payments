@@ -460,6 +460,7 @@ body {
   width: 850px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   border-radius: 20px;
+  padding-bottom: 15px;
   h2 {
     padding: 20px 30px 0;
     cursor: default;
@@ -656,7 +657,7 @@ input[type="date"], focus {
 
 .invoice-table {
   background: white;
-  margin: 0 auto 50px;
+  margin: 0 auto;
   width: 850px;
   border-radius: 20px;
   padding: 10px 40px;
@@ -932,4 +933,27 @@ input[type="date"], focus {
 }
 .close:after {
   transform: rotate(-45deg);
+}
+// 
+.error-msg {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 700px;
+  margin: 0 auto 40px;
+  height: 100px;
+  color: white;
+  position: relative;
+  top: 20px;
+  left: 0;
+  right: 0;
+  background: #f95252;
+  .close {
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+  }
+}
+.error-msg strong {
+  font-size: 16px;
 }

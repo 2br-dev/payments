@@ -38,8 +38,13 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 
 					WHERE `renter`.`short_name` = ?s ORDER BY `invoice_number` DESC",
 					array($_SESSION['login']))->all();
-	
-					 
+
+		$peni = Q("SELECT * FROM `#_mdd_peni` as `peni`
+		
+							LEFT JOIN `#_mdd_grounds` as `ground`
+							ON `peni`.`ground` = `ground`.`id`
+
+		 					WHERE `peni` != 0 ORDER BY `peni_invoice` DESC",array())->all();
 
 			foreach ($allinvoices as $key => $value) {
 				$akt = Q("SELECT * FROM `#_mdd_invoice` WHERE `schet_id` = ?i", 
@@ -50,9 +55,58 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 				$allinvoices[$key]['schet_id'] = $akt['invoice_number'];
 				$allinvoices[$key]['sf_number'] = $akt['invoice_number'];
 			}
+			foreach ($peni as $key => $value) {
+				$akt = Q("SELECT * FROM `#_mdd_invoice` WHERE `schet_id` = ?i", 
+				array($value['peni_invoice']))->row();
 
-			// exit(__($_SESSION[;]))
-		 // exit(__($allinvoices));
+				$peni[$key]['akt_id'] = $akt['invoice_number'];
+				$peni[$key]['sf_id'] = $akt['invoice_number'];
+				$peni[$key]['schet_id'] = $akt['invoice_number'];
+				$peni[$key]['sf_number'] = $akt['invoice_number'];
+			}
+		
+		if(isset($peni)) {
+			for ($i = 0; $i < count($peni); $i++) {
+				switch ($peni[$i]['month']) {
+					case '1':
+					  $peni[$i]['month'] = 'Января';
+						break;
+					case '2':
+					  $peni[$i]['month'] = 'Февраля';
+						break;
+					case '3':
+					$peni[$i]['month'] = 'Марта';
+						break;
+					case '4':
+					$peni[$i]['month'] = 'Апреля';
+						break;
+					case '5':
+					$peni[$i]['month'] = 'Мая';
+						break;
+					case '6':
+					$peni[$i]['month'] = 'Июня';
+						break;
+					case '7':
+					$peni[$i]['month'] = 'Июля';
+						break;
+					case '8':
+					$peni[$i]['month'] = 'Августа';
+						break;
+					case '9':
+					$peni[$i]['month'] = 'Сентября';
+						break;
+					case '10':
+					$peni[$i]['month'] = 'Октября';
+						break;
+					case '11':
+					$peni[$i]['month'] = 'Ноября';
+						break;
+					case '12':
+					$peni[$i]['month'] = 'Декабря';
+						break;											
+					}	
+			}	
+		}
 
 		if (!empty($_POST['year']) && !empty($_POST['month'])) {
 			$invoices = Q("SELECT 
@@ -131,7 +185,7 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 			}
 		}
 
-		//exit(__($allinvoices));
+		// exit(__($peni));
 		return array(
 			'inv' 				=> 	$invoices,
 			'year' 				=> 	$year,
@@ -139,7 +193,8 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 			'template' 		=> 	'block',
 			'error' 			=> 	$error,
 			'allinvoices' => 	$allinvoices,
-			'contracts'		=>	$contracts
+			'contracts'		=>	$contracts,
+			'peni'				=>  $peni
 		);
     }
 }

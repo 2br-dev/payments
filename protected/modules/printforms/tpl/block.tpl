@@ -39,7 +39,11 @@
 			</table>
 		</div>
 		<div class="schet-number">
+		 	{if $peni == 0}
 			<p>Счет № A-{$print.document_number} от {$date.2} {$month_string} {$date.0} года</p>
+			{else}
+			<p>Счет № П-{$print.document_number} от {$date.2} {$month_string} {$date.0} года</p>
+			{/if}
 		</div> 
 		<div class="arendator-name">
 			<p>Плательщик: {$print.renter_name}</p>
@@ -57,18 +61,30 @@
 					<td style="width: 90px;">Сумма</td>
 				</tr>
 				{if $print.ground}
-					{foreach from=$print.ground item=a}
-					<tr>
-						<td>{$count}</td>
-						<!--<td>{$a.desc} за {$print.period_month} {$print.period_year} года</td>-->
-						<td>{$a.desc} за {$print.period_month} {$print.period_year} года.</td>
-						<td><input type="text" value="{$a.ed}"></td>
-						<td><input type="text" value="{$print.invoice_amount}"></td>
-						<td><input type="text" value="{$a.price}"></td>
-						<td><input type="text" value="{$a.summ}"></td>
-					</tr>
-					{$count = $count + 1}
-					{/foreach}					
+
+					{if $peni == 1}
+						<tr>
+							<td>{$count}</td>
+							<td>{$item.desc} за {$print.period_month} {$print.period_year} года.</td>
+							<td><input type="text" value="{$allpeni.ed}"></td>
+							<td><input type="text" value="{$allpeni.amount}"></td>
+							<td><input type="text" value="{$allpeni.price}"></td>
+							<td><input type="text" value="{$allpeni.peni}"></td>
+						</tr>
+						{$count = $count + 1}
+					{else}
+						{foreach from=$print.ground item=a}
+						<tr>
+							<td>{$count}</td>
+							<td>{$a.desc} за {$print.period_month} {$print.period_year} года.</td>
+							<td><input type="text" value="{$a.ed}"></td>
+							<td><input type="text" value="{$print.invoice_amount}"></td>
+							<td><input type="text" value="{$a.price}"></td>
+							<td><input type="text" value="{$a.summ}"></td>
+						</tr>
+						{$count = $count + 1}
+						{/foreach}
+					{/if}						
 				</table>
 				<table style="widht: 200px; float: right;">
 					<tr>
@@ -92,18 +108,30 @@
 				{else}
 				<tr>
 					<td>1</td>
-					<td>{$print.ground_desc} за {$print.period_month} {$print.period_year} года. Основание: Договор аренды нежилого помещения № {$print.contract_number} от {$print.contract_date} г.</td>
-					<!--<td>{$print.ground_desc}. Основание: Государственный контракт на аренду нежилого помещения № {$print.contract_number} от {$print.contract_date} г.</td>-->
-					<td><input type="text" value="{$print.ground_ed}"></td>
-					<td><input type="text" value="{$print.invoice_amount}"></td>
-					<td><input type="text" value="{$print.contract_summa}"></td>
-					<td><input type="text" value="{$print.invoice_summa}"></td>
+					{if $peni == 0}
+						<td>{$print.ground_desc} за {$print.period_month} {$print.period_year} года. Основание: Договор аренды нежилого помещения № {$print.contract_number} от {$print.contract_date} г.</td>
+						<!--<td>{$print.ground_desc}. Основание: Государственный контракт на аренду нежилого помещения № {$print.contract_number} от {$print.contract_date} г.</td>-->
+						<td><input type="text" value="{$print.ground_ed}"></td>
+						<td><input type="text" value="{$print.invoice_amount}"></td>
+						<td><input type="text" value="{$print.contract_summa}"></td>
+						<td><input type="text" value="{$print.invoice_summa}"></td>
+					{else}			
+						<td>{$allpeni.desc} за {$print.period_month} {$print.period_year} года.</td>
+						<td><input type="text" value="{$allpeni.ed}"></td>
+						<td><input type="text" value="{$allpeni.delay}"></td>
+						<td><input type="text" value="{math equation="x / y" x=$allpeni.peni y=$allpeni.delay format="%.2f"}"></td>
+						<td><input type="text" value="{$allpeni.peni}"></td>
+					{/if}
 				</tr>				
 				</table>
 				<table style="widht: 200px; float: right;">
 					<tr>
 						<td style="text-align: right; font-weight: bold; border: none;">Итого:</td>
-						<td style="width: 90px; border: 1px solid #000000; border-top: none;"><input type="text" value="{$print.invoice_summa}"></td>
+						{if $peni == 1}
+							<td style="width: 90px; border: 1px solid #000000; border-top: none;"><input type="text" value="{$allpeni.peni}"></td>
+							{else}
+							<td style="width: 90px; border: 1px solid #000000; border-top: none;"><input type="text" value="{$print.invoice_summa}"></td>
+						{/if}						
 					</tr>
 					{if $disc == 1}
 						<tr>
@@ -121,20 +149,33 @@
 							<td style="border: 1px solid #000000;"><input type="text" value="{$print.discoint}"></td>
 						</tr>
 					{else}
-						<tr>
+						{if $peni == 1}
 							<td style="text-align: right; font-weight: bold; border: none;">Всего к оплате:</td>
-							<td style="border: 1px solid #000000;"><input type="text" value="{$print.invoice_summa}"></td>
-						</tr>
+							<td style="border: 1px solid #000000;"><input type="text" value="{$allpeni.peni}"></td>	
+							{else}
+							<tr>
+								<td style="text-align: right; font-weight: bold; border: none;">Всего к оплате:</td>
+								<td style="border: 1px solid #000000;"><input type="text" value="{$print.invoice_summa}"></td>
+							</tr>
+						{/if}
 					{/if}
 				</table>
 				<div style="clear: both;"></div>
 				<div class="podval">
-					{if $disc == 1}
-						<p>Всего наименований 1 на сумму <input type="text" value="{$print.discoint}"></p>
-					{else}
-						<p>Всего наименований 1 на сумму <input type="text" value="{$print.invoice_summa}"></p>
+					{if $peni == 1}
+						<p>Всего наименований 1 на сумму <input type="text" value="{$allpeni.peni}"></p>
+						{elseif $disc == 1}
+							<p>Всего наименований 1 на сумму <input type="text" value="{$print.discoint}"></p>
+						{else}
+							<p>Всего наименований 1 на сумму <input type="text" value="{$print.invoice_summa}"></p>
+					{/if}
+
+					{if $peni == 1}
+						<p><input style="width: 97%;" type="text" value="( {$allpeni.string} )"></p>
+						{else}
+						<p><input style="width: 97%;" type="text" value="( {$print.contract_summa_string} )"></p>
 					{/if}					
-					<p><input style="width: 97%;" type="text" value="( {$print.contract_summa_string} )"></p>
+					
 				</div>
 				{/if}			
 		</div>
@@ -166,7 +207,11 @@
 			<p>Адрес: 666784, Иркутская обл, Усть-Кут г., Кирова ул, 12, кв. 14</p>
 		</div>
 		<div class="schet-number">
-			<p>Акт № A-{$print.document_number} от {$date.2} {$month_string} {$print.period_year} года</p>
+			{if $peni == 1}
+				<p>Акт № П-{$print.document_number} от {$date.2} {$month_string} {$print.period_year} года</p>
+			{else}
+				<p>Акт № A-{$print.document_number} от {$date.2} {$month_string} {$print.period_year} года</p>
+			{/if}
 		</div>
 		<div class="arendator-name">
 			<p>Заказчик: {$print.renter_name}</p>
@@ -183,18 +228,18 @@
 					<td style="width: 90px;">Сумма</td>
 				</tr>
 				{if $print.ground}
-					{foreach from=$print.ground item=a}
-					<tr>
-						<td>{$count}</td>
-						<td>{$a.desc} за {$print.period_month} {$print.period_year} года</td>
-						<!--<td>{$a.desc}</td>-->
-						<td>{$a.ed}</td>
-						<td><input type="text" value="{$print.invoice_amount}"></td>
-						<td><input type="text" value="{$a.price}"></td>
-						<td><input type="text" value="{$a.summ}"></td>
-					</tr>
-					{$count = $count + 1}
-					{/foreach}					
+						{foreach from=$print.ground item=a}
+						<tr>
+							<td>{$allpeni.ed}</td>
+							<td>{$a.desc} за {$print.period_month} {$print.period_year} года</td>
+							<!--<td>{$a.desc}</td>-->
+							<td>{$a.ed}</td>
+							<td><input type="text" value="{$print.invoice_amount}"></td>
+							<td><input type="text" value="{$a.price}"></td>
+							<td><input type="text" value="{$a.summ}"></td>
+						</tr>
+						{$count = $count + 1}
+						{/foreach}									
 				</table>
 				<table style="widht: 200px; float: right;">
 					<tr>
@@ -216,20 +261,36 @@
 					<p style="font-style: italic; font-size: 12px;">Вышеперечисленные услуги выполненые полностью и в срок. Заказчик претензий по объему, качеству и срокам оказания услуг не имеет</p>
 				</div>
 				{else}
-				<tr>
-					<td>1</td>
-					<td>{$print.ground_desc} за {$print.period_month} {$print.period_year} года. Основание: Договор аренды нежилого помещения № {$print.contract_number} от {$print.contract_date} г.</td>
-					<!--<td>{$print.ground_desc}. Основание: Государственный контракт на аренду нежилого помещения № {$print.contract_number} от {$print.contract_date} г.</td>-->
-					<td>{$print.ground_ed}</td>
-					<td><input type="text" value="{$print.invoice_amount}"></td>
-					<td><input type="text" value="{$print.contract_summa}"></td>
-					<td><input type="text" value="{$print.invoice_summa}"></td>
-				</tr>				
+					{if $peni == 1}
+						<tr>
+							<td>1</td>
+							<td>{$allpeni.desc} за {$print.period_month} {$print.period_year} года. Основание: Договор аренды нежилого помещения № {$print.contract_number} от {$print.contract_date} г.</td>
+							<!--<td>{$print.ground_desc}. Основание: Государственный контракт на аренду нежилого помещения № {$print.contract_number} от {$print.contract_date} г.</td>-->
+							<td><input type="text" value="{$allpeni.ed}"></td>
+							<td><input type="text" value="{$allpeni.delay}"></td>
+							<td><input type="text" value="{math equation="x / y" x=$allpeni.peni y=$allpeni.delay format="%.2f"}"></td>
+							<td><input type="text" value="{$allpeni.peni}"></td>
+						</tr>						
+					{else}
+						<tr>
+							<td>1</td>
+							<td>{$print.ground_desc} за {$print.period_month} {$print.period_year} года. Основание: Договор аренды нежилого помещения № {$print.contract_number} от {$print.contract_date} г.</td>
+							<!--<td>{$print.ground_desc}. Основание: Государственный контракт на аренду нежилого помещения № {$print.contract_number} от {$print.contract_date} г.</td>-->
+							<td>{$print.ground_ed}</td>
+							<td><input type="text" value="{$print.invoice_amount}"></td>
+							<td><input type="text" value="{$print.contract_summa}"></td>
+							<td><input type="text" value="{$print.invoice_summa}"></td>
+						</tr>	
+					{/if}			
 				</table>
 				<table style="widht: 200px; float: right;">
 					<tr>
 						<td style="text-align: right; font-weight: bold; border: none;">Итого:</td>
-						<td style="width: 90px; border: 1px solid #000000; border-top: none;"><input type="text" value="{$print.invoice_summa}"></td>
+						{if $peni == 1} 
+							<td style="width: 90px; border: 1px solid #000000; border-top: none;"><input type="text" value="{$allpeni.peni}"></td>
+						{else}
+							<td style="width: 90px; border: 1px solid #000000; border-top: none;"><input type="text" value="{$print.invoice_summa}"></td>
+						{/if}				
 					</tr>
 					{if $disc == 1}
 						<tr>
@@ -240,27 +301,38 @@
 					<tr>
 						<td style="text-align: right; font-weight: bold; border: none;">Без налога (НДС).</td>
 						<td style="border: 1px solid #000000;">-</td>
-					</tr>					
-					{if $disc == 1}
+					</tr>
+					{if $peni == 1}
 						<tr>
 							<td style="text-align: right; font-weight: bold; border: none;">Всего:</td>
-							<td style="border: 1px solid #000000;"><input type="text" value="{$print.discoint}"></td>
+							<td style="border: 1px solid #000000;"><input type="text" value="{$allpeni.peni}"></td>
 						</tr>
 					{else}
-						<tr>
-							<td style="text-align: right; font-weight: bold; border: none;">Всего:</td>
-							<td style="border: 1px solid #000000;"><input type="text" value="{$print.invoice_summa}"></td>
-						</tr>
-					{/if}
+						{if $disc == 1}
+							<tr>
+								<td style="text-align: right; font-weight: bold; border: none;">Всего:</td>
+								<td style="border: 1px solid #000000;"><input type="text" value="{$print.discoint}"></td>
+							</tr>
+						{else}
+							<tr>
+								<td style="text-align: right; font-weight: bold; border: none;">Всего:</td>
+								<td style="border: 1px solid #000000;"><input type="text" value="{$print.invoice_summa}"></td>
+							</tr>
+						{/if}
+					{/if}					
+
 				</table>
 				<div style="clear: both;"></div>
 				<div class="podval">
+				{if $peni == 1}
+					<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму<strong><input type="text" value="{$allpeni.string}"></strong>, в т.ч.: НДС - Ноль рублей 00 копеек</p>
+				{else}
 					{if $disc == 1}
 						<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму<strong><input type="text" value="{$print.contract_summa_string}"></strong>, в т.ч.: НДС - Ноль рублей 00 копеек</p>
 					{else}
 						<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму<strong><input type="text" value="{$print.contract_summa_string}"></strong>, в т.ч.: НДС - Ноль рублей 00 копеек</p>
 					{/if}
-					
+				{/if}	
 					<p style="font-style: italic; font-size: 12px;">Вышеперечисленные услуги выполненые полностью и в срок. Заказчик претензий по объему, качеству и срокам оказания услуг не имеет</p>
 				</div>
 				{/if}			
@@ -290,7 +362,11 @@
 		<div style="clear: both;"></div>
 		
 		<div class="sf-number">
-			<p>Счет-фактура № A-{$print.document_number} от {$date.2} {$month_string} {$print.period_year} года</p>
+			{if $peni == 1}
+				<p>Счет-фактура № П-{$print.document_number} от {$date.2} {$month_string} {$print.period_year} года</p>
+			{else}
+				<p>Счет-фактура № A-{$print.document_number} от {$date.2} {$month_string} {$print.period_year} года</p>
+			{/if}
 			<p style="font-size: 16px; font-weight: normal;">Исправление № ---- от ----</p>
 		</div>
 		
@@ -378,6 +454,15 @@
 					</tr>
 				{else}
 					<tr>
+					{if $peni == 1}
+						<td>{$allpeni.desc} за {$print.period_month} {$print.period_year} года. Основание: Договор аренды нежилого помещения № {$print.contract_number} от {$print.contract_date} г.</td>
+						<td> - </td>
+						<td>{$allpeni.code_ed}</td>
+						<td><input type="text" value="{$allpeni.ed}"></td>
+						<td><input type="text" value="{$allpeni.delay}"></td>
+						<td><input type="text" value="{math equation="x / y" x=$allpeni.peni y=$allpeni.delay format="%.2f"}"></td>
+						<td><input type="text" value="{$allpeni.peni}"></td>
+					{else}
 						<td>{$print.ground_desc} за {$print.period_month} {$print.period_year} года. Основание: Договор аренды нежилого помещения № {$print.contract_number} от {$print.contract_date} г.</td>
 						<td> - </td>
 						<td>{$print.ground_code}</td>
@@ -394,35 +479,45 @@
 						{else}
 							<td><input type="text" value="{$print.invoice_summa}"></td>
 						{/if}
-						
+					{/if}						
 						<td>без акциза</td>
 						<td>без НДС</td>
 						<td>без НДС</td>
+					{if $peni == 1}
+						<td><input type="text" value="{$allpeni.peni}"></td>
+					{else}
 						{if $disc == 1}
 							<td><input type="text" value="{$print.discoint}"></td>
 						{else}
 							<td><input type="text" value="{$print.invoice_summa}"></td>
 						{/if}
-						
+					{/if}			
 						<td></td>
 						<td></td>
 						<td></td>
 					</tr>
 					<tr>
 						<td colspan="6" style="text-transform: uppercase;"><strong>Всего к оплате:</strong></td>
+					{if $peni == 1}
+						<td><input type="text" value="{$allpeni.peni}"></td>
+					{else}
 						{if $disc == 1}
 							<td><input type="text" value="{$print.discoint}"></td>
 						{else}
 							<td><input type="text" value="{$print.invoice_summa}"></td>
 						{/if}
-						
+					{/if}	
 						<td colspan="2">X</td>
 						<td>без НДС</td>
+					{if $peni == 1}
+						<td><input type="text" value="{$allpeni.peni}"></td>
+					{else}
 						{if $disc == 1}
 							<td><input type="text" value="{$print.discoint}"></td>
 						{else}
 							<td><input type="text" value="{$print.invoice_summa}"></td>
 						{/if}
+					{/if}	
 						<td colspan="3" style="border:none;"></td>
 					</tr>
 				{/if}

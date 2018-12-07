@@ -279,6 +279,9 @@ $("input[name='renter']").click(function() {
   }
 })
 
+$(".error-msg .close").click(function() {
+  $('.error-msg').slideToggle();
+})
 
 // custom select
 $(".custom-select").each(function() {

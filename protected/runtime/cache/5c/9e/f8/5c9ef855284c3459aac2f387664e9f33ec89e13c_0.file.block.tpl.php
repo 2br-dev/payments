@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-12-05 18:55:30
+/* Smarty version 3.1.32, created on 2018-12-07 12:58:30
   from 'C:\OpenServer\domains\authorization.local\protected\modules\pechat_schetov\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c07f4f27ff1a0_74824746',
+  'unifunc' => 'content_5c0a444685fad9_74278499',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '5c9ef855284c3459aac2f387664e9f33ec89e13c' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\modules\\pechat_schetov\\tpl\\block.tpl',
-      1 => 1543923869,
+      1 => 1544176550,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c07f4f27ff1a0_74824746 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c0a444685fad9_74278499 (Smarty_Internal_Template $_smarty_tpl) {
 if ($_SESSION['admin'] == 'true') {?>
   <div class="vystavlenie-schetov pechat-schetov">
     <form id="pechat-schetov" action="" method="post">
@@ -220,6 +220,54 @@ foreach ($_from as $_smarty_tpl->tpl_vars['contract']->value) {
 $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
         </table>
       </div>
+
+      <?php if ($_smarty_tpl->tpl_vars['peni']->value) {?> 
+      <div class="error-msg">      
+        <img src="/img/warning_white_48x48.png" alt="">
+        <div class="error-msg-text">
+          <p><strong>Внимание!</strong></p>
+          <p>У вас есть неоплаченные пени. <br> Следующее поступление денежных средств на счёт, будет покрывать неоплаченные пени.</p>
+        </div>
+        <div class="close"></div>
+      </div>
+
+      <div class="renters-invoices">
+      <h2>Все пени</h2>
+      <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['peni']->value, 'i');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['i']->value) {
+?>	
+          <div class="renters-list-item">
+            <p class="renters-list-link">Пени №: <?php echo $_smarty_tpl->tpl_vars['i']->value['peni_invoice'];?>
+ за <?php echo $_smarty_tpl->tpl_vars['i']->value['month'];?>
+, <?php echo $_smarty_tpl->tpl_vars['i']->value['year'];?>
+, на сумму: <?php echo $_smarty_tpl->tpl_vars['i']->value['peni'];?>
+ (просрочка на: <?php echo $_smarty_tpl->tpl_vars['i']->value['delay'];?>
+ дней)</p>
+            <hr>
+            <div class="documents-block documents-block-renter" data-block="<?php echo $_smarty_tpl->tpl_vars['i']->value['renter_id'];?>
+">
+              <p>Счет <a href="/schet-pechatnaya-forma?num=<?php echo $_smarty_tpl->tpl_vars['i']->value['peni_invoice'];?>
+&ind=sch&pr=0&disc=0&peni=1" target="_blank" >Распечатать</a></p>
+              <p>Акт <a href="/schet-pechatnaya-forma?num=<?php echo $_smarty_tpl->tpl_vars['i']->value['akt_id'];?>
+&ind=akt&pr=0&disc=0&peni=1" target="_blank" >Распечатать</a></p>
+              <p>Счет-фактура <a href="/schet-pechatnaya-forma?num=<?php echo $_smarty_tpl->tpl_vars['i']->value['sf_id'];?>
+&ind=sf&pr=0&disc=0&peni=1" target="_blank" >Распечатать</a></p>
+              <p>Счет+печать <a href="/schet-pechatnaya-forma?num=<?php echo $_smarty_tpl->tpl_vars['i']->value['peni_invoice'];?>
+&ind=sch&pr=1&disc=0&peni=1" target="_blank" >Распечатать</a></p>
+              <p>Акт+печать <a href="/schet-pechatnaya-forma?num=<?php echo $_smarty_tpl->tpl_vars['i']->value['akt_id'];?>
+&ind=akt&pr=1&disc=0&peni=1" target="_blank" >Распечатать</a></p>
+              <p>Счет-фактура+печать <a href="/schet-pechatnaya-forma?num=<?php echo $_smarty_tpl->tpl_vars['i']->value['sf_id'];?>
+&ind=sf&pr=1&disc=0&peni=1" target="_blank" >Распечатать</a></p>
+            </div>
+          </div>
+      <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+      </div> <?php }?>
+
       <div class="renters-invoices">
       <h2>Все выставленные счета</h2>
       <?php
