@@ -17,6 +17,9 @@
 	<!-- CSS -->
 	<link type="text/css" rel="stylesheet" href="/css/normalize.css" >
 	<link type="text/css" rel="stylesheet" href="/css/style.css" >
+  {if $uri[0] == 'pechat-aktov-schetov'}
+		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+  {/if}
 	<link rel="icon" href="/img/favicon.png" type="image/x-icon">
 
 </head>

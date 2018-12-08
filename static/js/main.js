@@ -341,3 +341,36 @@ $(".renters-list-delete").click(function() {
 
   location.reload();
 })
+
+$('.as-hidden').css("display", "none");
+
+$('input[name="dates"]').daterangepicker({
+  autoUpdateInput: false,
+  locale: {
+    cancelLabel: 'Clear'
+  }
+});
+
+$('input[name="dates"]').click(function() {
+    if ( $('.as-hidden').css('display') == 'block'){
+      $(".as-hidden").slideToggle();
+    }
+});
+
+$('input[name="dates"]').on('apply.daterangepicker', function(ev, picker) {
+  $(this).val(picker.startDate.format('MM.DD.YYYY') + ' - ' + picker.endDate.format('MM.DD.YYYY'));
+  $(".as-hidden").slideToggle();
+  var startDate = picker.startDate.format('MM.DD.YYYY');
+  var endDate = picker.endDate.format('MM.DD.YYYY');
+  var asNormalHref = document.getElementById('as-normal').href;
+  var asPrintHref = document.getElementById('as-print').href;
+  var asNormalHrefDone = `${asNormalHref}&start=${startDate}&end=${endDate}`;
+  var asPrintHrefDone = `${asPrintHref}&start=${startDate}&end=${endDate}`;
+  document.getElementById('as-normal').href = asNormalHrefDone;
+  document.getElementById('as-print').href = asPrintHrefDone;
+});
+
+$('input[name="dates"]').on('cancel.daterangepicker', function(ev, picker) {
+  $(this).val('');
+});
+

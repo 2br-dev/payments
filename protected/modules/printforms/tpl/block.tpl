@@ -537,7 +537,130 @@
 			{/if}
 		</div>
 	</div>
-{/if}	
+{/if}
+
+{if $document == 'as'}
+<div style="width: 1060px; padding: 15px;">
+	<p style="font-size: 20px; width: fit-content; margin: 0 auto;"><b>Акт сверки</b></p>
+	<p style="width: fit-content; margin: 0 auto; text-align: center;">
+		взаимных рассчётов за период: {$smarty.get.start} - {$smarty.get.end} <br>
+		между: ИП Кононович Галина Павловна и //renter.name// <br>
+		по договору аренды нежилого помещения № //contract.number// от //contract.datetime//
+	</p>
+	<div style="margin-top: 40px">
+		<p>Мы, нижеподписавшиеся, ИП Кононович Галина Павловна, с одной стороны, и //renter.name//, с другой стороны, составили данный акт сверки в том, что, состояние взаимных рассчётов по данным учёта слудующее:</p>
+	</div>
+	<table style="width: 100%; cellspacing: 0; border-collapse: collapse;">
+		<tr>
+			<td colspan="6" style="width: 50%">По данным ИП Кононович Галина Павловна, руб</td>
+			<td colspan="6" style="width: 50%">По данным //renter.name//, руб</td>
+		</tr>
+		<tr>
+			<td class="ta" colspan="1"><b>Дата</b></td>
+			<td class="ta" colspan="3" style="width: 20%"><b>Документ</b></td>
+			<td class="ta" colspan="1"><b>Дебет</b></td>
+			<td class="ta" colspan="1"><b>Кредит</b></td>
+			<td class="ta" colspan="1"><b>Дата</b></td>
+			<td class="ta" colspan="3" style="width: 20%"><b>Документ</b></td>
+			<td class="ta" colspan="1"><b>Дебет</b></td>
+			<td class="ta" colspan="1"><b>Кредит</b></td>		
+		</tr>
+		<tr>
+			<td class="fs-11" colspan="4" style="width: 20%"><b>Сальдо начальное</b></td>
+			<td class="fs-11 ta" colspan="1">0.00 </td>
+			<td class="fs-11" colspan="1"> </td>
+			<td class="fs-11" colspan="4"  style="width: 20%"><b>Сальдо начальное</b></td>
+			<td class="fs-11" colspan="1"> </td>
+			<td class="fs-11 ta" colspan="1">0.00 </td>	
+		</tr>
+		<tr style="line-height: 25px">
+			<td class="fs-11" colspan="1">10.12.2013</td>
+			<td class="fs-11" colspan="3" style="width: 20%">Оплата счёта (10 от 12.12.2012)</td>
+			<td class="fs-11 ta" colspan="1"></td>
+			<td class="fs-11 ta" colspan="1">10000,00</td>
+			<td class="fs-11" colspan="1">10.12.2013</td>
+			<td class="fs-11" colspan="3" style="width: 20%">Оплата счёта (10 от 12.12.2012)</td>
+			<td class="fs-11 ta" colspan="1">10000,00</td>
+			<td class="fs-11 ta" colspan="1"></td>	
+		</tr>
+		<tr style="line-height: 25px">
+			<td class="fs-11" colspan="1">12.14.2019</td>
+			<td class="fs-11" colspan="3" style="width: 20%">Аренда помещения (10 от 13.13.2015)</td>
+			<td class="fs-11 ta" colspan="1">12000.00</td>
+			<td class="fs-11 ta" colspan="1"></td>
+			<td class="fs-11" colspan="1">12.14.2019</td>
+			<td class="fs-11" colspan="3"  style="width: 20%">Аренда помещения (10 от 13.13.2015)</td>
+			<td class="fs-11 ta" colspan="1"></td>
+			<td class="fs-11 ta" colspan="1">12000.00</td>	
+		</tr>
+		<tr>
+			<td class="fs-11" colspan="4" style="width: 20%"><b>Обороты за период</b></td>
+			<td class="fs-11 ta" colspan="1"><b>12000.00</b></td>
+			<td class="fs-11 ta" colspan="1"><b>10000.00</b></td>
+			<td class="fs-11" colspan="4"  style="width: 20%"><b>Обороты за период</b></td>
+			<td class="fs-11 ta" colspan="1"><b>10000.00</b></td>
+			<td class="fs-11 ta" colspan="1"><b>12000.00</b></td>	
+		</tr>
+		<tr>
+			<td class="fs-11" colspan="4" style="width: 20%"><b>Сальдо конечно</b></td>
+			<td class="fs-11 ta" colspan="1"><b>2000.00</b></td>
+			<td class="fs-11 ta" colspan="1"><b></b></td>
+			<td class="fs-11" colspan="4"  style="width: 20%"><b>Сальдо конечно</b></td>
+			<td class="fs-11 ta" colspan="1"><b></b></td>
+			<td class="fs-11 ta" colspan="1"><b>2000.00</b></td>	
+		</tr>										
+	</table>
+	<div style="display: flex; justify-content: center;">
+		<div class="fs-11" style="width: 50%;">
+			<p>По данным ИП Кононович Галина Павловна</p>
+			<div>
+				<p><b>на 31.12.2015 Задолженность в пользу ИП Кононович Галина Павловна <br>
+							2000.00 руб. (две тысячи рублей 00 копеек)
+				</b></p>
+				<p>От ИП Кононович Галина Павловна</p>
+			</div>
+			<p><b><i>Директор</i></b></p>
+			<p>________________________<b><i>(Г.П.Кононович)</i></b></p>
+			<p>М.П</p>
+		</div>
+		<div class="fs-11" style="width: 50%;">
+			<p>По данным //renter.name//</p>
+			<div>
+				<p><b>на 31.12.2015 Задолженность в пользу ИП Кононович Галина Павловна<br>
+							2000.00 руб. (две тысячи рублей 00 копеек)
+				</b></p>
+				<p>От //renter.name//</p>
+			</div>
+			<p><b><i>Директор</i></b></p>
+			<p>________________________<b><i>(//Director.name//)</i></b></p>
+			<p>М.П</p>
+		</div>
+	</div>
+	{if $pr == '1'}
+	<div class="sf-sign-img" style="top: 440px; left: 59px;">
+		<img src="/images/sign.png" width="100">
+		<!--<img src="/images/sign-glazkov.png" width="100" style="padding-top: 20px;">-->
+	</div>
+	<div class="sf-sign-img" style="top: unset; left: 350px; top: 440px;">
+		<img src="/images/print.png" width="100">
+	</div>
+	{/if}	
+</div>
+
+<style>
+	tr, td {
+		font-size: 12px;
+		border: 1px solid #000;
+		padding-left: 5px;
+	}
+	.fs-11 {
+		font-size: 11px !important;
+	}
+	.ta {
+		text-align: center;
+	}
+</style>
+{/if}
 </body>
 {/strip}
 </html>

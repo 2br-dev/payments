@@ -153,6 +153,29 @@
         </table>
       </div>
 
+    <div class="renters-invoices" style="margin-top: 20px;">
+      <div style="display: flex; justify-content: space-between; align-items: baseline;">
+        <h2 style="margin-bottom: 10px; margin-left: 10px; margin-top: 10px;">Акт сверки </h2>
+        <div> 
+          <label class="hide" for="dates" style="margin-right: 10px;">Выберите период</label>
+          <input style="margin-right: 45px; padding: 8px 10px; border: 1px solid lightgray; border-radius: 5px;" type="text" name="dates" value="" />
+        </div>
+      </div>
+      <hr style="margin-left: 30px" class="as-hidden">    
+          <div class="renters-list-item">
+            <div class="documents-block documents-block-renter as-hidden" data-block="{$i.renter_id}">
+              {foreach from=$allinvoices item=contract}	
+              <p>Акт сверки <a id="as-normal" href="/schet-pechatnaya-forma?con={$i.peni_invoice}&ind=as&pr=0" target="_blank" >Распечатать</a></p>
+               {break}
+              {/foreach}
+              {foreach from=$allinvoices item=contract}	
+                <p>Акт сверки + печать<a id="as-print" href="/schet-pechatnaya-forma?con={$i.peni_invoice}&ind=as&pr=1" target="_blank" >Распечатать</a></p>
+               {break}
+              {/foreach}
+            </div>
+          </div>
+    </div>
+
       {if $peni} 
       <div class="error-msg">      
         <img src="/img/warning_white_48x48.png" alt="">
@@ -218,6 +241,11 @@
       }
     </style>
  
+ 
+
+
+
+
 {/if} {* end noadmin  *}
 
 {*  error  *}
