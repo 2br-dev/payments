@@ -98,7 +98,7 @@
           <a data-arendator="{$i.renter_id}" class="renters-list-link">
             <p>{$i.renter_name}, № счёта: {$i.invoice_number}, на сумму: {$i.invoice_summa}</p>
           </a>
-          <span data-invoice="{$i.invoice_number}" class="renters-list-delete">удалить<span class="renters-list-delete-img"></span></span>
+          <span data-invoice="{$i.invoice_number}" data-contract="{$i.document_number}" class="renters-list-delete">удалить<span class="renters-list-delete-img"></span></span>
         </div>
         <hr>
         <div class="documents-block" data-block="{$i.renter_id}">

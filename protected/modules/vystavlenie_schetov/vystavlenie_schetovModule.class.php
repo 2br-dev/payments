@@ -31,7 +31,7 @@ final class vystavlenie_schetovModule extends \Fastest\Core\Modules\Module
             LEFT JOIN `#_mdd_renters` as `renter` ON `contract`.`renter` = `renter`.`id` ORDER BY `renter`.`short_name` ASC", array())->all();
                   
          // exit(__($renters));
-
+        
         return [
             'template' => 'block',
             'renters' => $renters

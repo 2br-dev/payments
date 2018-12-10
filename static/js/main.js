@@ -324,6 +324,7 @@ $(".renters-list-delete").click(function() {
 
   var data = {
     invoice:  $(this).data('invoice'),
+    number:   $(this).data('contract'),
   }
   console.log(data);
 
@@ -339,7 +340,10 @@ $(".renters-list-delete").click(function() {
     }
   });
 
-  location.reload();
+  setTimeout(function() { 
+    location.reload(); 
+  }, 1200);
+  
 })
 
 $('.as-hidden').css("display", "none");

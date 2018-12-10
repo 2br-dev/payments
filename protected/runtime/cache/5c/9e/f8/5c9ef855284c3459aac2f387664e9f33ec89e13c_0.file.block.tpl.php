@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-12-07 18:15:00
+/* Smarty version 3.1.32, created on 2018-12-10 12:29:52
   from 'C:\OpenServer\domains\authorization.local\protected\modules\pechat_schetov\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c0a8e74454c73_68930837',
+  'unifunc' => 'content_5c0e321080a658_28396546',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '5c9ef855284c3459aac2f387664e9f33ec89e13c' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\modules\\pechat_schetov\\tpl\\block.tpl',
-      1 => 1544192797,
+      1 => 1544430895,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c0a8e74454c73_68930837 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c0e321080a658_28396546 (Smarty_Internal_Template $_smarty_tpl) {
 if ($_SESSION['admin'] == 'true') {?>
   <div class="vystavlenie-schetov pechat-schetov">
     <form id="pechat-schetov" action="" method="post">
@@ -132,6 +132,7 @@ foreach ($_from as $_smarty_tpl->tpl_vars['i']->value) {
 </p>
           </a>
           <span data-invoice="<?php echo $_smarty_tpl->tpl_vars['i']->value['invoice_number'];?>
+" data-contract="<?php echo $_smarty_tpl->tpl_vars['i']->value['document_number'];?>
 " class="renters-list-delete">удалить<span class="renters-list-delete-img"></span></span>
         </div>
         <hr>
