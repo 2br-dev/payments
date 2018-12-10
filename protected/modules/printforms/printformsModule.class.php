@@ -516,6 +516,11 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 				if(!isset($allpeni)) {
 					$allpeni = 0;
 				}
+
+				//$login_id = Q("SELECT `id` ")
+				//exit(__($_SESSION));
+			//	$history = Q("SELECT * FROM `db_mdd_balance` as `balance` WHERE")
+
 				return array(
 					'print' => $print,
 					'month_string' => $month,

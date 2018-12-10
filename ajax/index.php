@@ -457,7 +457,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 					$peni_delay = 0;
 				} 
 				// за этот месяц будет начислять пени и мы можем подсчитать
-				$peni = number_format(($peni_delay * $cur_rest  * $peni_percent),2);
+				$peni = number_format(($peni_delay * $cur_rest  * $peni_percent),2, '.', '');
 				$peni_amount = $peni_delay * $peni_in_contract;
 				 
 				$invoice_number = Q("SELECT * FROM `#_mdd_invoice` WHERE `invoice_number` = $invoice AND `status` != 0", array())->row();

@@ -361,17 +361,32 @@ $('input[name="dates"]').click(function() {
     }
 });
 
+var asNormalHref = document.getElementById('as-normal').href;
+var asPrintHref = document.getElementById('as-print').href;
+$('.renter-invoices-dates').css('display', 'none');
+
+$('select').on('change', function() {
+  if ($('input[name="dates"]').val() !== '') {
+    $(".as-hidden").slideToggle();
+  }
+  $('.renter-invoices-dates').css('display', 'block');
+});
+
 $('input[name="dates"]').on('apply.daterangepicker', function(ev, picker) {
   $(this).val(picker.startDate.format('MM.DD.YYYY') + ' - ' + picker.endDate.format('MM.DD.YYYY'));
-  $(".as-hidden").slideToggle();
+  
+  if ($("select[name='contracts']").val() !== null) {
+    $(".as-hidden").slideToggle();
+  }
+
+  var contractId = $("select[name='contracts']").val();
   var startDate = picker.startDate.format('MM.DD.YYYY');
   var endDate = picker.endDate.format('MM.DD.YYYY');
-  var asNormalHref = document.getElementById('as-normal').href;
-  var asPrintHref = document.getElementById('as-print').href;
-  var asNormalHrefDone = `${asNormalHref}&start=${startDate}&end=${endDate}`;
-  var asPrintHrefDone = `${asPrintHref}&start=${startDate}&end=${endDate}`;
+  var asNormalHrefDone = `${asNormalHref}&start=${startDate}&end=${endDate}&id=${contractId}`;
+  var asPrintHrefDone = `${asPrintHref}&start=${startDate}&end=${endDate}&id=${contractId}`;
   document.getElementById('as-normal').href = asNormalHrefDone;
   document.getElementById('as-print').href = asPrintHrefDone;
+  //$('input[name="dates"]').prop('disabled', true);
 });
 
 $('input[name="dates"]').on('cancel.daterangepicker', function(ev, picker) {

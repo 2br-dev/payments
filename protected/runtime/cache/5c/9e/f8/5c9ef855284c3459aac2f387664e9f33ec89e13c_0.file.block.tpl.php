@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-12-10 12:29:52
+/* Smarty version 3.1.32, created on 2018-12-10 13:44:18
   from 'C:\OpenServer\domains\authorization.local\protected\modules\pechat_schetov\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c0e321080a658_28396546',
+  'unifunc' => 'content_5c0e438278ac94_21017368',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '5c9ef855284c3459aac2f387664e9f33ec89e13c' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\modules\\pechat_schetov\\tpl\\block.tpl',
-      1 => 1544430895,
+      1 => 1544438621,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c0e321080a658_28396546 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c0e438278ac94_21017368 (Smarty_Internal_Template $_smarty_tpl) {
 if ($_SESSION['admin'] == 'true') {?>
   <div class="vystavlenie-schetov pechat-schetov">
     <form id="pechat-schetov" action="" method="post">
@@ -223,9 +223,27 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
       </div>
 
     <div class="renters-invoices" style="margin-top: 20px;">
-      <div style="display: flex; justify-content: space-between; align-items: baseline;">
+      <div style="display: flex; justify-content: flex-start; align-items: baseline;">
         <h2 style="margin-bottom: 10px; margin-left: 10px; margin-top: 10px;">Акт сверки </h2>
         <div> 
+          <select style="margin-right: 5px; padding: 8px 10px; border: 1px solid lightgray; border-radius: 5px;" name="contracts">
+            <option selected disabled hidden>Выберите договор</option>          
+            <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['contracts']->value, 'item');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['item']->value) {
+?>
+            <option class="select-contract" value="<?php echo $_smarty_tpl->tpl_vars['item']->value['id'];?>
+">№ <?php echo $_smarty_tpl->tpl_vars['item']->value['number'];?>
+, от <?php echo $_smarty_tpl->tpl_vars['item']->value['datetime'];?>
+</option>
+            <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+          </select>
+        </div>
+        <div class="renter-invoices-dates"> 
           <label class="hide" for="dates" style="margin-right: 10px;">Выберите период</label>
           <input style="margin-right: 45px; padding: 8px 10px; border: 1px solid lightgray; border-radius: 5px;" type="text" name="dates" value="" />
         </div>
@@ -239,7 +257,7 @@ $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->t
 if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['contract']->value) {
 ?>	
-              <p>Акт сверки <a id="as-normal" href="/schet-pechatnaya-forma?con=<?php echo $_smarty_tpl->tpl_vars['i']->value['peni_invoice'];?>
+              <p>Акт сверки <a id="as-normal" href="/schet-pechatnaya-forma?con=<?php echo $_smarty_tpl->tpl_vars['contract']->value['renter_id'];?>
 &ind=as&pr=0" target="_blank" >Распечатать</a></p>
                <?php break 1;?>
               <?php
@@ -251,7 +269,7 @@ $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->t
 if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['contract']->value) {
 ?>	
-                <p>Акт сверки + печать<a id="as-print" href="/schet-pechatnaya-forma?con=<?php echo $_smarty_tpl->tpl_vars['i']->value['peni_invoice'];?>
+                <p>Акт сверки + печать<a id="as-print" href="/schet-pechatnaya-forma?con=<?php echo $_smarty_tpl->tpl_vars['contract']->value['renter_id'];?>
 &ind=as&pr=1" target="_blank" >Распечатать</a></p>
                <?php break 1;?>
               <?php

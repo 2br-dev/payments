@@ -557,6 +557,9 @@ body {
   right: 0;
   z-index: 2;
 }
+input[name="dates"]:disabled {
+  background-color: #ffe5e5;
+}
 input[type="date"]::-webkit-clear-button {
   display: none;
 }

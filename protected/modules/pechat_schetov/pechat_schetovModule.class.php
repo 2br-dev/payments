@@ -185,7 +185,7 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 			}
 		}
 
-		// exit(__($invoices));
+		//exit(__($allinvoices));
 
 		return array(
 			'inv' 				=> 	$invoices,
