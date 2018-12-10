@@ -544,16 +544,16 @@
 	<p style="font-size: 20px; width: fit-content; margin: 0 auto;"><b>Акт сверки</b></p>
 	<p style="width: fit-content; margin: 0 auto; text-align: center;">
 		взаимных рассчётов за период: {$smarty.get.start} - {$smarty.get.end} <br>
-		между: ИП Кононович Галина Павловна и //renter.name// <br>
-		по договору аренды нежилого помещения № //contract.number// от //contract.datetime//
+		между: ИП Кононович Галина Павловна и {$client.short_name} <br>
+		по договору аренды нежилого помещения № {foreach from=$history item=hist} {$hist.contract}{break} {/foreach} от {$client.datetime}
 	</p>
 	<div style="margin-top: 40px">
-		<p>Мы, нижеподписавшиеся, ИП Кононович Галина Павловна, с одной стороны, и //renter.name//, с другой стороны, составили данный акт сверки в том, что, состояние взаимных рассчётов по данным учёта слудующее:</p>
+		<p>Мы, нижеподписавшиеся, ИП Кононович Галина Павловна, с одной стороны, и {$client.short_name}, с другой стороны, составили данный акт сверки в том, что, состояние взаимных рассчётов по данным учёта слудующее:</p>
 	</div>
 	<table style="width: 100%; cellspacing: 0; border-collapse: collapse;">
 		<tr>
 			<td colspan="6" style="width: 50%">По данным ИП Кононович Галина Павловна, руб</td>
-			<td colspan="6" style="width: 50%">По данным //renter.name//, руб</td>
+			<td colspan="6" style="width: 50%">По данным {$client.short_name}, руб</td>
 		</tr>
 		<tr>
 			<td class="ta" colspan="1"><b>Дата</b></td>
@@ -567,72 +567,112 @@
 		</tr>
 		<tr>
 			<td class="fs-11" colspan="4" style="width: 20%"><b>Сальдо начальное</b></td>
-			<td class="fs-11 ta" colspan="1">0.00 </td>
-			<td class="fs-11" colspan="1"> </td>
+				{if $saldo < 0}
+				<td class="fs-11 ta" colspan="1"></td>
+				<td class="fs-11 ta period-credit" colspan="1">{math equation="x * y" x=$saldo y=-1 format="%.2f"}</td>
+				{else}
+				<td class="fs-11 ta period-debet" colspan="1">{$saldo}</td>
+				<td class="fs-11 ta" colspan="1"> </td>
+				{/if}
 			<td class="fs-11" colspan="4"  style="width: 20%"><b>Сальдо начальное</b></td>
-			<td class="fs-11" colspan="1"> </td>
-			<td class="fs-11 ta" colspan="1">0.00 </td>	
+				{if $saldo < 0}
+				<td class="fs-11 ta" colspan="1">{math equation="x * y" x=$saldo y=-1 format="%.2f"}</td>
+				<td class="fs-11 ta" colspan="1"></td>
+				{else}
+				<td class="fs-11 ta" colspan="1"></td>
+				<td class="fs-11 ta" colspan="1">{$saldo}</td>
+				{/if}	
 		</tr>
-		<tr style="line-height: 25px">
-			<td class="fs-11" colspan="1">10.12.2013</td>
-			<td class="fs-11" colspan="3" style="width: 20%">Оплата счёта (10 от 12.12.2012)</td>
-			<td class="fs-11 ta" colspan="1"></td>
-			<td class="fs-11 ta" colspan="1">10000,00</td>
-			<td class="fs-11" colspan="1">10.12.2013</td>
-			<td class="fs-11" colspan="3" style="width: 20%">Оплата счёта (10 от 12.12.2012)</td>
-			<td class="fs-11 ta" colspan="1">10000,00</td>
-			<td class="fs-11 ta" colspan="1"></td>	
-		</tr>
-		<tr style="line-height: 25px">
-			<td class="fs-11" colspan="1">12.14.2019</td>
-			<td class="fs-11" colspan="3" style="width: 20%">Аренда помещения (10 от 13.13.2015)</td>
-			<td class="fs-11 ta" colspan="1">12000.00</td>
-			<td class="fs-11 ta" colspan="1"></td>
-			<td class="fs-11" colspan="1">12.14.2019</td>
-			<td class="fs-11" colspan="3"  style="width: 20%">Аренда помещения (10 от 13.13.2015)</td>
-			<td class="fs-11 ta" colspan="1"></td>
-			<td class="fs-11 ta" colspan="1">12000.00</td>	
-		</tr>
+		{foreach from=$history item=action}
+			{if $action.ground == 'schet' && $action.valid}
+			<tr style="line-height: 25px">
+				<td class="fs-11" colspan="1">{$action.date}</td>
+				<td class="fs-11" colspan="3" style="width: 20%">Cчёт за аренду (№ {$action.ground_id}  от {$action.date})</td>
+				<td class="fs-11 ta" colspan="1"></td>
+				<td class="fs-11 ta period-credit" colspan="1">{$action.summa}</td>
+				<td class="fs-11" colspan="1">{$action.date}</td>
+				<td class="fs-11" colspan="3" style="width: 20%">Cчёт за аренду (№ {$action.ground_id} от {$action.date})</td>
+				<td class="fs-11 ta" colspan="1">{$action.summa}</td>
+				<td class="fs-11 ta" colspan="1"></td>	
+			</tr>
+			{elseif $action.ground == 'peni' && $action.valid}
+			<tr style="line-height: 25px">
+				<td class="fs-11" colspan="1">{$action.date}</td>
+				<td class="fs-11" colspan="3" style="width: 20%">Пени по счёту (№ {$action.ground_id}  от {$action.date})</td>
+				<td class="fs-11 ta" colspan="1"></td>
+				<td class="fs-11 ta period-credit" colspan="1">{$action.summa}</td>
+				<td class="fs-11" colspan="1">{$action.date}</td>
+				<td class="fs-11" colspan="3" style="width: 20%">Пени по счёту (№ {$action.ground_id} от {$action.date})</td>
+				<td class="fs-11 ta" colspan="1">{$action.summa}</td>
+				<td class="fs-11 ta" colspan="1"></td>	
+			</tr>
+			{elseif $action.ground == 'payment' && $action.valid}
+			<tr style="line-height: 25px">
+				<td class="fs-11" colspan="1">{$action.date}</td>
+				<td class="fs-11" colspan="3" style="width: 20%">Оплата счёта (№ {$action.ground_id} от {$action.date})</td>
+				<td class="fs-11 ta period-debet" colspan="1">{$action.summa}</td>
+				<td class="fs-11 ta" colspan="1"></td>
+				<td class="fs-11" colspan="1">{$action.date}</td>
+				<td class="fs-11" colspan="3" style="width: 20%">Оплата счёта (№ {$action.ground_id} от {$action.date})</td>
+				<td class="fs-11 ta" colspan="1"></td>
+				<td class="fs-11 ta" colspan="1">{$action.summa}</td>	
+			</tr>			
+			{/if}
+		{/foreach}
 		<tr>
 			<td class="fs-11" colspan="4" style="width: 20%"><b>Обороты за период</b></td>
-			<td class="fs-11 ta" colspan="1"><b>12000.00</b></td>
-			<td class="fs-11 ta" colspan="1"><b>10000.00</b></td>
+			<td class="fs-11 ta final-debet" colspan="1"><b></b></td>
+			<td class="fs-11 ta final-credit" colspan="1"><b></b></td>
 			<td class="fs-11" colspan="4"  style="width: 20%"><b>Обороты за период</b></td>
-			<td class="fs-11 ta" colspan="1"><b>10000.00</b></td>
-			<td class="fs-11 ta" colspan="1"><b>12000.00</b></td>	
+			<td class="fs-11 ta final-credit" colspan="1"><b></b></td>
+			<td class="fs-11 ta final-debet" colspan="1"><b></b></td>	
 		</tr>
 		<tr>
-			<td class="fs-11" colspan="4" style="width: 20%"><b>Сальдо конечно</b></td>
-			<td class="fs-11 ta" colspan="1"><b>2000.00</b></td>
-			<td class="fs-11 ta" colspan="1"><b></b></td>
-			<td class="fs-11" colspan="4"  style="width: 20%"><b>Сальдо конечно</b></td>
-			<td class="fs-11 ta" colspan="1"><b></b></td>
-			<td class="fs-11 ta" colspan="1"><b>2000.00</b></td>	
+			<td class="fs-11" colspan="4" style="width: 20%"><b>Сальдо конечное</b></td>
+			<td class="fs-11 ta final-saldo" colspan="1"><b></b></td>
+			<td class="fs-11 ta saldo-minus" colspan="1"><b></b></td>
+			<td class="fs-11" colspan="4"  style="width: 20%"><b>Сальдо конечное</b></td>
+			<td class="fs-11 ta saldo-minus" colspan="1"><b></b></td>
+			<td class="fs-11 ta final-saldo" colspan="1"><b></b></td>	
 		</tr>										
 	</table>
 	<div style="display: flex; justify-content: center;">
 		<div class="fs-11" style="width: 50%;">
 			<p>По данным ИП Кононович Галина Павловна</p>
 			<div>
-				<p><b>на 31.12.2015 Задолженность в пользу ИП Кононович Галина Павловна <br>
-							2000.00 руб. (две тысячи рублей 00 копеек)
-				</b></p>
+				{if $client.balance <= 0}
+				<p><b>на {$smarty.get.end} Задолженность в пользу ИП Кононович Галина Павловна<br>
+							<span class="final-saldo"></span> руб. (<span class="num2str"></span>)</b></p>
+				<p>От {$client.short_name}</p>
+				{else}
+				<p><b>на {$smarty.get.end} Задолженность в пользу {$client.short_name} <br>
+							<span class="final-saldo"></span> руб. (<span class="num2str"></span>)</b></p>
 				<p>От ИП Кононович Галина Павловна</p>
+				{/if}
 			</div>
 			<p><b><i>Директор</i></b></p>
 			<p>________________________<b><i>(Г.П.Кононович)</i></b></p>
 			<p>М.П</p>
 		</div>
 		<div class="fs-11" style="width: 50%;">
-			<p>По данным //renter.name//</p>
+			<p>По данным {$smarty.session.login}</p>
 			<div>
-				<p><b>на 31.12.2015 Задолженность в пользу ИП Кононович Галина Павловна<br>
-							2000.00 руб. (две тысячи рублей 00 копеек)
-				</b></p>
-				<p>От //renter.name//</p>
+				{if $client.balance <= 0}
+				<p><b>на {$smarty.get.end} Задолженность в пользу ИП Кононович Галина Павловна<br>
+							<span class="final-saldo"></span> руб. (<span class="num2str"></span>)</b></p>
+				<p>От {$client.short_name}</p>
+				{else}
+				<p><b>на {$smarty.get.end}Задолженность в пользу {$client.short_name} <br>
+							<span class="final-saldo"></span> руб. (<span class="num2str"></span>)</b></p>
+				<p>От ИП Кононович Галина Павловна</p>
+				{/if}
 			</div>
 			<p><b><i>Директор</i></b></p>
-			<p>________________________<b><i>(//Director.name//)</i></b></p>
+			{if $client.chief_name}
+			<p>________________________<b><i>{$client.chief_name}</i></b></p>
+			{else}
+			{/if}
+			<pre><p>________________________<b><i>(                 )</i></b></p></pre>
 			<p>М.П</p>
 		</div>
 	</div>
@@ -660,6 +700,7 @@
 		text-align: center;
 	}
 </style>
+
 {/if}
 </body>
 {/strip}

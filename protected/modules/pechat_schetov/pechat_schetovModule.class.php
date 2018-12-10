@@ -44,7 +44,7 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 							LEFT JOIN `#_mdd_grounds` as `ground`
 							ON `peni`.`ground` = `ground`.`id`
 
-		 					WHERE `peni` != 0 ORDER BY `peni_invoice` DESC",array())->all();
+		 					WHERE `peni` != 0 AND `status` = 1 ORDER BY `peni_invoice` DESC",array())->all();
 
 			foreach ($allinvoices as $key => $value) {
 				$akt = Q("SELECT * FROM `#_mdd_invoice` WHERE `schet_id` = ?i", 

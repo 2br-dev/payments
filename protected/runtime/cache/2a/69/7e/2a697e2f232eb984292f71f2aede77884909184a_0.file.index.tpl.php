@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-12-10 10:12:59
+/* Smarty version 3.1.32, created on 2018-12-10 17:46:19
   from 'C:\OpenServer\domains\authorization.local\protected\app\core\admin-template\view\modules\index\index.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c0e11fbc00777_61216187',
+  'unifunc' => 'content_5c0e7c3be137e5_01761393',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c0e11fbc00777_61216187 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c0e7c3be137e5_01761393 (Smarty_Internal_Template $_smarty_tpl) {
 ?><table class="table" id="meta_data"><col><col width="270"><col width="160"><col width="140"><col width="120"><col width="80"><col width="60"><thead><tr class="th"><th colspan="7">Список модулей</th></tr></thead><tbody><tr><td class="h">Название модуля</td><td class="h">Системное имя</td><td class="h">Кол-во на странице</td><td class="h">Тип данных</td><td class="h">Тип таблицы</td><td class="h">Статус</td><td class="h"></td></tr><?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['modules_list']->value, 'item', false, NULL, 'i', array (
 ));

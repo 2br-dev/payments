@@ -472,9 +472,11 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 					'amount' 					=> $peni_amount,
 					'summa' 					=> $cur_summa,
 					'peni' 						=> $peni,
+					'rest'						=> $peni,
 					'delay' 					=> $peni_delay,
 					'peni_invoice'    => $invoice,		
-					'ground'					=> 2					
+					'ground'					=> 2,
+					'status'					=> 1					
 				));	
 
 				// апдейтим баланс договора

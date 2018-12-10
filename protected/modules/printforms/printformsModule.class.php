@@ -517,21 +517,58 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 					$allpeni = 0;
 				}
 
-				//$login_id = Q("SELECT `id` ")
-				//exit(__($_SESSION));
-			//	$history = Q("SELECT * FROM `db_mdd_balance` as `balance` WHERE")
+				// барем айдишник клиента из сессии
+				$client = Q("SELECT * FROM `#_mdd_renters` as `renter`
+				
+									LEFT JOIN `#_mdd_contracts` as `contracts`
+									ON `renter`.`id` = `contracts`.`renter`
+
+									WHERE `short_name` = ?s", array($_SESSION['login']))->row();
+					
+				// находим всю его историю операций
+				$history = Q("SELECT * FROM `db_mdd_balance` WHERE `contract_id` = ?i ORDER BY `id` ASC", array($_GET['id'] ))->all();
+
+				//проверяет находится ли дата в промежутке запроса для акта сверки
+				$start_date = strtotime(str_replace("/", ".", $_GET['start']) );	
+				$end_date   = strtotime(str_replace("/", ".", $_GET['end']) );
+				$first_valid_id = 0;
+								
+				for ($i = 0; $i < count($history); $i++) {
+					$new_date = strtotime(str_replace("/", "-", $history[$i]['date']));
+					
+					if (($start_date <= $new_date && $new_date <= $end_date) || ($end_date <= $new_date && $new_date <= $start_date)) {
+						$history[$i]['valid'] = true;
+					
+						if($first_valid_id == 0) {
+							$first_valid_id = $history[$i]['id'];
+						}
+					} else {
+						$history[$i]['valid'] = false;
+					}
+				}
+
+				// находим первую валидную дату
+				$starting_saldo = Q("SELECT `balance`,`summa` FROM `db_mdd_balance` WHERE `id` = ?i ORDER BY `id` ASC", array($first_valid_id))->row();
+				$saldo = number_format($starting_saldo['balance'] + $starting_saldo['summa'], 2, '.', '');
+						
+				$string = $client['balance'];
+				$string  < 0 ? $string *= -1 : $string;				
+				$client['string'] = num2str($string);
 
 				return array(
-					'print' => $print,
-					'month_string' => $month,
-					'date' => $date,
-					'document' => $ind,
-					'pr' => $pr,
-					'template' => 'block',
-					'disc' => $disc,
+					'print' 				=> $print,
+					'month_string'  => $month,
+					'date' 					=> $date,
+					'document' 			=> $ind,
+					'pr' 						=> $pr,
+					'template' 			=> 'block',
+					'disc' 					=> $disc,
 					'discount_summ' => $discount_summ,
-					'peni'	=> $peni,
-					'allpeni' => $allpeni
+					'peni'					=> $peni,
+					'allpeni' 			=> $allpeni,
+					'history' 			=> $history,
+					'client'				=> $client,
+					'saldo'					=> $saldo
 				);
   }
 }
