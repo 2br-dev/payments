@@ -105,7 +105,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		$number_schet = $schet_prev_number + 1;
 	
 		if (isset($_POST['from_first'])){
-			$number_schet = 1;
+			$number_schet = $_POST['from_first_number'];
 		}
 		
 		if (!empty($_POST['renter']) && !empty($_POST['date']) && !empty($_POST['year']) && !empty($_POST['month'])){
@@ -708,5 +708,13 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 
 	}
 
+/* 	if ($controller == 'filter')
+	{
+		$filter = $_POST['filter'];
+		$filtered = Q("SELECT `short_name` FROM `#_mdd_renters` WHERE `short_name` LIKE `%$filter%` AND `visible` = 1",array())->all();
+		echo print_r($filtered);
+	} */
+
 	return true ;
 }
+

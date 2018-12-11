@@ -1,8 +1,13 @@
 {strip}
 
 <div>
+{* <input name="reestr">
+{if isset($filter)}
+  <h3>{$filter}</h3>
+{/if} *}
+
 {foreach from=$renters item=renter}
-  <div class='renters'>
+  <div class='renters'>   
     <h2 class="renter">{$renter.short_name} — Баланс: 
      {if $renter.balance < 0}
      <span style="color: #d32f2f;"> {$renter.balance} ₽</span>

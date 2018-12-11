@@ -119,7 +119,8 @@
         </span>
       </div>
       <hr>
-      <label class="container-checkbox">Начать нумерацию с 1
+      <input name="from_first_number" type="number" value="1" style="position: absolute; left: 190px; position: absolute; border-radius: 5px; border: 1px solid lightgray; padding: 6px 10px; bottom: -3px; width: 60px;">
+      <label class="container-checkbox" style="width: fit-content;">Начать нумерацию с 
         <input type="checkbox" name="from_first">
         <span class="checkmark"></span>
       </label>

@@ -83,13 +83,14 @@ $(document).ready(function() {
     });
 
     var data = {
-      year:         $("input[name='year']:checked").val(),
-      month:        allMonths,
-      renter:       allRenters,
-      from_first:   $("input[name='from_first']:checked").val(),
-      date:         $("input[name='date']").val(),
-      summa_id:     allId,
-      period_sum:   allSum,
+      year:               $("input[name='year']:checked").val(),
+      month:              allMonths,
+      renter:             allRenters,
+      from_first:         $("input[name='from_first']:checked").val(),
+      from_first_number:  $("input[type='number']").val(),
+      date:               $("input[name='date']").val(),
+      summa_id:           allId,
+      period_sum:         allSum,
     };
 
     var index = 0;
@@ -379,12 +380,15 @@ $(".renters-list-delete").click(function() {
 
 $('.as-hidden').css("display", "none");
 
-$('input[name="dates"]').daterangepicker({
-  autoUpdateInput: false,
-  locale: {
-    cancelLabel: 'Clear'
-  }
-});
+if ($('input[name="dates"]').length) {
+  
+  $('input[name="dates"]').daterangepicker({
+    autoUpdateInput: false,
+    locale: {
+      cancelLabel: 'Clear'
+    }
+  });
+}
 
 $('input[name="dates"]').click(function() {
     if ( $('.as-hidden').css('display') == 'block'){
@@ -553,4 +557,44 @@ String.prototype.numberToString = function(toUpper) {
     return numberToString(this, toUpper);
 };
 
+
+/* $.event.special.inputchange = {
+  setup: function() {
+      var self = this, val;
+      $.data(this, 'timer', window.setInterval(function() {
+          val = self.value;
+          if ( $.data( self, 'cache') != val ) {
+              $.data( self, 'cache', val );
+              $( self ).trigger( 'inputchange' );
+          }
+      }, 20));
+  },
+  teardown: function() {
+      window.clearInterval( $.data(this, 'timer') );
+  },
+  add: function() {
+      $.data(this, 'cache', this.value);
+  }
+};
+
+
+$('input[name="reestr"]').on('inputchange', function() {
+  
+  var data = {
+    filter: this.value,
+  }
+  
+  $.ajax({
+    type: "POST",
+    url: "/ajax/filter",
+    data: data,
+    success: function(res){
+      console.log(res);
+    },
+    error: function(err) {
+      console.log(err);
+    }
+  });
+
+}); */
 
