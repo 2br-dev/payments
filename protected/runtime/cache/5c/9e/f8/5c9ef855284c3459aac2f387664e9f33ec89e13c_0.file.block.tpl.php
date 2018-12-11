@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-12-10 17:47:52
+/* Smarty version 3.1.32, created on 2018-12-11 14:25:13
   from 'C:\OpenServer\domains\authorization.local\protected\modules\pechat_schetov\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c0e7c98449133_14640452',
+  'unifunc' => 'content_5c0f9e99cd0534_13635849',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '5c9ef855284c3459aac2f387664e9f33ec89e13c' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\modules\\pechat_schetov\\tpl\\block.tpl',
-      1 => 1544438621,
+      1 => 1544511951,
       2 => 'file',
     ),
   ),
@@ -20,9 +20,42 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c0e7c98449133_14640452 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c0f9e99cd0534_13635849 (Smarty_Internal_Template $_smarty_tpl) {
 if ($_SESSION['admin'] == 'true') {?>
   <div class="vystavlenie-schetov pechat-schetov">
+    <select style="margin-top: 10px; padding: 8px 10px; border: 1px solid lightgray; border-radius: 5px;" name="renters">
+      <?php if ($_GET['id']) {?>
+        <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['renters']->value, 'renter');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['renter']->value) {
+?>
+          <?php if ($_smarty_tpl->tpl_vars['renter']->value['id'] != $_GET['id']) {?>
+          <?php continue 1;?>
+          <?php } else { ?>
+          <option selected disabled hidden><?php echo $_smarty_tpl->tpl_vars['renter']->value['short_name'];?>
+</option>
+          <?php }?>
+        <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>  
+      <?php } else { ?>
+      <option selected disabled hidden>Выберите арендатора</option>  
+      <?php }?>        
+      <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['renters']->value, 'renter');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['renter']->value) {
+?>
+      <option class="select-renter" value="<?php echo $_smarty_tpl->tpl_vars['renter']->value['id'];?>
+"><?php echo $_smarty_tpl->tpl_vars['renter']->value['short_name'];?>
+</option>
+      <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+    </select>    
     <form id="pechat-schetov" action="" method="post">
       <p class="mb0">Год</p><span class="error year-error">Выберите год:</span>
       <div class="vystavlenie-schetov-year">
@@ -397,7 +430,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 <?php if ($_smarty_tpl->tpl_vars['error']->value) {?> 
   <div class="print-error">
     <div class="wrapper">
-      <a href="#" class="close"></a>
+      <div class="close"></div>
       <div class="print-error-text">
         <p>К сожалению, за данный период нечего напечатать :(</p>
       </div>

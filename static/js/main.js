@@ -18,8 +18,13 @@ $(document).ready(function() {
     $(".final-debet").html(periodDebet.toFixed(2));
 
     var finalSaldo = period - periodDebet;
-    finalSaldo >= 0 ? $(".final-saldo").html(finalSaldo.toFixed(2)) : $(".saldo-minus").html(finalSaldo.toFixed(2) * -1);
 
+    if (finalSaldo >= 0) {
+      $(".final-saldo").html(finalSaldo.toFixed(2));
+    } else {
+      $(".saldo-minus").html((finalSaldo * -1).toFixed(2));
+    }
+    
     if (finalSaldo == 0) {
       $(".num2str").html('ноль рублей 00 копеек');
     } else if (finalSaldo > 0 && finalSaldo < 1) {
@@ -112,7 +117,7 @@ $(document).ready(function() {
       $(".month-error").show();
     } 
 
-    if (data.date && data.year && data.month && data.renter) {
+    if (data.date && data.year && data.month.length != 0 && data.renter.length != 0) {
       $('.success-message').fadeIn(); 
       $('.black-wrapper').fadeIn();
       $("input[name='period_sum']").prop('disabled', true);         
@@ -387,8 +392,11 @@ $('input[name="dates"]').click(function() {
     }
 });
 
-var asNormalHref = document.getElementById('as-normal').href;
-var asPrintHref = document.getElementById('as-print').href;
+if (document.getElementById('as-normal') !== null) {
+  var asNormalHref = document.getElementById('as-normal').href;
+  var asPrintHref = document.getElementById('as-print').href;
+}
+
 $('.renter-invoices-dates').css('display', 'none');
 
 $('select').on('change', function() {
@@ -396,6 +404,12 @@ $('select').on('change', function() {
     $(".as-hidden").slideToggle();
   }
   $('.renter-invoices-dates').css('display', 'block');
+});
+
+var currentHref = window.location.pathname;
+$('select[name="renters"]').on('change', function() {
+  var idFromOption = $('select[name="renters"]').val();
+  window.location.href = `${currentHref}?id=${idFromOption}`;
 });
 
 $('input[name="dates"]').on('apply.daterangepicker', function(ev, picker) {

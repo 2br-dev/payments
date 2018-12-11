@@ -540,7 +540,7 @@
 {/if}
 
 {if $document == 'as'}
-<div style="width: 1060px; padding: 15px;">
+<div style="width: 1060px; padding: 15px; position: relative;">
 	<p style="font-size: 20px; width: fit-content; margin: 0 auto;"><b>Акт сверки</b></p>
 	<p style="width: fit-content; margin: 0 auto; text-align: center;">
 		взаимных рассчётов за период: {$smarty.get.start} - {$smarty.get.end} <br>
@@ -617,6 +617,17 @@
 				<td class="fs-11 ta" colspan="1"></td>
 				<td class="fs-11 ta" colspan="1">{$action.summa}</td>	
 			</tr>			
+			{elseif $action.ground == 'peni-payment' && $action.valid}
+			<tr style="line-height: 25px">
+				<td class="fs-11" colspan="1">{$action.date}</td>
+				<td class="fs-11" colspan="3" style="width: 20%">Оплата пени (№ {$action.ground_id} от {$action.date})</td>
+				<td class="fs-11 ta period-debet" colspan="1">{$action.summa}</td>
+				<td class="fs-11 ta" colspan="1"></td>
+				<td class="fs-11" colspan="1">{$action.date}</td>
+				<td class="fs-11" colspan="3" style="width: 20%">Оплата пени (№ {$action.ground_id} от {$action.date})</td>
+				<td class="fs-11 ta" colspan="1"></td>
+				<td class="fs-11 ta" colspan="1">{$action.summa}</td>	
+			</tr>			
 			{/if}
 		{/foreach}
 		<tr>
@@ -646,7 +657,7 @@
 				<p>От {$client.short_name}</p>
 				{else}
 				<p><b>на {$smarty.get.end} Задолженность в пользу {$client.short_name} <br>
-							<span class="final-saldo"></span> руб. (<span class="num2str"></span>)</b></p>
+							<span class="saldo-minus"></span> руб. (<span class="num2str"></span>)</b></p>
 				<p>От ИП Кононович Галина Павловна</p>
 				{/if}
 			</div>
@@ -663,7 +674,7 @@
 				<p>От {$client.short_name}</p>
 				{else}
 				<p><b>на {$smarty.get.end}Задолженность в пользу {$client.short_name} <br>
-							<span class="final-saldo"></span> руб. (<span class="num2str"></span>)</b></p>
+							<span class="saldo-minus"></span> руб. (<span class="num2str"></span>)</b></p>
 				<p>От ИП Кононович Галина Павловна</p>
 				{/if}
 			</div>
@@ -677,11 +688,11 @@
 		</div>
 	</div>
 	{if $pr == '1'}
-	<div class="sf-sign-img" style="top: 440px; left: 59px;">
+	<div class="sf-sign-img" style="top: unset; bottom: 42px; left: 59px;">
 		<img src="/images/sign.png" width="100">
 		<!--<img src="/images/sign-glazkov.png" width="100" style="padding-top: 20px;">-->
 	</div>
-	<div class="sf-sign-img" style="top: unset; left: 350px; top: 440px;">
+	<div class="sf-sign-img" style="top: unset; left: 350px; bottom: 0;">
 		<img src="/images/print.png" width="100">
 	</div>
 	{/if}	

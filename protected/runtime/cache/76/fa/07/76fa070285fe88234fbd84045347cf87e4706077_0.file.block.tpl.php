@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-12-10 17:48:47
+/* Smarty version 3.1.32, created on 2018-12-11 14:25:22
   from 'C:\OpenServer\domains\authorization.local\protected\modules\printforms\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c0e7ccf35bb27_81575753',
+  'unifunc' => 'content_5c0f9ea22fd629_90947148',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '76fa070285fe88234fbd84045347cf87e4706077' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\modules\\printforms\\tpl\\block.tpl',
-      1 => 1544452169,
+      1 => 1544521526,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c0e7ccf35bb27_81575753 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c0f9ea22fd629_90947148 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\OpenServer\\domains\\authorization.local\\protected\\app\\vendors\\smarty\\smarty\\libs\\plugins\\function.math.php','function'=>'smarty_function_math',),));
 ?><!DOCTYPE html>
 <html class="no-js" itemscope="itemscope" itemtype="http://schema.org/<?php if (!isset($_smarty_tpl->tpl_vars['uri']->value[1])) {?>WebPage<?php } else { ?>ItemPage<?php }?>" lang="<?php echo $_smarty_tpl->tpl_vars['_page']->value['lang'];?>
@@ -237,7 +237,7 @@ if ($_smarty_tpl->tpl_vars['disc']->value == 1) {?><td><input type="text" value=
 "></td><?php } else { ?><td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['invoice_summa'];?>
 "></td><?php }
 }?><td colspan="3" style="border:none;"></td></tr><?php }?></table></div><div class="sign"><p style="display: inline-block; margin-right: 100px; ">Индивидуальный предприниматель ________________ (Гавриленко Н.В.)</p><!--<p style="display: inline-block; margin-right: 100px; ">Индивидуальный предприниматель ________________ (Глазков С.А.)</p>--><p style="display: inline-block;"><span style="text-decoration: underline; padding: 0 100px;">серия 38 № 002688578</span><br><span style="font-style: italic; font-size: 10px;">(реквизиты свидетельства о государственной регистрации индивидуального предпринимателя)</span></p><p style="font-style: italic; font-size: 12px;">За Кононович Г.П. по доверенности от 09.09.2016 г.</p><!--<p style="font-style: italic; font-size: 12px;">За Кононович Г.П. по доверенности от 07.02.2014 г.</p>--><?php if ($_smarty_tpl->tpl_vars['pr']->value == '1') {?><div class="sf-sign-img"><img src="/images/sign.png" width="100"><!--<img src="/images/sign-glazkov.png" width="100" style="padding-top: 20px;">--></div><?php }?></div></div><?php }
-if ($_smarty_tpl->tpl_vars['document']->value == 'as') {?><div style="width: 1060px; padding: 15px;"><p style="font-size: 20px; width: fit-content; margin: 0 auto;"><b>Акт сверки</b></p><p style="width: fit-content; margin: 0 auto; text-align: center;">взаимных рассчётов за период: <?php echo $_GET['start'];?>
+if ($_smarty_tpl->tpl_vars['document']->value == 'as') {?><div style="width: 1060px; padding: 15px; position: relative;"><p style="font-size: 20px; width: fit-content; margin: 0 auto;"><b>Акт сверки</b></p><p style="width: fit-content; margin: 0 auto; text-align: center;">взаимных рассчётов за период: <?php echo $_GET['start'];?>
  - <?php echo $_GET['end'];?>
  <br>между: ИП Кононович Галина Павловна и <?php echo $_smarty_tpl->tpl_vars['client']->value['short_name'];?>
  <br>по договору аренды нежилого помещения № <?php
@@ -283,6 +283,14 @@ if ($_smarty_tpl->tpl_vars['action']->value['ground'] == 'schet' && $_smarty_tpl
 </td><td class="fs-11" colspan="3" style="width: 20%">Оплата счёта (№ <?php echo $_smarty_tpl->tpl_vars['action']->value['ground_id'];?>
  от <?php echo $_smarty_tpl->tpl_vars['action']->value['date'];?>
 )</td><td class="fs-11 ta" colspan="1"></td><td class="fs-11 ta" colspan="1"><?php echo $_smarty_tpl->tpl_vars['action']->value['summa'];?>
+</td></tr><?php } elseif ($_smarty_tpl->tpl_vars['action']->value['ground'] == 'peni-payment' && $_smarty_tpl->tpl_vars['action']->value['valid']) {?><tr style="line-height: 25px"><td class="fs-11" colspan="1"><?php echo $_smarty_tpl->tpl_vars['action']->value['date'];?>
+</td><td class="fs-11" colspan="3" style="width: 20%">Оплата пени (№ <?php echo $_smarty_tpl->tpl_vars['action']->value['ground_id'];?>
+ от <?php echo $_smarty_tpl->tpl_vars['action']->value['date'];?>
+)</td><td class="fs-11 ta period-debet" colspan="1"><?php echo $_smarty_tpl->tpl_vars['action']->value['summa'];?>
+</td><td class="fs-11 ta" colspan="1"></td><td class="fs-11" colspan="1"><?php echo $_smarty_tpl->tpl_vars['action']->value['date'];?>
+</td><td class="fs-11" colspan="3" style="width: 20%">Оплата пени (№ <?php echo $_smarty_tpl->tpl_vars['action']->value['ground_id'];?>
+ от <?php echo $_smarty_tpl->tpl_vars['action']->value['date'];?>
+)</td><td class="fs-11 ta" colspan="1"></td><td class="fs-11 ta" colspan="1"><?php echo $_smarty_tpl->tpl_vars['action']->value['summa'];?>
 </td></tr><?php }
 }
 }
@@ -290,13 +298,13 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?><tr><td class="f
  Задолженность в пользу ИП Кононович Галина Павловна<br><span class="final-saldo"></span> руб. (<span class="num2str"></span>)</b></p><p>От <?php echo $_smarty_tpl->tpl_vars['client']->value['short_name'];?>
 </p><?php } else { ?><p><b>на <?php echo $_GET['end'];?>
  Задолженность в пользу <?php echo $_smarty_tpl->tpl_vars['client']->value['short_name'];?>
- <br><span class="final-saldo"></span> руб. (<span class="num2str"></span>)</b></p><p>От ИП Кононович Галина Павловна</p><?php }?></div><p><b><i>Директор</i></b></p><p>________________________<b><i>(Г.П.Кононович)</i></b></p><p>М.П</p></div><div class="fs-11" style="width: 50%;"><p>По данным <?php echo $_SESSION['login'];?>
+ <br><span class="saldo-minus"></span> руб. (<span class="num2str"></span>)</b></p><p>От ИП Кононович Галина Павловна</p><?php }?></div><p><b><i>Директор</i></b></p><p>________________________<b><i>(Г.П.Кононович)</i></b></p><p>М.П</p></div><div class="fs-11" style="width: 50%;"><p>По данным <?php echo $_SESSION['login'];?>
 </p><div><?php if ($_smarty_tpl->tpl_vars['client']->value['balance'] <= 0) {?><p><b>на <?php echo $_GET['end'];?>
  Задолженность в пользу ИП Кононович Галина Павловна<br><span class="final-saldo"></span> руб. (<span class="num2str"></span>)</b></p><p>От <?php echo $_smarty_tpl->tpl_vars['client']->value['short_name'];?>
 </p><?php } else { ?><p><b>на <?php echo $_GET['end'];?>
 Задолженность в пользу <?php echo $_smarty_tpl->tpl_vars['client']->value['short_name'];?>
- <br><span class="final-saldo"></span> руб. (<span class="num2str"></span>)</b></p><p>От ИП Кононович Галина Павловна</p><?php }?></div><p><b><i>Директор</i></b></p><?php if ($_smarty_tpl->tpl_vars['client']->value['chief_name']) {?><p>________________________<b><i><?php echo $_smarty_tpl->tpl_vars['client']->value['chief_name'];?>
+ <br><span class="saldo-minus"></span> руб. (<span class="num2str"></span>)</b></p><p>От ИП Кононович Галина Павловна</p><?php }?></div><p><b><i>Директор</i></b></p><?php if ($_smarty_tpl->tpl_vars['client']->value['chief_name']) {?><p>________________________<b><i><?php echo $_smarty_tpl->tpl_vars['client']->value['chief_name'];?>
 </i></b></p><?php } else {
-}?><pre><p>________________________<b><i>(                 )</i></b></p></pre><p>М.П</p></div></div><?php if ($_smarty_tpl->tpl_vars['pr']->value == '1') {?><div class="sf-sign-img" style="top: 440px; left: 59px;"><img src="/images/sign.png" width="100"><!--<img src="/images/sign-glazkov.png" width="100" style="padding-top: 20px;">--></div><div class="sf-sign-img" style="top: unset; left: 350px; top: 440px;"><img src="/images/print.png" width="100"></div><?php }?></div><style>tr, td {font-size: 12px;border: 1px solid #000;padding-left: 5px;}.fs-11 {font-size: 11px !important;}.ta {text-align: center;}</style><?php }?></body>
+}?><pre><p>________________________<b><i>(                 )</i></b></p></pre><p>М.П</p></div></div><?php if ($_smarty_tpl->tpl_vars['pr']->value == '1') {?><div class="sf-sign-img" style="top: unset; bottom: 42px; left: 59px;"><img src="/images/sign.png" width="100"><!--<img src="/images/sign-glazkov.png" width="100" style="padding-top: 20px;">--></div><div class="sf-sign-img" style="top: unset; left: 350px; bottom: 0;"><img src="/images/print.png" width="100"></div><?php }?></div><style>tr, td {font-size: 12px;border: 1px solid #000;padding-left: 5px;}.fs-11 {font-size: 11px !important;}.ta {text-align: center;}</style><?php }?></body>
 </html><?php }
 }

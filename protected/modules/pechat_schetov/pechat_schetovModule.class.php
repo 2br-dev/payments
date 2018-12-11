@@ -109,33 +109,62 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 		}
 
 		if (!empty($_POST['year']) && !empty($_POST['month'])) {
-			$invoices = Q("SELECT 
 
-							`invoice`.`invoice_number` as `invoice_number`, `invoice`.`summa` as `invoice_summa`,
-							`invoice`.`rest` as `invoice_rest`, 
-							`renter`.`short_name` as `renter_name`, `renter`.`id` as `renter_id`,
-							`contract`.`number` as `document_number`							  
+			if (isset($_GET['id'])) {
+				$id = intval($_GET['id']);
+				$year = $_POST['year'];
+				$month = $_POST['month'];
+				$invoices = Q("SELECT 
 
-							FROM `#_mdd_invoice` as `invoice`
+				`invoice`.`invoice_number` as `invoice_number`, `invoice`.`summa` as `invoice_summa`,
+				`invoice`.`rest` as `invoice_rest`, 
+				`renter`.`short_name` as `renter_name`, `renter`.`id` as `renter_id`,
+				`contract`.`number` as `document_number`							  
 
-							LEFT JOIN `#_mdd_contracts` as `contract`
-							ON `invoice`.`contract_id` = `contract`.`id`
+				FROM `#_mdd_invoice` as `invoice`
 
-							LEFT JOIN `#_mdd_grounds` as `ground`
-							ON `contract`.`ground` = `ground`.`id`
+				LEFT JOIN `#_mdd_contracts` as `contract`
+				ON `invoice`.`contract_id` = `contract`.`id`
 
-							LEFT JOIN `#_mdd_renters` as `renter`
-							ON `contract`.`renter` = `renter`.`id`
+				LEFT JOIN `#_mdd_grounds` as `ground`
+				ON `contract`.`ground` = `ground`.`id`
 
-							LEFT JOIN `#_mdd_rooms` as `room`
-							ON `contract`.`rooms` = `room`.`id`
+				LEFT JOIN `#_mdd_renters` as `renter`
+				ON `contract`.`renter` = `renter`.`id`
 
-							WHERE `invoice`.`period_year` = ?s AND `invoice`.`period_month` = ?s
-							ORDER BY `invoice`.`invoice_number` ASC",
-							array($_POST['year'], $_POST['month']))->all();
+				LEFT JOIN `#_mdd_rooms` as `room`
+				ON `contract`.`rooms` = `room`.`id`
+
+				WHERE `invoice`.`period_year` = ?s AND `invoice`.`period_month` = ?s AND `renter`.`id` = ?i
+				ORDER BY `invoice`.`invoice_number` ASC",
+				array($_POST['year'], $_POST['month'], $id))->all();
+			} else {
+				$invoices = Q("SELECT 
+
+				`invoice`.`invoice_number` as `invoice_number`, `invoice`.`summa` as `invoice_summa`,
+				`invoice`.`rest` as `invoice_rest`, 
+				`renter`.`short_name` as `renter_name`, `renter`.`id` as `renter_id`,
+				`contract`.`number` as `document_number`							  
+
+				FROM `#_mdd_invoice` as `invoice`
+
+				LEFT JOIN `#_mdd_contracts` as `contract`
+				ON `invoice`.`contract_id` = `contract`.`id`
+
+				LEFT JOIN `#_mdd_grounds` as `ground`
+				ON `contract`.`ground` = `ground`.`id`
+
+				LEFT JOIN `#_mdd_renters` as `renter`
+				ON `contract`.`renter` = `renter`.`id`
+
+				LEFT JOIN `#_mdd_rooms` as `room`
+				ON `contract`.`rooms` = `room`.`id`
+
+				WHERE `invoice`.`period_year` = ?s AND `invoice`.`period_month` = ?s
+				ORDER BY `invoice`.`invoice_number` ASC",
+				array($_POST['year'], $_POST['month']))->all();
+			}
 			
-							 
-
 			foreach ($invoices as $key => $value) {
 				$akt = Q("SELECT * FROM `#_mdd_invoice` WHERE `schet_id` = ?i", 
 				array($value['invoice_number']))->row();
@@ -185,8 +214,9 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 			}
 		}
 
-		//exit(__($allinvoices));
+		$renters = Q("SELECT `short_name`, `id` FROM `#_mdd_renters` WHERE `visible` = 1", array())->all();
 
+		//exit(__($invoices));
 		return array(
 			'inv' 				=> 	$invoices,
 			'year' 				=> 	$year,
@@ -195,7 +225,8 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 			'error' 			=> 	$error,
 			'allinvoices' => 	$allinvoices,
 			'contracts'		=>	$contracts,
-			'peni'				=>  $peni
+			'peni'				=>  $peni,
+			'renters'			=>  $renters
 		);
-    }
+  }
 }

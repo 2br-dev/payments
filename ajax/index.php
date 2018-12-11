@@ -63,7 +63,6 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			}	
 		}				 
 		//	 END
-
 		$query = "SELECT * FROM db_mdd_renters WHERE login='$login' AND password='$password' ";
 		$get_login = Q("SELECT * FROM `#_mdd_renters` WHERE `login`=?s AND `password`= ?s", array($login, $password))->row();
 		$username_login = $get_login['short_name'];
@@ -346,6 +345,8 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				die("Connection failed: " . $conn->connect_error);
 		} 
 
+		$rest_sum = $_POST['summa'];
+
 		if(isset($_POST['summa']) && isset($_POST['renter_document'])) {
 			// парсим номер договора
 			$peni_contract = $_POST['renter_document'];
@@ -358,10 +359,90 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			$period_sum = $_POST['summa'];
 			for($i = 0; $i < count($_POST['invoices']); $i++) {
 
-				// ПЕНИ
+				// сначала оплатим пени
+				// сначала найдем все пени со статусом 1
+				$allpeni = Q("SELECT * FROM `#_mdd_peni` WHERE `status` = 1 ORDER BY `id` ASC",array())->all();
+
+				// получаем инвойс номер
+				// и дату // и имя
+				$invoice = $_POST['invoices'][$i];
+				$invoice_date_balance = Q("SELECT * FROM `#_mdd_invoice` WHERE `invoice_number` = $invoice", array())->row('invoice_date');
+				$renter_full_name = Q("SELECT `full_name` FROM `#_mdd_renters` WHERE `id` = ?i", array($renter_id))->row('full_name');
+
+				// проходимся циклом по всему массиву пеней и считаем разницу
+				if(isset($allpeni)) {
+				foreach($allpeni as $item) {
+					$peni_id = $item['id'];
+					$peni_rest = $item['rest'];
+					$peni_rest = $period_sum - $peni_rest;
+					
+					// получаем баланс в контракте 
+					$contracts = Q("SELECT `number`, `balance` FROM `#_mdd_contracts` WHERE `id` = $id", array())->row();
+					$payed_peni = Q("SELECT `peni`, `peni_invoice` FROM `#_mdd_peni` WHERE `id` = '$peni_id'", array())->row();
+
+					if($peni_rest == 0) {
+						$upd_peni_rest =  "UPDATE `db_mdd_peni` SET `rest` = 0, `status` = 0  WHERE `id` = '$peni_id'";
+						$conn->query($upd_peni_rest);
+						$period_sum = 0;
+					
+						O('_mdd_balance')->create(array(
+							'renter_id' => $_POST['renter_id'],
+							'contract_id' => $id,
+							'balance' => $contracts['balance'] + $payed_peni['peni'],
+							'ground' => 'peni-payment',
+							'contract' => $contracts['number'],
+							'date' => $invoice_date_balance,
+							'renter' => $renter_full_name,
+							'ground_id' => $payed_peni['peni_invoice'],	
+							'summa' => $payed_peni['peni'],
+						));	
+						$rest_sum -= $payed_peni['peni'];
+
+						break;
+
+					} elseif ($peni_rest > 0) {
+						$upd_peni_rest =  "UPDATE `db_mdd_peni` SET `rest` = 0, `status` = 0  WHERE `id` = '$peni_id'";
+						$conn->query($upd_peni_rest);
+						$period_sum = $peni_rest;
+						O('_mdd_balance')->create(array(
+							'renter_id' => $_POST['renter_id'],
+							'contract_id' => $id,
+							'balance' => $contracts['balance'] + $payed_peni['peni'],
+							'ground' => 'peni-payment',
+							'contract' => $contracts['number'],
+							'date' => $invoice_date_balance,
+							'renter' => $renter_full_name,
+							'ground_id' => $payed_peni['peni_invoice'],	
+							'summa' => $payed_peni['peni'],
+						));	
+
+						$rest_sum -= $payed_peni['peni'];
+						continue;
+
+					} else {
+						$period_sum = -1 * $peni_rest;
+						$upd_peni_rest =  "UPDATE `db_mdd_peni` SET `rest` = '$period_sum', `status` = 1  WHERE `id` = '$peni_id'";
+						$conn->query($upd_peni_rest);
+						O('_mdd_balance')->create(array(
+							'renter_id' => $_POST['renter_id'],
+							'contract_id' => $id,
+							'balance' => $contracts['balance']  + $payed_peni['peni'],
+							'ground' => 'peni-payment',
+							'contract' => $contracts['number'],
+							'date' => $invoice_date_balance,
+							'renter' => $renter_full_name,
+							'ground_id' => $payed_peni['peni_invoice'],	
+							'summa' => $payed_peni['peni'],
+						));	
+
+						$rest_sum -= $payed_peni['peni'];
+						break;
+					}
+				}
+				} 
+
 				// получаем день начисления пени
 				$start_peni = intval( Q("SELECT `start_peni` FROM `#_mdd_contracts` WHERE `id` = ?i", array($id))->row('start_peni'));
-				$invoice = $_POST['invoices'][$i];
 
 				//парсим дату счета
 				$invoice_date = Q("SELECT * FROM `#_mdd_invoice` WHERE `invoice_number` = $invoice", array())->row('akt_date');
@@ -460,8 +541,9 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				$peni = number_format(($peni_delay * $cur_rest  * $peni_percent),2, '.', '');
 				$peni_amount = $peni_delay * $peni_in_contract;
 				 
-				$invoice_number = Q("SELECT * FROM `#_mdd_invoice` WHERE `invoice_number` = $invoice AND `status` != 0", array())->row();
+				$invoice_number = Q("SELECT * FROM `#_mdd_invoice` WHERE `invoice_number` = '$invoice' AND `status` != 0", array())->row();
 
+				$peni === 0 ? $status = 0 : $status = 1;
 				// записываем пени, так как она уже точно начисляется и все данные есть	
 				O('_mdd_peni')->create(array(
 					'contract_id' 		=> $id,
@@ -470,13 +552,13 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 					'month' 					=> $invoice_month,
 					'year' 						=> $invoice_year,
 					'amount' 					=> $peni_amount,
-					'summa' 					=> $cur_summa,
+					'summa' 					=> $cur_rest,
 					'peni' 						=> $peni,
 					'rest'						=> $peni,
 					'delay' 					=> $peni_delay,
 					'peni_invoice'    => $invoice,		
 					'ground'					=> 2,
-					'status'					=> 1					
+					'status'					=> $status					
 				));	
 
 				// апдейтим баланс договора
@@ -491,10 +573,9 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				
 				$conn->query($sql_balance_peni);
 				$conn->query($sql_cont_balance_peni);
-
-				$invoice_date_balance = Q("SELECT * FROM `#_mdd_invoice` WHERE `invoice_number` = $invoice", array())->row('invoice_date');
+			
 				$contract_number = Q("SELECT `number`, `balance` FROM `#_mdd_contracts` WHERE `id` = $id", array())->row();
-				$renter_full_name = Q("SELECT `full_name` FROM `#_mdd_renters` WHERE `id` = ?i", array($renter_id))->row('full_name');
+
 				//  записываем в тааблицу балансов
 				O('_mdd_balance')->create(array(
 					'renter_id' => $_POST['renter_id'],
@@ -507,29 +588,29 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 					'ground_id' => $invoice,	
 					'summa' => $peni,
 				));	
+	
+					if ($period_sum == 0) {
+						break;
+					}
 
+					// если сумма больше остатка по счету, то...
+					if($period_sum >= $invoice_number['rest']) {
+			
+						// записываем в остаток 0, и меняем статус
+						$sql = "UPDATE `db_mdd_invoice` SET `rest` = 0, `status` = 0 WHERE `db_mdd_invoice`.`invoice_number` = $invoice";
+						
+						$conn->query($sql);
 
-				if ($period_sum === 0) {
-					break;
-				}
-				// если сумма больше остатка по счету, то...
-				if($period_sum >= $invoice_number['rest']) {
-		
-					// записываем в остаток 0, и меняем статус
-					$sql = "UPDATE `db_mdd_invoice` SET `rest` = 0, `status` = 0 WHERE `db_mdd_invoice`.`invoice_number` = $invoice";
-					
-					$conn->query($sql);
-
-					// пересчитываем остаточную сумму
-					$period_sum -= $invoice_number['rest'];
+						// пересчитываем остаточную сумму
+						$period_sum -= intval($invoice_number['rest']);
 					//если сумма меньше остатка по счету
 					} else {
-					// высчитываем остаток и перезаписываем
-					$rest = $invoice_number['rest'] - $period_sum;
-					$sql = "UPDATE `db_mdd_invoice` SET `rest` = $rest WHERE `db_mdd_invoice`.`invoice_number` = $invoice";
-					
-					$conn->query($sql);
-				}
+						// высчитываем остаток и перезаписываем
+						$rest = intval($invoice_number['rest']) - $period_sum;
+						$sql = "UPDATE `db_mdd_invoice` SET `rest` = '$rest' WHERE `db_mdd_invoice`.`invoice_number` = '$invoice'";
+						
+						$conn->query($sql);
+					}
 
 			}			
 		} 
@@ -575,7 +656,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			'date' => $_POST['date'],
 			'renter' => $renter_full_name,
 			'ground_id' => $balance_in_contract['ground'],	
-			'summa' => $_POST['summa'],
+			'summa' => $rest_sum,
 		));	
 
 		$conn->close();
@@ -609,18 +690,11 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		$delete_balance = "DELETE FROM `db_mdd_balance` WHERE `ground_id` = '$invoice'";
 		$conn->query($delete_balance);
 
-		$balance_array = Q("SELECT `balance`,`id` FROM `#_mdd_balance` WHERE `contract` = '$number' AND `id` > $id",array())->all();
-		
-		echo $id;
-		echo print_r($balance_array);
+		$balance_array = Q("SELECT `balance`,`id` FROM `#_mdd_balance` WHERE `contract` = '$number' AND `id` > $id",array())->all();	
 
 		for ($i = 0; $i < count($balance_array); $i++) {
 			$current_id = $balance_array[$i]['id'];
 			$current_sum = $balance_array[$i]['balance'] + $sum;
-
-			echo 'current sum is: '.$current_sum;
-			echo 'current id is: '.$current_id;
-
 			$update_array_balance = "UPDATE `db_mdd_balance` SET `balance` = '$current_sum' WHERE `db_mdd_balance`.`id` = '$current_id'";
 			$conn->query($update_array_balance);
 		}

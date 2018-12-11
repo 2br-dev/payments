@@ -1,5 +1,21 @@
 {if $smarty.session.admin == 'true'}
   <div class="vystavlenie-schetov pechat-schetov">
+    <select style="margin-top: 10px; padding: 8px 10px; border: 1px solid lightgray; border-radius: 5px;" name="renters">
+      {if $smarty.get.id}
+        {foreach from=$renters item=renter}
+          {if $renter.id != $smarty.get.id}
+          {continue}
+          {else}
+          <option selected disabled hidden>{$renter.short_name}</option>
+          {/if}
+        {/foreach}  
+      {else}
+      <option selected disabled hidden>Выберите арендатора</option>  
+      {/if}        
+      {foreach from=$renters item=renter}
+      <option class="select-renter" value="{$renter.id}">{$renter.short_name}</option>
+      {/foreach}
+    </select>    
     <form id="pechat-schetov" action="" method="post">
       <p class="mb0">Год</p><span class="error year-error">Выберите год:</span>
       <div class="vystavlenie-schetov-year">
@@ -260,7 +276,7 @@
 {if $error} 
   <div class="print-error">
     <div class="wrapper">
-      <a href="#" class="close"></a>
+      <div class="close"></div>
       <div class="print-error-text">
         <p>К сожалению, за данный период нечего напечатать :(</p>
       </div>
