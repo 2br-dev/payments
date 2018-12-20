@@ -110,14 +110,15 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 
 		if (!empty($_POST['year']) && !empty($_POST['month'])) {
 
-			if (isset($_GET['id'])) {
-				$id = intval($_GET['id']);
+			$id = intval($_GET['id']);
+
+			if (isset($_GET['id']) && $id != 0) {	
 				$year = $_POST['year'];
 				$month = $_POST['month'];
 				$invoices = Q("SELECT 
 
 				`invoice`.`invoice_number` as `invoice_number`, `invoice`.`summa` as `invoice_summa`,
-				`invoice`.`rest` as `invoice_rest`, `invoice_amount`,
+				`invoice`.`rest` as `invoice_rest`, `amount`,
 				`renter`.`short_name` as `renter_name`, `renter`.`id` as `renter_id`,
 				`contract`.`number` as `document_number`, `contract`.`summa` as `contract_sum`						  
 
@@ -135,7 +136,7 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 				LEFT JOIN `#_mdd_rooms` as `room`
 				ON `contract`.`rooms` = `room`.`id`
 
-				WHERE `invoice`.`period_year` = ?s AND `invoice`.`period_month` = ?s AND `renter`.`id` = ?i
+				WHERE `invoice`.`period_year` = ?s AND `invoice`.`period_month` = ?s AND `renter`.`id` = ANY
 				ORDER BY `invoice`.`invoice_number` ASC",
 				array($_POST['year'], $_POST['month'], $id))->all();
 

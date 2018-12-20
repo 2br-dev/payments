@@ -14,8 +14,7 @@
       {/if}
         >
       {foreach from=$renters item=renter}
-        <option name="renter_id" data-id="{$renter.id}" value="{$renter.full_name}">{$renter.short_name}</option>
-        
+        <option name="renter_id" data-id="{$renter.id}" value="{$renter.full_name}">{$renter.short_name}</option>  
       {/foreach}
     </select>
      

@@ -8,9 +8,10 @@
           {else}
           <option selected disabled hidden>{$renter.short_name}</option>
           {/if}
-        {/foreach}  
+        {/foreach}
+        <option class="select-renter" value="0">Все арендаторы</option>   
       {else}
-      <option selected disabled hidden>Выберите арендатора</option>  
+      <option selected class="select-renter" value="0">Все арендаторы</option>  
       {/if}        
       {foreach from=$renters item=renter}
       <option class="select-renter" value="{$renter.id}">{$renter.short_name}</option>
