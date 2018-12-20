@@ -1,13 +1,14 @@
 {strip}
   <div class="vystavlenie-schetov">
-    <form id="vystavlenie-schetov" method="POST" action="/ajax/write">
-      <div class="vystavlenie-schetov-date">
-        <p class="date-error">Выберите дату:</p>
-        <input type="date" name="date" value="2018-01-01" id="date">
-      </div>
-      <hr style="margin-bottom: 40px">
-      <p class="error renter-error">Выберите одного или более арендодателей:</p>
 
+    <div class="vystavlenie-schetov-date">
+      <p class="date-error">Выберите дату:</p>
+      <input type="date" name="date" value="2018-01-01" id="date">
+    </div>
+    <hr style="margin-bottom: 40px">
+
+    <form id="vystavlenie-schetov" method="POST" action="/ajax/write">
+      <p class="error renter-error">Выберите одного или более арендодателей:</p>
       <p><b style="font-size: 18px">Действующие договора:</p></b>
       {foreach from=$renters item=renter}
         {if $renter.status == 1}

@@ -200,9 +200,9 @@ if (!function_exists('json_decode')) {
     }
 }
 
-function to_money($number = 0, $d = 0)
+function to_money($number, $d = 2)
 {
-    return number_format(floatval($number), $d, ',', ' ');
+    return number_format(floatval($number), $d, '.', '');
 }
 
 function __get($val)

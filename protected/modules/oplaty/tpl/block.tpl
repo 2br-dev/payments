@@ -78,27 +78,30 @@
   </div>
 
   <script>
-    var elem = document.getElementById("helper");
-    var form = document.getElementById("payments").contains(elem);
-    var url = window.location.href.split('=');
-    if (form || url.length != 3) {
-      document.getElementById("error-empty").style.display = 'none';
-    } else {
-      document.getElementById("error-empty").style.display = 'block';
+    function recountDate() {
+      var elem = document.getElementById("helper");
+      var form = document.getElementById("payments").contains(elem);
+      var url = window.location.href.split('=');
+      if (form || url.length != 3) {
+        document.getElementById("error-empty").style.display = 'none';
+      } else {
+        document.getElementById("error-empty").style.display = 'block';
+      }
+        
+      var d = new Date();
+      var date = d.getDate();
+      var month = d.getMonth() + 1;
+      var year = d.getFullYear();
+      if (date < 10) {
+        date = '0' + date;
+      }
+      if (month < 10) {
+        month = '0' + month;
+      }
+      var x = year + "-" + month + "-" + date;
+      document.getElementById('date').value = x;
     }
-      
-    var d = new Date();
-    var date = d.getDate();
-    var month = d.getMonth() + 1;
-    var year = d.getFullYear();
-    if (date < 10) {
-      date = '0' + date;
-    }
-    if (month < 10) {
-      month = '0' + month;
-    }
-    var x = year + "-" + month + "-" + date;
-    document.getElementById('date').value = x;
+    recountDate();
   </script>
 
 {/strip}

@@ -525,36 +525,41 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 
 									WHERE `short_name` = ?s", array($_SESSION['login']))->row();
 					
-				// находим всю его историю операций
-				$history = Q("SELECT * FROM `db_mdd_balance` WHERE `contract_id` = ?i ORDER BY `id` ASC", array($_GET['id'] ))->all();
+				if ($_GET['ind'] == 'as') {
+					// находим всю его историю операций
+					$history = Q("SELECT * FROM `db_mdd_balance` WHERE `contract_id` = ?i AND `summa` != ?s ORDER BY `id` ASC", array($_GET['id'], '0.00' ))->all();
 
-				//проверяет находится ли дата в промежутке запроса для акта сверки
-				$start_date = strtotime(str_replace("/", ".", $_GET['start']) );	
-				$end_date   = strtotime(str_replace("/", ".", $_GET['end']) );
-				$first_valid_id = 0;
-								
-				for ($i = 0; $i < count($history); $i++) {
-					$new_date = strtotime(str_replace("/", "-", $history[$i]['date']));
-					
-					if (($start_date <= $new_date && $new_date <= $end_date) || ($end_date <= $new_date && $new_date <= $start_date)) {
-						$history[$i]['valid'] = true;
-					
-						if($first_valid_id == 0) {
-							$first_valid_id = $history[$i]['id'];
+					//проверяет находится ли дата в промежутке запроса для акта сверки
+					$start_date = strtotime(str_replace("/", ".", $_GET['start']) );	
+					$end_date   = strtotime(str_replace("/", ".", $_GET['end']) );
+					$first_valid_id = 0;
+									
+					for ($i = 0; $i < count($history); $i++) {
+						$new_date = strtotime(str_replace("/", "-", $history[$i]['date']));
+						
+						if (($start_date <= $new_date && $new_date <= $end_date) || ($end_date <= $new_date && $new_date <= $start_date)) {
+							$history[$i]['valid'] = true;
+						
+							if($first_valid_id == 0) {
+								$first_valid_id = $history[$i]['id'];
+							}
+						} else {
+							$history[$i]['valid'] = false;
 						}
-					} else {
-						$history[$i]['valid'] = false;
 					}
+				
+					// находим первую валидную дату
+					$starting_saldo = Q("SELECT `balance`,`summa` FROM `db_mdd_balance` WHERE `id` = ?i ORDER BY `id` ASC", array($first_valid_id))->row();
+					$saldo = number_format($starting_saldo['balance'] + $starting_saldo['summa'], 2, '.', '');
+							
+					$string = $client['balance'];
+					$string  < 0 ? $string *= -1 : $string;				
+					$client['string'] = num2str($string);
+				}	else {
+					$history = $saldo = 0;
 				}
 
-				// находим первую валидную дату
-				$starting_saldo = Q("SELECT `balance`,`summa` FROM `db_mdd_balance` WHERE `id` = ?i ORDER BY `id` ASC", array($first_valid_id))->row();
-				$saldo = number_format($starting_saldo['balance'] + $starting_saldo['summa'], 2, '.', '');
-						
-				$string = $client['balance'];
-				$string  < 0 ? $string *= -1 : $string;				
-				$client['string'] = num2str($string);
-
+			//	exit(__($history));
 				return array(
 					'print' 				=> $print,
 					'month_string'  => $month,

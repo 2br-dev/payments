@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-12-11 09:28:35
+/* Smarty version 3.1.32, created on 2018-12-20 10:45:57
   from 'C:\OpenServer\domains\authorization.local\protected\themes\base\smarty\core\404.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c0f5913c0eaa6_64792147',
+  'unifunc' => 'content_5c1b48b531b1b1_26460457',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:../system/sitemap.tpl' => 1,
   ),
 ),false)) {
-function content_5c0f5913c0eaa6_64792147 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c1b48b531b1b1_26460457 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\OpenServer\\domains\\authorization.local\\protected\\app\\libs\\smarty.plugins\\function.compress.php','function'=>'smarty_function_compress',),));
 ?><!DOCTYPE html>
 <!-- (c) lnk. celebro | http://www.celebro.ru/ -->

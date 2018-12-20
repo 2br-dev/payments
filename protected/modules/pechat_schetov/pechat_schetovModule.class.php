@@ -117,9 +117,9 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 				$invoices = Q("SELECT 
 
 				`invoice`.`invoice_number` as `invoice_number`, `invoice`.`summa` as `invoice_summa`,
-				`invoice`.`rest` as `invoice_rest`, 
+				`invoice`.`rest` as `invoice_rest`, `invoice_amount`,
 				`renter`.`short_name` as `renter_name`, `renter`.`id` as `renter_id`,
-				`contract`.`number` as `document_number`							  
+				`contract`.`number` as `document_number`, `contract`.`summa` as `contract_sum`						  
 
 				FROM `#_mdd_invoice` as `invoice`
 
@@ -138,13 +138,18 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 				WHERE `invoice`.`period_year` = ?s AND `invoice`.`period_month` = ?s AND `renter`.`id` = ?i
 				ORDER BY `invoice`.`invoice_number` ASC",
 				array($_POST['year'], $_POST['month'], $id))->all();
+
+/* 				$sum_in_invoice = Q("SELECT `summa` FROM `#_mdd_invoice` WHERE `period_year` = ?s AND `period_month` = ?s
+				ORDER BY `invoce_number` ASC", array($_POST['year'], $_POST['month']))->all('summa'); */
+
+
 			} else {
 				$invoices = Q("SELECT 
 
 				`invoice`.`invoice_number` as `invoice_number`, `invoice`.`summa` as `invoice_summa`,
-				`invoice`.`rest` as `invoice_rest`, 
+				`invoice`.`rest` as `invoice_rest`, `amount`,
 				`renter`.`short_name` as `renter_name`, `renter`.`id` as `renter_id`,
-				`contract`.`number` as `document_number`							  
+				`contract`.`number` as `document_number`, `contract`.`summa` as `contract_sum`							  
 
 				FROM `#_mdd_invoice` as `invoice`
 
@@ -163,6 +168,9 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 				WHERE `invoice`.`period_year` = ?s AND `invoice`.`period_month` = ?s
 				ORDER BY `invoice`.`invoice_number` ASC",
 				array($_POST['year'], $_POST['month']))->all();
+
+/* 				$sum_in_invoice = Q("SELECT `summa` FROM `#_mdd_invoice` WHERE `period_year` = ?s AND `period_month` = ?s
+						ORDER BY `invoce_number` ASC", array($_POST['year'], $_POST['month']))->all('summa'); */
 			}
 			
 			foreach ($invoices as $key => $value) {
@@ -173,6 +181,11 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 				$invoices[$key]['sf_id'] 			= $akt['invoice_number'];
 				$invoices[$key]['schet_id'] 	= $akt['invoice_number'];
 				$invoices[$key]['sf_number'] 	= $akt['invoice_number'];
+				if ($invoices[$key]['invoice_summa'] < $invoices[$key]['contract_sum'] && intval($invoices[$key]['amount']) == 1) {
+					$invoices[$key]['disc'] 		= 1;
+				} else {
+					$invoices[$key]['disc'] 		= 0;
+				}
 			}
 
 			$year = $_POST['year'];
@@ -216,7 +229,7 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 
 		$renters = Q("SELECT `short_name`, `id` FROM `#_mdd_renters` WHERE `visible` = 1", array())->all();
 
-		//exit(__($invoices));
+		// exit(__($invoices));
 		return array(
 			'inv' 				=> 	$invoices,
 			'year' 				=> 	$year,

@@ -74,7 +74,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			$_SESSION['authorization'] = true;
 			$_SESSION['login'] = $username_login;
 
-				if($_SESSION['login'] == "Господь") {
+				if($get_login['is_admin'] == 1) {
 					$_SESSION['admin'] = 'true';
 				} else {
 					$_SESSION['admin'] = 'false';
@@ -345,7 +345,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				die("Connection failed: " . $conn->connect_error);
 		} 
 
-		$rest_sum = $_POST['summa'];
+		$rest_sum = to_money($_POST['summa']);
 
 		if(isset($_POST['summa']) && isset($_POST['renter_document'])) {
 			// парсим номер договора
@@ -398,6 +398,8 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 						));	
 						$rest_sum -= $payed_peni['peni'];
 
+						$rest_sum <= 0 ? $rest_sum = 0 : '';
+
 						break;
 
 					} elseif ($peni_rest > 0) {
@@ -417,8 +419,9 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 						));	
 
 						$rest_sum -= $payed_peni['peni'];
+						$rest_sum <= 0 ? $rest_sum = 0 : '';
 						continue;
-
+						
 					} else {
 						$period_sum = -1 * $peni_rest;
 						$upd_peni_rest =  "UPDATE `db_mdd_peni` SET `rest` = '$period_sum', `status` = 1  WHERE `id` = '$peni_id'";
@@ -436,6 +439,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 						));	
 
 						$rest_sum -= $payed_peni['peni'];
+						$rest_sum <= 0 ? $rest_sum = 0 : '';
 						break;
 					}
 				}
@@ -456,7 +460,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				}
 
 				//проверяем дату когда был оплачен счёт
-				if ($payment_day <= 5 && $payment_month == $invoice_month && $payment_year == $invoice_year) {
+				if (($payment_day <= 5 && $payment_month == $invoice_month && $payment_year == $invoice_year) || ($payment_month < $invoice_month && $payment_year == $invoice_year)) {
 					
 					$discount  = Q("SELECT `discount` FROM `#_mdd_invoice` WHERE `invoice_number` = ?i",array($invoice))->row('discount');
 					$cur_summa = Q("SELECT `summa`    FROM `#_mdd_invoice` WHERE `invoice_number` = ?i",array($invoice))->row('summa');
@@ -486,80 +490,84 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 
 				// проверяем дату оплаты на предмет начиления пени
 				if ($payment_day >= $start_peni || $payment_month > $invoice_month || $payment_year > $invoice_year) {
-					$cur_rest  = Q("SELECT `rest`     FROM `#_mdd_invoice` WHERE `invoice_number` = ?i",array($invoice))->row('rest');
-					$cur_summa = Q("SELECT `summa`    FROM `#_mdd_invoice` WHERE `invoice_number` = ?i",array($invoice))->row('summa');
-					$cur_amount = Q("SELECT `amount`	FROM `#_mdd_invoice` WHERE `invoice_number` = ?i",array($invoice))->row('amount');
-					$start_arenda = Q("SELECT `start_arenda` FROM `#_mdd_contracts` WHERE `id` = ?i", array($id))->row('start_arenda');	
-					$start_arenda = explode('.', $start_arenda);
-					
-					// если в этом месяце меньше чем полный месяц, то
-					$extra_days = 0;
-					if ($cur_amount < 1) {	
-						$extra_days = intval($start_arenda[0]) - $start_peni + 1; 
-					}				
-					// если месяц оплаты старше первого месяца договора, то 
-					if ($payment_month >= $start_arenda[1]) {
-						$first_month_peni = $start_arenda[0] + 9;
-						if ($first_month_peni > $number_of_days[$start_arenda[1] - 1]) {
-							$first_month_peni = 0;
-						} 
-					}
-					if(isset($first_month_peni) && $invoice_month == $start_arenda[1]) {
-						$start_peni = $first_month_peni;
-					}
-
-					$dif_days = $number_of_days[$payment_month - 1] - $payment_day - 1;
-					// если месяц оплаты не совпадает (больше), то..
-					if ($payment_month > $invoice_month || $payment_year > $invoice_year) {
-						// считаем разницу в месяцах 
-						$dif_month = $payment_month - $invoice_month; // вычит. месяц счета из месяца оплаты 
-						// циклом собераем все дни в нужных месяцах :
-						$all_days = 0;
+					if ($payment_month >= $invoice_month && $payment_year >= $invoice_year) {	
+						$cur_rest  = Q("SELECT `rest`     FROM `#_mdd_invoice` WHERE `invoice_number` = ?i",array($invoice))->row('rest');
+						$cur_summa = Q("SELECT `summa`    FROM `#_mdd_invoice` WHERE `invoice_number` = ?i",array($invoice))->row('summa');
+						$cur_amount = Q("SELECT `amount`	FROM `#_mdd_invoice` WHERE `invoice_number` = ?i",array($invoice))->row('amount');
+						$start_arenda = Q("SELECT `start_arenda` FROM `#_mdd_contracts` WHERE `id` = ?i", array($id))->row('start_arenda');	
+						$start_arenda = explode('.', $start_arenda);
 						
-						$current_month = $payment_month;
-						for ($it = 1; $it <= $dif_month + 1; $it++)  {
-							$current_month_index = $current_month - $it;
-							if($current_month_index < 0) {
-								$current_month_index = 11;
-								$current_month = 11;
-							}
-							$all_days = $all_days + $number_of_days[$current_month_index];
+						// если в этом месяце меньше чем полный месяц, то
+						$extra_days = 0;
+						if ($cur_amount < 1) {	
+							$extra_days = intval($start_arenda[0]) - $start_peni + 1; 
+						}				
+						// если месяц оплаты старше первого месяца договора, то 
+						if ($payment_month >= $start_arenda[1]) {
+							$first_month_peni = $start_arenda[0] + 9;
+							if ($first_month_peni > $number_of_days[$start_arenda[1] - 1]) {
+								$first_month_peni = 0;
+							} 
 						}
-			
-						$peni_delay = $all_days - $dif_days - $start_peni; 
+						if(isset($first_month_peni) && $invoice_month == $start_arenda[1]) {
+							$start_peni = $first_month_peni;
+						}
+
+						$dif_days = $number_of_days[$payment_month - 1] - $payment_day - 1;
+						// если месяц оплаты не совпадает (больше), то..
+						if ($payment_month > $invoice_month || $payment_year > $invoice_year) {
+							// считаем разницу в месяцах 
+							$dif_month = $payment_month - $invoice_month; // вычит. месяц счета из месяца оплаты 
+							// циклом собераем все дни в нужных месяцах :
+							$all_days = 0;
+							
+							$current_month = $payment_month;
+							for ($it = 1; $it <= $dif_month + 1; $it++)  {
+								$current_month_index = $current_month - $it;
+								if($current_month_index < 0) {
+									$current_month_index = 11;
+									$current_month = 11;
+								}
+								$all_days = $all_days + $number_of_days[$current_month_index];
+							}
+				
+							$peni_delay = $all_days - $dif_days - $start_peni; 
+						} 
+						// иначе (месяц тот же) просто разница между кол-вом дней в этом месяце и началой пени в договоре ($start_peni)
+						else { 
+							$peni_delay = $number_of_days[$payment_month - 1] -  $start_peni - $dif_days;  // +1 так как день включительно
+						}
 					} 
-					// иначе (месяц тот же) просто разница между кол-вом дней в этом месяце и началой пени в договоре ($start_peni)
-					else { 
-						$peni_delay = $number_of_days[$payment_month - 1] -  $start_peni - $dif_days;  // +1 так как день включительно
-					}
-				} 
+				}
 
-				if ($peni_delay < 0) {
-					$peni_delay = 0;
-				} 
-				// за этот месяц будет начислять пени и мы можем подсчитать
-				$peni = number_format(($peni_delay * $cur_rest  * $peni_percent),2, '.', '');
-				$peni_amount = $peni_delay * $peni_in_contract;
-				 
-				$invoice_number = Q("SELECT * FROM `#_mdd_invoice` WHERE `invoice_number` = '$invoice' AND `status` != 0", array())->row();
+					if ($peni_delay < 0) {
+						$peni_delay = 0;
+					} 
 
-				$peni === 0 ? $status = 0 : $status = 1;
-				// записываем пени, так как она уже точно начисляется и все данные есть	
-				O('_mdd_peni')->create(array(
-					'contract_id' 		=> $id,
-					'contract_number' => $_POST['renter_document'],
-					'renter' 					=> $renter_name,
-					'month' 					=> $invoice_month,
-					'year' 						=> $invoice_year,
-					'amount' 					=> $peni_amount,
-					'summa' 					=> $cur_rest,
-					'peni' 						=> $peni,
-					'rest'						=> $peni,
-					'delay' 					=> $peni_delay,
-					'peni_invoice'    => $invoice,		
-					'ground'					=> 2,
-					'status'					=> $status					
-				));	
+
+					// за этот месяц будет начислять пени и мы можем подсчитать
+					$peni = number_format(($peni_delay * $cur_rest  * $peni_percent),2, '.', '');
+					$peni_amount = $peni_delay * $peni_in_contract;
+					
+					$invoice_number = Q("SELECT * FROM `#_mdd_invoice` WHERE `invoice_number` = '$invoice' AND `status` != 0", array())->row();
+
+					intval($peni) === 0 ? $status = 0 : $status = 1;
+					// записываем пени, так как она уже точно начисляется и все данные есть	
+					O('_mdd_peni')->create(array(
+						'contract_id' 		=> $id,
+						'contract_number' => $_POST['renter_document'],
+						'renter' 					=> $renter_name,
+						'month' 					=> $invoice_month,
+						'year' 						=> $invoice_year,
+						'amount' 					=> $peni_amount,
+						'summa' 					=> $cur_rest,
+						'peni' 						=> $peni,
+						'rest'						=> $peni,
+						'delay' 					=> $peni_delay,
+						'peni_invoice'    => $invoice,		
+						'ground'					=> 2,
+						'status'					=> $status					
+					));	
 
 				// апдейтим баланс договора
 				$balance_now = Q("SELECT `balance` FROM `#_mdd_contracts` WHERE `id` = $id", array())->row('balance');
@@ -623,7 +631,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			O('_mdd_payments')->create(array(
 				'renter_name' 		=> $_POST['renter_name'],
 				'date' 						=> $_POST['date'],
-				'summa' 					=> $_POST['summa'],
+				'summa' 					=> to_money($_POST['summa']),
 				'document' 				=> $_POST['number'],
 				'payment_info' 		=> $_POST['renter_document'],
 				'invoices' 				=> $invoices,								
@@ -656,7 +664,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			'date' => $_POST['date'],
 			'renter' => $renter_full_name,
 			'ground_id' => $balance_in_contract['ground'],	
-			'summa' => $rest_sum,
+			'summa' => to_money($rest_sum),
 		));	
 
 		$conn->close();
@@ -708,12 +716,6 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 
 	}
 
-/* 	if ($controller == 'filter')
-	{
-		$filter = $_POST['filter'];
-		$filtered = Q("SELECT `short_name` FROM `#_mdd_renters` WHERE `short_name` LIKE `%$filter%` AND `visible` = 1",array())->all();
-		echo print_r($filtered);
-	} */
 
 	return true ;
 }

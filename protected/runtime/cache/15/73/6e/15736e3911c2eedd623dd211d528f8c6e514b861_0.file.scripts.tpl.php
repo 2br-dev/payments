@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-12-11 17:30:47
+/* Smarty version 3.1.32, created on 2018-12-20 10:53:39
   from 'C:\OpenServer\domains\authorization.local\protected\themes\base\smarty\components\scripts.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c0fca17744792_45466948',
+  'unifunc' => 'content_5c1b4a833c2367_86560732',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '15736e3911c2eedd623dd211d528f8c6e514b861' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\themes\\base\\smarty\\components\\scripts.tpl',
-      1 => 1544190819,
+      1 => 1544683449,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c0fca17744792_45466948 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c1b4a833c2367_86560732 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\OpenServer\\domains\\authorization.local\\protected\\app\\libs\\smarty.plugins\\function.compress.php','function'=>'smarty_function_compress',),));
 echo smarty_function_compress(array('attr'=>'data-no-instant','mode'=>'js','source'=>array(array('file'=>'/js/vendor.min.js'),array('file'=>'/js/app.min.js'))),$_smarty_tpl);
 echo '<script'; ?>

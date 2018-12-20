@@ -100,7 +100,7 @@
         </span>
       </div>
       <hr>
-      <input type="submit" value="Отправить">
+      <input type="submit" value="Показать">
     </form>
   </div>
   {if $inv}
@@ -118,6 +118,7 @@
         </div>
         <hr>
         <div class="documents-block" data-block="{$i.renter_id}">
+          {if $i.disc == 0}
           <div class="without-print">
             <a href="/schet-pechatnaya-forma?num={$i.invoice_number}&ind=sch&pr=0&disc=0" target="_blank" >Счет</a>
             <a href="/schet-pechatnaya-forma?num={$i.akt_id}&ind=akt&pr=0&disc=0" target="_blank" >Акт</a>
@@ -128,6 +129,7 @@
             <a href="/schet-pechatnaya-forma?num={$i.akt_id}&ind=akt&pr=1&disc=0" target="_blank" >Акт+печать</a>
             <a href="/schet-pechatnaya-forma?num={$i.sf_id}&ind=sf&pr=1&disc=0" target="_blank" >Счет-фактура+печать</a>
           </div>
+          {else}
           <div class="with-discount">
             <a href="/schet-pechatnaya-forma?num={$i.invoice_number}&ind=sch&pr=0&disc=1" target="_blank" >Счет (со скидкой)</a>
             <a href="/schet-pechatnaya-forma?num={$i.akt_id}&ind=akt&pr=0&disc=1" target="_blank" >Акт (со скидкой)</a>
@@ -138,6 +140,7 @@
             <a href="/schet-pechatnaya-forma?num={$i.akt_id}&ind=akt&pr=1&disc=1" target="_blank" >Акт (со скидкой)+печать</a>
             <a href="/schet-pechatnaya-forma?num={$i.sf_id}&ind=sf&pr=1&disc=1" target="_blank" >Счет-фактура (со скидкой)+печать</a>
           </div>
+          {/if}
         </div>
       </div>
       {/foreach}
