@@ -6,7 +6,7 @@
     <select name="sources" id="sources" name="renter_name" class="custom-select sources" 
       {if $contracts}
         {foreach from=$contracts item=ren}
-        placeholder="{$ren.short_name}"
+        placeholder='{$ren.short_name}'
         {break}
         {/foreach}
       {else}
