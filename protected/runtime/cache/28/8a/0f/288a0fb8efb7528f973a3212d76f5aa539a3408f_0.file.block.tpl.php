@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-12-20 12:27:18
+/* Smarty version 3.1.32, created on 2019-01-09 17:30:08
   from 'C:\OpenServer\domains\authorization.local\protected\modules\oplaty\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c1b607653bac3_31116149',
+  'unifunc' => 'content_5c3605708ef093_49926595',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '288a0fb8efb7528f973a3212d76f5aa539a3408f' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\modules\\oplaty\\tpl\\block.tpl',
-      1 => 1545295988,
+      1 => 1545298968,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c1b607653bac3_31116149 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c3605708ef093_49926595 (Smarty_Internal_Template $_smarty_tpl) {
 ?><div class="payments"><form id="payments" method='post' action=''><select name="sources" id="sources" name="renter_name" class="custom-select sources"<?php if ($_smarty_tpl->tpl_vars['contracts']->value) {
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['contracts']->value, 'ren');
 if ($_from !== null) {

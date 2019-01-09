@@ -368,6 +368,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				$invoice = $_POST['invoices'][$i];
 				$invoice_date_balance = Q("SELECT * FROM `#_mdd_invoice` WHERE `invoice_number` = $invoice", array())->row('invoice_date');
 				$renter_full_name = Q("SELECT `full_name` FROM `#_mdd_renters` WHERE `id` = ?i", array($renter_id))->row('full_name');
+				$cur_rest  = Q("SELECT `rest`     FROM `#_mdd_invoice` WHERE `invoice_number` = ?i",array($invoice))->row('rest');
 
 				// проходимся циклом по всему массиву пеней и считаем разницу
 				if(isset($allpeni)) {
@@ -458,14 +459,13 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				if ( is_int(3019 % $invoice_year / 4) ) {
 					$number_of_days[1] = 29;
 				}
-
+				
 				//проверяем дату когда был оплачен счёт
 				if (($payment_day <= 5 && $payment_month == $invoice_month && $payment_year == $invoice_year) || ($payment_month < $invoice_month && $payment_year == $invoice_year)) {
 					
 					$discount  = Q("SELECT `discount` FROM `#_mdd_invoice` WHERE `invoice_number` = ?i",array($invoice))->row('discount');
 					$cur_summa = Q("SELECT `summa`    FROM `#_mdd_invoice` WHERE `invoice_number` = ?i",array($invoice))->row('summa');
-					$cur_rest  = Q("SELECT `rest`     FROM `#_mdd_invoice` WHERE `invoice_number` = ?i",array($invoice))->row('rest');
-
+					
 					$rest = $discount - ($cur_summa - $cur_rest);
 					$updated_balance = $cur_summa - $discount;
 					$balance = Q("SELECT `balance` FROM `#_mdd_renters` WHERE `id` = ?i",array($renter_id))->row('balance');
@@ -491,7 +491,6 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 				// проверяем дату оплаты на предмет начиления пени
 				if ($payment_day >= $start_peni || $payment_month > $invoice_month || $payment_year > $invoice_year) {
 					if ($payment_month >= $invoice_month && $payment_year >= $invoice_year) {	
-						$cur_rest  = Q("SELECT `rest`     FROM `#_mdd_invoice` WHERE `invoice_number` = ?i",array($invoice))->row('rest');
 						$cur_summa = Q("SELECT `summa`    FROM `#_mdd_invoice` WHERE `invoice_number` = ?i",array($invoice))->row('summa');
 						$cur_amount = Q("SELECT `amount`	FROM `#_mdd_invoice` WHERE `invoice_number` = ?i",array($invoice))->row('amount');
 						$start_arenda = Q("SELECT `start_arenda` FROM `#_mdd_contracts` WHERE `id` = ?i", array($id))->row('start_arenda');	
