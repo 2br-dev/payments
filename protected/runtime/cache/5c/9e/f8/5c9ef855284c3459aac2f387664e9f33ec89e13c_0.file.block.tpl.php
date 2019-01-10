@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-10 12:48:45
+/* Smarty version 3.1.32, created on 2019-01-10 14:25:32
   from 'C:\OpenServer\domains\authorization.local\protected\modules\pechat_schetov\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c3714fded1e11_69194763',
+  'unifunc' => 'content_5c372bac583660_46661646',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '5c9ef855284c3459aac2f387664e9f33ec89e13c' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\modules\\pechat_schetov\\tpl\\block.tpl',
-      1 => 1545299781,
+      1 => 1547119529,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c3714fded1e11_69194763 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c372bac583660_46661646 (Smarty_Internal_Template $_smarty_tpl) {
 if ($_SESSION['admin'] == 'true') {?>
   <div class="vystavlenie-schetov pechat-schetov">
     <select style="margin-top: 10px; padding: 8px 10px; border: 1px solid lightgray; border-radius: 5px;" name="renters">
@@ -226,8 +226,20 @@ $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->t
 if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['i']->value) {
 ?>
-          <h2 class='pechat-schetov-result-header'><?php echo $_smarty_tpl->tpl_vars['i']->value['renter_name'];?>
-</h2>
+          <h2 class='pechat-schetov-result-header' style="font-weight: normal"><?php echo $_smarty_tpl->tpl_vars['i']->value['renter_name'];?>
+, 
+          текущий баланс:
+          <?php if ($_smarty_tpl->tpl_vars['balance']->value > 0) {?>
+            <span style="color: green"> <?php echo $_smarty_tpl->tpl_vars['balance']->value;?>
+</span>
+          <?php } elseif ($_smarty_tpl->tpl_vars['balance']->value < 0) {?>
+            <span style="color: darkred"> <?php echo $_smarty_tpl->tpl_vars['balance']->value;?>
+</span>
+          <?php } else { ?>   
+            <span> <?php echo $_smarty_tpl->tpl_vars['balance']->value;?>
+</span>
+          <?php }?>  
+          </h2>
           <?php break 1;?>
         <?php
 }

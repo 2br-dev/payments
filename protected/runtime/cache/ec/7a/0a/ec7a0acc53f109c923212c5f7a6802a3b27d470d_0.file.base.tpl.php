@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-10 12:57:28
+/* Smarty version 3.1.32, created on 2019-01-10 14:25:32
   from 'C:\OpenServer\domains\authorization.local\protected\themes\base\smarty\base.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c37170819b061_54632860',
+  'unifunc' => 'content_5c372bac5ff703_76987997',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -23,7 +23,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:./components/scripts.tpl' => 1,
   ),
 ),false)) {
-function content_5c37170819b061_54632860 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c372bac5ff703_76987997 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender("file:./components/meta.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 $_smarty_tpl->_subTemplateRender("file:./components/main.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 if (isset($_smarty_tpl->tpl_vars['_sitemenu']->value['main'])) {

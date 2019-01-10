@@ -155,7 +155,16 @@
       <div class='pechat-schetov-result'>
 
         {foreach from=$allinvoices item=i}
-          <h2 class='pechat-schetov-result-header'>{$i.renter_name}</h2>
+          <h2 class='pechat-schetov-result-header' style="font-weight: normal">{$i.renter_name}, 
+          текущий баланс:
+          {if $balance > 0}
+            <span style="color: green"> {$balance}</span>
+          {elseif $balance < 0}
+            <span style="color: darkred"> {$balance}</span>
+          {else}   
+            <span> {$balance}</span>
+          {/if}  
+          </h2>
           {break}
         {/foreach}
 

@@ -213,7 +213,7 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 		$clientID = Q("SELECT `id` FROM `#_mdd_renters` WHERE `visible` = 1 AND `short_name` = '$login'")->row('id');
 		// запрос для получения списка всех договор арендатора
 		$contracts = Q("SELECT * FROM `#_mdd_contracts` WHERE `visible` = 1 AND `renter` = '$clientID'", array())->all();
-
+		$balance = Q("SELECT `balance` FROM `#_mdd_renters` WHERE `visible` = 1 AND `id` = $clientID", array())->row('balance');
 		// если сегодняшняя дата скидки до присваем ключу дискаунт - 1, если нет то 0
 		$today = getdate();
 		for($i = 0; $i < count($allinvoices); $i++) {
@@ -230,7 +230,7 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 
 		$renters = Q("SELECT `short_name`, `id` FROM `#_mdd_renters` WHERE `visible` = 1", array())->all();
 
-		// exit(__($invoices));
+	/* exit(__($balance)); */
 		return array(
 			'inv' 				=> 	$invoices,
 			'year' 				=> 	$year,
@@ -240,7 +240,8 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 			'allinvoices' => 	$allinvoices,
 			'contracts'		=>	$contracts,
 			'peni'				=>  $peni,
-			'renters'			=>  $renters
+			'renters'			=>  $renters,
+			'balance'			=>  $balance
 		);
   }
 }
