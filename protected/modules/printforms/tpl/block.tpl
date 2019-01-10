@@ -40,9 +40,9 @@
 		</div>
 		<div class="schet-number">
 		 	{if $peni == 0}
-			<p>Счет № A-{$print.document_number} от {$date.2} {$month_string} {$date.0} года</p>
+			<p>Счет № A-{$print.document_number} от {$invoice_day} {$month_string} {$date.0} года</p>
 			{else}
-			<p>Счет № П-{$print.document_number} от {$date.2} {$month_string} {$date.0} года</p>
+			<p>Счет № П-{$print.document_number} от {$invoice_day} {$month_string} {$date.0} года</p>
 			{/if}
 		</div> 
 		<div class="arendator-name">

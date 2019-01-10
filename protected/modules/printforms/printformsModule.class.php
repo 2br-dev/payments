@@ -94,6 +94,7 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 
 													`invoice`.`period_year`, 
 													`invoice`.`period_month`, 
+													`invoice`.`invoice_date`,
 													`invoice`.`amount` as `invoice_amount`,
 													`invoice`.`summa` as `invoice_summa`,
 													`invoice`.`invoice_number` as `document_number`,
@@ -559,7 +560,8 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 					$history = $saldo = 0;
 				}
 
-			//	exit(__($history));
+				$invoice_day = substr($print['invoice_date'], -2);
+
 				return array(
 					'print' 				=> $print,
 					'month_string'  => $month,
@@ -573,7 +575,8 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 					'allpeni' 			=> $allpeni,
 					'history' 			=> $history,
 					'client'				=> $client,
-					'saldo'					=> $saldo
+					'saldo'					=> $saldo,
+					'invoice_day'		=> $invoice_day
 				);
   }
 }

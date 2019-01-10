@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-12-20 12:13:27
+/* Smarty version 3.1.32, created on 2019-01-10 12:57:28
   from 'C:\OpenServer\domains\authorization.local\protected\modules\printforms\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c1b5d374752f6_25607655',
+  'unifunc' => 'content_5c37170812e067_21304319',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '76fa070285fe88234fbd84045347cf87e4706077' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\modules\\printforms\\tpl\\block.tpl',
-      1 => 1544521526,
+      1 => 1547114246,
       2 => 'file',
     ),
   ),
@@ -20,16 +20,16 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c1b5d374752f6_25607655 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c37170812e067_21304319 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\OpenServer\\domains\\authorization.local\\protected\\app\\vendors\\smarty\\smarty\\libs\\plugins\\function.math.php','function'=>'smarty_function_math',),));
 ?><!DOCTYPE html>
 <html class="no-js" itemscope="itemscope" itemtype="http://schema.org/<?php if (!isset($_smarty_tpl->tpl_vars['uri']->value[1])) {?>WebPage<?php } else { ?>ItemPage<?php }?>" lang="<?php echo $_smarty_tpl->tpl_vars['_page']->value['lang'];?>
 "><head><title></title><link rel="stylesheet" href="/css/printform.css"></head><body><?php if ($_smarty_tpl->tpl_vars['document']->value == 'sch') {?><div class="wrapper-schet"><div class="arendodatel-name"><p>Индивидуальный предприниматель Кононович Галина Павловна</p></div><div class="arendodatel-address"><p>Адрес: 666784, Иркутская обл, Усть-Кут г., Кирова ул, 12, кв. 14</p></div><div class="arendodatel-bank"><p>Образец заполнения платежного поручения</p><table border="1" cellspacing="0"><tr><td>ИНН 381800677995</td><td>КПП</td><td rowspan="2">Сч. №</td><td rowspan="2">40802810130000045576</td></tr><tr><td colspan="2">Получатель<br>Индивидуальный предприниматель Кононович Галина Павловна</td></tr><tr><td rowspan="2" colspan="2">Банк Получателя<br>КРАСНОДАРСКОЕ ОТДЕЛЕНИЕ N8619 ПАО СБЕРБАНК</td><td>БИК</td><td colspan="2">040349602</td></tr><tr><td>Сч. №</td><td colspan="2">30101810100000000602</td></tr></table></div><div class="schet-number"><?php if ($_smarty_tpl->tpl_vars['peni']->value == 0) {?><p>Счет № A-<?php echo $_smarty_tpl->tpl_vars['print']->value['document_number'];?>
- от <?php echo $_smarty_tpl->tpl_vars['date']->value[2];?>
+ от <?php echo $_smarty_tpl->tpl_vars['invoice_day']->value;?>
  <?php echo $_smarty_tpl->tpl_vars['month_string']->value;?>
  <?php echo $_smarty_tpl->tpl_vars['date']->value[0];?>
  года</p><?php } else { ?><p>Счет № П-<?php echo $_smarty_tpl->tpl_vars['print']->value['document_number'];?>
- от <?php echo $_smarty_tpl->tpl_vars['date']->value[2];?>
+ от <?php echo $_smarty_tpl->tpl_vars['invoice_day']->value;?>
  <?php echo $_smarty_tpl->tpl_vars['month_string']->value;?>
  <?php echo $_smarty_tpl->tpl_vars['date']->value[0];?>
  года</p><?php }?></div><div class="arendator-name"><p>Плательщик: <?php echo $_smarty_tpl->tpl_vars['print']->value['renter_name'];?>
