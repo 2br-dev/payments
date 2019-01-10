@@ -15,7 +15,7 @@ final class reestrModule extends \Fastest\Core\Modules\Module
     public function blockMethod()
     {
 
-        exit(__($_SERVER['REQUEST_URI'] == '/reestr-arendatorov'));
+        /* exit(__($_SERVER['REQUEST_URI'] == '/reestr-arendatorov')); */
          $reestr = Q("SELECT 
             `contract`.`id` as `contract_id`, `contract`.`number` as `contract_number`, `contract`.`datetime`,
             `contract`.`status`, `contract`.`summa`, `contract`.`start_date`, `contract`.`end_date`, `contract`.`peni`,
