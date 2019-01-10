@@ -18,10 +18,10 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 
 	if ($controller == 'login')
 	{
-		$host='localhost';
-		$user='root';
-		$pass='';
-		$db='authorization';
+		$host = DB_HOST;
+		$user = DB_USER;
+		$pass = DB_PASS;
+		$db   = DB_BASE;
 	
 		$conn = mysqli_connect($host, $user, $pass, $db);
 		
@@ -111,10 +111,10 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		if (!empty($_POST['renter']) && !empty($_POST['date']) && !empty($_POST['year']) && !empty($_POST['month'])){
 			
 			$index = 0;
-			$servername = "localhost";
-			$username = "root";
-			$password = "";
-			$dbname = "authorization";
+			$servername = DB_HOST;
+			$username 	= DB_USER;
+			$password 	= DB_PASS;
+			$dbname   	= DB_BASE;
 	
 			// Create connection
 			$conn = new mysqli($servername, $username, $password, $dbname);
@@ -333,10 +333,10 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		$index = 0;
 		$renter_id = $_POST['renter_id'];
 
-		$servername = "localhost";
-		$username = "root";
-		$password = "";
-		$dbname = "authorization";
+		$servername = DB_HOST;
+		$username 	= DB_USER;
+		$password 	= DB_PASS;
+		$dbname   	= DB_BASE;
 
 		// Create connection
 		$conn = new mysqli($servername, $username, $password, $dbname);
@@ -671,10 +671,10 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 
 	if ($controller == 'delete')
 	{
-		$servername = "localhost";
-		$username = "root";
-		$password = "";
-		$dbname = "authorization";
+		$servername = DB_HOST;
+		$username 	= DB_USER;
+		$password 	= DB_PASS;
+		$dbname   	= DB_BASE;
 		$conn = new mysqli($servername, $username, $password, $dbname);
 		if ($conn->connect_error) {
 			die("Connection failed: " . $conn->connect_error);
