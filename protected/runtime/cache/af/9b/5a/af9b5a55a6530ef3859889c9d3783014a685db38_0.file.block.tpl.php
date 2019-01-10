@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-10 15:25:57
+/* Smarty version 3.1.32, created on 2019-01-10 17:26:03
   from 'C:\OpenServer\domains\authorization.local\protected\modules\reestr\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c3739d5c68826_21021225',
+  'unifunc' => 'content_5c3755fb7d7354_22463053',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'af9b5a55a6530ef3859889c9d3783014a685db38' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\modules\\reestr\\tpl\\block.tpl',
-      1 => 1544537189,
+      1 => 1547130361,
       2 => 'file',
     ),
   ),
@@ -20,8 +20,8 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c3739d5c68826_21021225 (Smarty_Internal_Template $_smarty_tpl) {
-?><div><?php
+function content_5c3755fb7d7354_22463053 (Smarty_Internal_Template $_smarty_tpl) {
+?><div style="padding-bottom: 100px"><?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['renters']->value, 'renter');
 if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['renter']->value) {

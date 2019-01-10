@@ -1,0 +1,9 @@
+node_modules
+apps/
+cp/
+cp_setup/
+upload_dir/
+img/
+protected/runtime/
+.idea
+.vscode

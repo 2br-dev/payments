@@ -40,12 +40,16 @@ final class reestrModule extends \Fastest\Core\Modules\Module
         for ($i = 0; $i < count($reestr); $i++) {
             $date = strtotime($reestr[$i]['end_date']);
        
+            if ($reestr[$i]['end_date'] == '') {
+                $reestr[$i]['status'] = 1; 
+                continue;
+            }
             if ($date - $today > 0 && $date - $today < 3600 * 24 * 30) {
                 $reestr[$i]['status'] = 0.5; 
             }
         }
 
-        // exit(__($reestr));
+        /* exit(__($reestr)); */
         return [
             'template'  => 'block',
             'reestr'    => $reestr,

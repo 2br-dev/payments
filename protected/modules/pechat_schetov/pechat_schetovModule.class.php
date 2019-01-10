@@ -209,11 +209,12 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 
 		// LOGIN NAME в этой сессии для получения списка договоров
 		$login = $_SESSION['login'];
+
 		// получем ID авторизованного пользователя
-		$clientID = Q("SELECT `id` FROM `#_mdd_renters` WHERE `visible` = 1 AND `short_name` = '$login'")->row('id');
+		$clientID = Q("SELECT `id` FROM `#_mdd_renters` WHERE `short_name` = '$login'")->row('id');
 		// запрос для получения списка всех договор арендатора
-		$contracts = Q("SELECT * FROM `#_mdd_contracts` WHERE `visible` = 1 AND `renter` = '$clientID'", array())->all();
-		$balance = Q("SELECT `balance` FROM `#_mdd_renters` WHERE `visible` = 1 AND `id` = $clientID", array())->row('balance');
+		$contracts = Q("SELECT * FROM `#_mdd_contracts` WHERE `renter` = '$clientID'", array())->all();
+		$balance = Q("SELECT `balance` FROM `#_mdd_renters` WHERE `id` = $clientID", array())->row('balance');
 		// если сегодняшняя дата скидки до присваем ключу дискаунт - 1, если нет то 0
 		$today = getdate();
 		for($i = 0; $i < count($allinvoices); $i++) {

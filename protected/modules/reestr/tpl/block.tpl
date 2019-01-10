@@ -1,6 +1,6 @@
 {strip}
 
-<div>
+<div style="padding-bottom: 100px">
 {* <input name="reestr">
 {if isset($filter)}
   <h3>{$filter}</h3>
