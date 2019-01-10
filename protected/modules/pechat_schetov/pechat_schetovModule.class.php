@@ -136,7 +136,7 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 				LEFT JOIN `#_mdd_rooms` as `room`
 				ON `contract`.`rooms` = `room`.`id`
 
-				WHERE `invoice`.`period_year` = ?s AND `invoice`.`period_month` = ?s AND `renter`.`id` = ANY
+				WHERE `invoice`.`period_year` = ?s AND `invoice`.`period_month` = ?s AND `renter`.`id` = ?i
 				ORDER BY `invoice`.`invoice_number` ASC",
 				array($_POST['year'], $_POST['month'], $id))->all();
 
