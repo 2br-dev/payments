@@ -21,7 +21,6 @@
 		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
   {/if}
 	
-	<link rel="stylesheet" type="text/css" href="/konkurs/simplelightbox-master/dist/simplelightbox.min.css" />
 	<link rel="icon" href="/img/favicon.png" type="image/x-icon">
 
 </head>

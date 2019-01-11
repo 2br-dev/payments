@@ -1,6 +1,6 @@
 {if $smarty.session.admin == 'true'}
   <div class="vystavlenie-schetov pechat-schetov">
-    <select style="margin-top: 10px; padding: 8px 10px; border: 1px solid lightgray; border-radius: 5px;" name="renters">
+    <select style="background: #eee; margin-top: 10px; padding: 8px 10px; border: 1px solid lightgray; border-radius: 5px;" name="renters">
       {if $smarty.get.id}
         {foreach from=$renters item=renter}
           {if $renter.id != $smarty.get.id}
@@ -107,7 +107,11 @@
   {if $inv}
     <div class="renters-list">
       <div class='pechat-schetov-result'>
-        <h2 class='pechat-schetov-result-header'>{$year} {$month}</h2>
+        {if $month == false}
+          <h2 class='pechat-schetov-result-header'>{$year}</h2>
+        {else} 
+          <h2 class='pechat-schetov-result-header'>{$year} {$month}</h2> 
+        {/if}        
       </div>
       {foreach from=$inv item=i}	
       <div class="renters-list-item">
@@ -278,11 +282,6 @@
       }
     </style>
  
- 
-
-
-
-
 {/if} {* end noadmin  *}
 
 {*  error  *}

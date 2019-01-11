@@ -1,11 +1,8 @@
 {strip}
-
 <div style="padding-bottom: 100px">
-{* <input name="reestr">
-{if isset($filter)}
-  <h3>{$filter}</h3>
-{/if} *}
-
+<div style='width: 50%; margin: 0 auto; text-align: center;'>
+  <button class="show-all">Показать все договора</button>
+</div>
 {foreach from=$renters item=renter}
   <div class='renters'>   
     <h2 class="renter">{$renter.short_name} — Баланс: 
@@ -33,7 +30,13 @@
       {if $item.short_name == $renter.short_name}
       <div class='renter-contract'>
         <div class='renter-contract-header' style="display: flex; justify-content: space-between; padding-right: 30px;">
-          <p>{$item.contract_number} от {$item.datetime}</p>
+          
+          {if $item.end_date != ''}
+            <p>{$item.contract_number} от {$item.datetime}</p>
+          {else}
+            <p>{$item.contract_number} от {$item.datetime} <i>(безсрочно)</i></p>
+          {/if}
+
           {if $item.status == 0}
           <span style="color: #d32f2f">Завершенный</span>
           {elseif $item.status == 0.5}
@@ -57,5 +60,20 @@
   </div>
 {/foreach}
 </div>
+
+<style>
+  .show-all {
+    background: #8eacbb;
+    padding: 15px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    border: none;
+    color: white;
+    text-transform: uppercase;
+    border-radius: 20px;
+    width: 50%;
+    margin: 0 auto;
+    cursor: pointer;
+  }
+</style>
 
 {/strip}

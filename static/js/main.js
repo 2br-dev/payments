@@ -121,8 +121,8 @@ function sortNumber(a,b) {
   return a - b;
 }
 
-$(document).ready(function() { 
-  
+$(document).ready(function() {  
+
   (function(){
     var period = 0;
     $(".period-credit").each(function() {
@@ -276,6 +276,18 @@ $(document).ready(function() {
     localStorage.setItem("renter_document",value);
   })
 
+  $('.show-all').click(function(e) {
+    e.preventDefault();
+    var url = window.location.href;
+    
+    if (window.location.href.indexOf('show') !== -1) {
+      window.location.href = '/reestr-arendatorov';
+    } else {
+      window.location.href = url + '?show=show';
+    }
+    $(this).text('Показать только действующие');
+  });
+
   $("#payments").submit(function(e){
     e.preventDefault();
     var self = this;
@@ -335,12 +347,8 @@ $(document).ready(function() {
       e.preventDefault();
       $(".year-error").show();
     } 
-    if(!data.month) {
-      e.preventDefault();
-      $(".month-error").show();
-    } 
 
-    if (data.year && data.month) {     
+    if (data.year) {     
       $.ajax({
         type: "POST",
         data: data,
@@ -555,45 +563,14 @@ $('input[name="dates"]').on('cancel.daterangepicker', function(ev, picker) {
   $(this).val('');
 });
 
-
-
-/* $.event.special.inputchange = {
-  setup: function() {
-      var self = this, val;
-      $.data(this, 'timer', window.setInterval(function() {
-          val = self.value;
-          if ( $.data( self, 'cache') != val ) {
-              $.data( self, 'cache', val );
-              $( self ).trigger( 'inputchange' );
-          }
-      }, 20));
-  },
-  teardown: function() {
-      window.clearInterval( $.data(this, 'timer') );
-  },
-  add: function() {
-      $.data(this, 'cache', this.value);
-  }
-};
-
-
-$('input[name="reestr"]').on('inputchange', function() {
-  
-  var data = {
-    filter: this.value,
-  }
-  
-  $.ajax({
-    type: "POST",
-    url: "/ajax/filter",
-    data: data,
-    success: function(res){
-      console.log(res);
-    },
-    error: function(err) {
-      console.log(err);
-    }
-  });
-
-}); */
-
+(function() {
+  if(window.location.pathname === '/reestr-arendatorov') {
+    $('.renters').each(function() {
+      if ( $( this ).children( ".renter-contract" ).length > 0) {
+        return;
+      } else {
+        $(this).hide();
+      }
+    });
+  } 
+})();

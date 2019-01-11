@@ -108,70 +108,128 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 			}	
 		}
 
-		if (!empty($_POST['year']) && !empty($_POST['month'])) {
-
-			$id = intval($_GET['id']);
-
-			if (isset($_GET['id']) && $id != 0) {	
+		$month = false;
+		if (!empty($_POST['year'])) {
+			
+			if(isset($_GET['id'])) {
+				$id = intval($_GET['id']);
+			}
+			if (isset($_GET['id']) && $id != 0) {		
 				$year = $_POST['year'];
-				$month = $_POST['month'];
-				$invoices = Q("SELECT 
 
-				`invoice`.`invoice_number` as `invoice_number`, `invoice`.`summa` as `invoice_summa`,
-				`invoice`.`rest` as `invoice_rest`, `amount`,
-				`renter`.`short_name` as `renter_name`, `renter`.`id` as `renter_id`,
-				`contract`.`number` as `document_number`, `contract`.`summa` as `contract_sum`						  
+				if(isset($_POST['month'])) {
+					$month = $_POST['month'];
+				}
+				
+				if($month != false) {
+					//exit(__('вы находитесь здесь'));
+					$invoices = Q("SELECT 
 
-				FROM `#_mdd_invoice` as `invoice`
+					`invoice`.`invoice_number` as `invoice_number`, `invoice`.`summa` as `invoice_summa`,
+					`invoice`.`rest` as `invoice_rest`, `amount`,
+					`renter`.`short_name` as `renter_name`, `renter`.`id` as `renter_id`,
+					`contract`.`number` as `document_number`, `contract`.`summa` as `contract_sum`						  
+	
+					FROM `#_mdd_invoice` as `invoice`
+	
+					LEFT JOIN `#_mdd_contracts` as `contract`
+					ON `invoice`.`contract_id` = `contract`.`id`
+	
+					LEFT JOIN `#_mdd_grounds` as `ground`
+					ON `contract`.`ground` = `ground`.`id`
+	
+					LEFT JOIN `#_mdd_renters` as `renter`
+					ON `contract`.`renter` = `renter`.`id`
+	
+					LEFT JOIN `#_mdd_rooms` as `room`
+					ON `contract`.`rooms` = `room`.`id`
+	
+					WHERE `invoice`.`period_year` = ?s AND `invoice`.`period_month` = ?s AND `renter`.`id` = ?i
+					ORDER BY `invoice`.`invoice_number` ASC",
+					array($_POST['year'], $month, $id))->all();
+				} else {
+	
+					$invoices = Q("SELECT 
 
-				LEFT JOIN `#_mdd_contracts` as `contract`
-				ON `invoice`.`contract_id` = `contract`.`id`
-
-				LEFT JOIN `#_mdd_grounds` as `ground`
-				ON `contract`.`ground` = `ground`.`id`
-
-				LEFT JOIN `#_mdd_renters` as `renter`
-				ON `contract`.`renter` = `renter`.`id`
-
-				LEFT JOIN `#_mdd_rooms` as `room`
-				ON `contract`.`rooms` = `room`.`id`
-
-				WHERE `invoice`.`period_year` = ?s AND `invoice`.`period_month` = ?s AND `renter`.`id` = ?i
-				ORDER BY `invoice`.`invoice_number` ASC",
-				array($_POST['year'], $_POST['month'], $id))->all();
-
-/* 				$sum_in_invoice = Q("SELECT `summa` FROM `#_mdd_invoice` WHERE `period_year` = ?s AND `period_month` = ?s
-				ORDER BY `invoce_number` ASC", array($_POST['year'], $_POST['month']))->all('summa'); */
-
+					`invoice`.`invoice_number` as `invoice_number`, `invoice`.`summa` as `invoice_summa`,
+					`invoice`.`rest` as `invoice_rest`, `amount`,
+					`renter`.`short_name` as `renter_name`, `renter`.`id` as `renter_id`,
+					`contract`.`number` as `document_number`, `contract`.`summa` as `contract_sum`						  
+	
+					FROM `#_mdd_invoice` as `invoice`
+	
+					LEFT JOIN `#_mdd_contracts` as `contract`
+					ON `invoice`.`contract_id` = `contract`.`id`
+	
+					LEFT JOIN `#_mdd_grounds` as `ground`
+					ON `contract`.`ground` = `ground`.`id`
+	
+					LEFT JOIN `#_mdd_renters` as `renter`
+					ON `contract`.`renter` = `renter`.`id`
+	
+					LEFT JOIN `#_mdd_rooms` as `room`
+					ON `contract`.`rooms` = `room`.`id`
+	
+					WHERE `invoice`.`period_year` = ?s AND `renter`.`id` = ?i
+					ORDER BY `invoice`.`invoice_number` ASC",
+					array($_POST['year'], $id))->all();
+				}
 
 			} else {
-				$invoices = Q("SELECT 
+				if(isset($_POST['month'])) {
+					$month = $_POST['month'];
+				}
+				
+				if(isset($_POST['month'])) {
+					$invoices = Q("SELECT 
+					`invoice`.`invoice_number` as `invoice_number`, `invoice`.`summa` as `invoice_summa`,
+					`invoice`.`rest` as `invoice_rest`, `amount`,
+					`renter`.`short_name` as `renter_name`, `renter`.`id` as `renter_id`,
+					`contract`.`number` as `document_number`, `contract`.`summa` as `contract_sum`							  
+	
+					FROM `#_mdd_invoice` as `invoice`
+	
+					LEFT JOIN `#_mdd_contracts` as `contract`
+					ON `invoice`.`contract_id` = `contract`.`id`
+	
+					LEFT JOIN `#_mdd_grounds` as `ground`
+					ON `contract`.`ground` = `ground`.`id`
+	
+					LEFT JOIN `#_mdd_renters` as `renter`
+					ON `contract`.`renter` = `renter`.`id`
+	
+					LEFT JOIN `#_mdd_rooms` as `room`
+					ON `contract`.`rooms` = `room`.`id`
+	
+					WHERE `invoice`.`period_year` = ?s AND `invoice`.`period_month` = ?s
+					ORDER BY `invoice`.`invoice_number` ASC",
+					array($_POST['year'], $month))->all();
+				} else {
+					$invoices = Q("SELECT 
+					`invoice`.`invoice_number` as `invoice_number`, `invoice`.`summa` as `invoice_summa`,
+					`invoice`.`rest` as `invoice_rest`, `amount`,
+					`renter`.`short_name` as `renter_name`, `renter`.`id` as `renter_id`,
+					`contract`.`number` as `document_number`, `contract`.`summa` as `contract_sum`							  
+	
+					FROM `#_mdd_invoice` as `invoice`
+	
+					LEFT JOIN `#_mdd_contracts` as `contract`
+					ON `invoice`.`contract_id` = `contract`.`id`
+	
+					LEFT JOIN `#_mdd_grounds` as `ground`
+					ON `contract`.`ground` = `ground`.`id`
+	
+					LEFT JOIN `#_mdd_renters` as `renter`
+					ON `contract`.`renter` = `renter`.`id`
+	
+					LEFT JOIN `#_mdd_rooms` as `room`
+					ON `contract`.`rooms` = `room`.`id`
+	
+					WHERE `invoice`.`period_year` = ?s 
+					ORDER BY `invoice`.`invoice_number` ASC",
+					array($_POST['year']))->all();
+				}
 
-				`invoice`.`invoice_number` as `invoice_number`, `invoice`.`summa` as `invoice_summa`,
-				`invoice`.`rest` as `invoice_rest`, `amount`,
-				`renter`.`short_name` as `renter_name`, `renter`.`id` as `renter_id`,
-				`contract`.`number` as `document_number`, `contract`.`summa` as `contract_sum`							  
-
-				FROM `#_mdd_invoice` as `invoice`
-
-				LEFT JOIN `#_mdd_contracts` as `contract`
-				ON `invoice`.`contract_id` = `contract`.`id`
-
-				LEFT JOIN `#_mdd_grounds` as `ground`
-				ON `contract`.`ground` = `ground`.`id`
-
-				LEFT JOIN `#_mdd_renters` as `renter`
-				ON `contract`.`renter` = `renter`.`id`
-
-				LEFT JOIN `#_mdd_rooms` as `room`
-				ON `contract`.`rooms` = `room`.`id`
-
-				WHERE `invoice`.`period_year` = ?s AND `invoice`.`period_month` = ?s
-				ORDER BY `invoice`.`invoice_number` ASC",
-				array($_POST['year'], $_POST['month']))->all();
-
-/* 				$sum_in_invoice = Q("SELECT `summa` FROM `#_mdd_invoice` WHERE `period_year` = ?s AND `period_month` = ?s
-						ORDER BY `invoce_number` ASC", array($_POST['year'], $_POST['month']))->all('summa'); */
 			}
 			
 			foreach ($invoices as $key => $value) {
@@ -190,8 +248,10 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 			}
 
 			$year = $_POST['year'];
-			$month = $_POST['month'];
-
+			
+			if (isset($_POST['month'])) {
+				$month = $_POST['month'];
+			}
 			
 			if (empty($invoices)) {
 				$error = true;
@@ -203,7 +263,6 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 		 else {
 			$invoices = 0;
 			$year = 0;
-			$month = 0;
 			$error = false;
 		} 
 
@@ -231,6 +290,7 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 
 		$renters = Q("SELECT `short_name`, `id` FROM `#_mdd_renters` WHERE `visible` = 1", array())->all();
 
+		/* exit(__(!$month ? 'false' : 'true')); */
 	/* exit(__($balance)); */
 		return array(
 			'inv' 				=> 	$invoices,

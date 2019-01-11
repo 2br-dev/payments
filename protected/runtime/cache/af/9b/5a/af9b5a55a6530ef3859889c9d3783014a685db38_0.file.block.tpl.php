@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-10 17:26:03
+/* Smarty version 3.1.32, created on 2019-01-11 12:09:07
   from 'C:\OpenServer\domains\authorization.local\protected\modules\reestr\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c3755fb7d7354_22463053',
+  'unifunc' => 'content_5c385d333f19c0_05575020',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'af9b5a55a6530ef3859889c9d3783014a685db38' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\modules\\reestr\\tpl\\block.tpl',
-      1 => 1547130361,
+      1 => 1547197742,
       2 => 'file',
     ),
   ),
@@ -20,8 +20,8 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c3755fb7d7354_22463053 (Smarty_Internal_Template $_smarty_tpl) {
-?><div style="padding-bottom: 100px"><?php
+function content_5c385d333f19c0_05575020 (Smarty_Internal_Template $_smarty_tpl) {
+?><div style="padding-bottom: 100px"><div style='width: 50%; margin: 0 auto; text-align: center;'><button class="show-all">Показать все договора</button></div><?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['renters']->value, 'renter');
 if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['renter']->value) {
@@ -44,9 +44,12 @@ foreach ($_from as $_smarty_tpl->tpl_vars['renter']->value) {
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['reestr']->value, 'item');
 if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['item']->value) {
-if ($_smarty_tpl->tpl_vars['item']->value['short_name'] == $_smarty_tpl->tpl_vars['renter']->value['short_name']) {?><div class='renter-contract'><div class='renter-contract-header' style="display: flex; justify-content: space-between; padding-right: 30px;"><p><?php echo $_smarty_tpl->tpl_vars['item']->value['contract_number'];?>
+if ($_smarty_tpl->tpl_vars['item']->value['short_name'] == $_smarty_tpl->tpl_vars['renter']->value['short_name']) {?><div class='renter-contract'><div class='renter-contract-header' style="display: flex; justify-content: space-between; padding-right: 30px;"><?php if ($_smarty_tpl->tpl_vars['item']->value['end_date'] != '') {?><p><?php echo $_smarty_tpl->tpl_vars['item']->value['contract_number'];?>
  от <?php echo $_smarty_tpl->tpl_vars['item']->value['datetime'];?>
-</p><?php if ($_smarty_tpl->tpl_vars['item']->value['status'] == 0) {?><span style="color: #d32f2f">Завершенный</span><?php } elseif ($_smarty_tpl->tpl_vars['item']->value['status'] == 0.5) {?><span style="color: #ffa000">Действителен до: <?php echo $_smarty_tpl->tpl_vars['item']->value['end_date'];?>
+</p><?php } else { ?><p><?php echo $_smarty_tpl->tpl_vars['item']->value['contract_number'];?>
+ от <?php echo $_smarty_tpl->tpl_vars['item']->value['datetime'];?>
+ <i>(безсрочно)</i></p><?php }
+if ($_smarty_tpl->tpl_vars['item']->value['status'] == 0) {?><span style="color: #d32f2f">Завершенный</span><?php } elseif ($_smarty_tpl->tpl_vars['item']->value['status'] == 0.5) {?><span style="color: #ffa000">Действителен до: <?php echo $_smarty_tpl->tpl_vars['item']->value['end_date'];?>
 </span><?php } else { ?><span style="color: #2e7d32">Действующий</span><?php }?></div><div class='renters-schet'><p><b>Помещение:</b> <?php echo $_smarty_tpl->tpl_vars['item']->value['room_number'];?>
 </p><p><b>Номер на схеме:</b> <?php echo $_smarty_tpl->tpl_vars['item']->value['number_scheme'];?>
 </p><p><b>Площадь:</b> <?php echo $_smarty_tpl->tpl_vars['item']->value['square'];?>
@@ -61,5 +64,5 @@ if ($_smarty_tpl->tpl_vars['item']->value['short_name'] == $_smarty_tpl->tpl_var
 $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?></div><?php
 }
 }
-$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?></div><?php }
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?></div><style>.show-all {background: #8eacbb;padding: 15px;box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);border: none;color: white;text-transform: uppercase;border-radius: 20px;width: 50%;margin: 0 auto;cursor: pointer;}</style><?php }
 }

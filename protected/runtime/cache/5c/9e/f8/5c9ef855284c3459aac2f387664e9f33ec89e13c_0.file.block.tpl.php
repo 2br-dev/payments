@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-10 17:30:58
+/* Smarty version 3.1.32, created on 2019-01-11 12:09:14
   from 'C:\OpenServer\domains\authorization.local\protected\modules\pechat_schetov\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c37572283a6f3_71727212',
+  'unifunc' => 'content_5c385d3ad9def5_57420229',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '5c9ef855284c3459aac2f387664e9f33ec89e13c' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\modules\\pechat_schetov\\tpl\\block.tpl',
-      1 => 1547119529,
+      1 => 1547190634,
       2 => 'file',
     ),
   ),
@@ -20,10 +20,10 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c37572283a6f3_71727212 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c385d3ad9def5_57420229 (Smarty_Internal_Template $_smarty_tpl) {
 if ($_SESSION['admin'] == 'true') {?>
   <div class="vystavlenie-schetov pechat-schetov">
-    <select style="margin-top: 10px; padding: 8px 10px; border: 1px solid lightgray; border-radius: 5px;" name="renters">
+    <select style="background: #eee; margin-top: 10px; padding: 8px 10px; border: 1px solid lightgray; border-radius: 5px;" name="renters">
       <?php if ($_GET['id']) {?>
         <?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['renters']->value, 'renter');
@@ -147,9 +147,14 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
   <?php if ($_smarty_tpl->tpl_vars['inv']->value) {?>
     <div class="renters-list">
       <div class='pechat-schetov-result'>
-        <h2 class='pechat-schetov-result-header'><?php echo $_smarty_tpl->tpl_vars['year']->value;?>
- <?php echo $_smarty_tpl->tpl_vars['month']->value;?>
+        <?php if ($_smarty_tpl->tpl_vars['month']->value == false) {?>
+          <h2 class='pechat-schetov-result-header'><?php echo $_smarty_tpl->tpl_vars['year']->value;?>
 </h2>
+        <?php } else { ?> 
+          <h2 class='pechat-schetov-result-header'><?php echo $_smarty_tpl->tpl_vars['year']->value;?>
+ <?php echo $_smarty_tpl->tpl_vars['month']->value;?>
+</h2> 
+        <?php }?>        
       </div>
       <?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['inv']->value, 'i');
@@ -437,11 +442,6 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
       }
     </style>
  
- 
-
-
-
-
 <?php }?> 
 <?php if ($_smarty_tpl->tpl_vars['error']->value) {?> 
   <div class="print-error">
