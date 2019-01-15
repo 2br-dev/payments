@@ -201,14 +201,12 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 	
 						// Если да, и день начала аренды ревен 1 то колличество в счете = 1	
 						if ($start_arenda[0] == '01') {
-							$summa = $rest = $rest;
 							$amount = 1;
 						}
 						// Если день начала аренды больше 1, то колличество дней аренды в текущем месяце в счете вычисляется
 						else {
 							$days_arenda = $days - $start_arenda[0] + 1;
-							$amount = $days_arenda/$days;	
-							$rest = $rest * $amount;		
+							$amount = $days_arenda/$days;			
 						}
 
 					}
@@ -216,7 +214,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 						$amount = 1;
 					} 
 										
-					$summa = $rest * $amount;
+					$summa = $rest = $rest * $amount;
 					$summa = number_format($summa, 2, '.', '');
 					$period_balance = $summa;
 
