@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-11 12:09:14
+/* Smarty version 3.1.32, created on 2019-01-15 15:44:30
   from 'C:\OpenServer\domains\authorization.local\protected\modules\pechat_schetov\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c385d3ad9def5_57420229',
+  'unifunc' => 'content_5c3dd5aed8a682_44950068',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c385d3ad9def5_57420229 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c3dd5aed8a682_44950068 (Smarty_Internal_Template $_smarty_tpl) {
 if ($_SESSION['admin'] == 'true') {?>
   <div class="vystavlenie-schetov pechat-schetov">
     <select style="background: #eee; margin-top: 10px; padding: 8px 10px; border: 1px solid lightgray; border-radius: 5px;" name="renters">

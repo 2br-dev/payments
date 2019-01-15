@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-10 17:15:22
+/* Smarty version 3.1.32, created on 2019-01-11 14:24:53
   from 'C:\OpenServer\domains\authorization.local\protected\app\core\admin-template\fields\select.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c37537a6fc977_31288655',
+  'unifunc' => 'content_5c387d057a87e4_47892771',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c37537a6fc977_31288655 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c387d057a87e4_47892771 (Smarty_Internal_Template $_smarty_tpl) {
 ?><div class="<?php echo $_smarty_tpl->tpl_vars['class_name']->value;?>
 "><select name="<?php echo $_smarty_tpl->tpl_vars['name']->value;?>
 " data-placeholder="Выбрать" tabindex="<?php echo $_smarty_tpl->tpl_vars['index']->value;?>

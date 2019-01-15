@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-10 12:57:28
+/* Smarty version 3.1.32, created on 2019-01-15 15:43:55
   from 'C:\OpenServer\domains\authorization.local\protected\modules\printforms\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c37170812e067_21304319',
+  'unifunc' => 'content_5c3dd58b3bf1a5_60788697',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '76fa070285fe88234fbd84045347cf87e4706077' => 
     array (
       0 => 'C:\\OpenServer\\domains\\authorization.local\\protected\\modules\\printforms\\tpl\\block.tpl',
-      1 => 1547114246,
+      1 => 1547114321,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c37170812e067_21304319 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c3dd58b3bf1a5_60788697 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\OpenServer\\domains\\authorization.local\\protected\\app\\vendors\\smarty\\smarty\\libs\\plugins\\function.math.php','function'=>'smarty_function_math',),));
 ?><!DOCTYPE html>
 <html class="no-js" itemscope="itemscope" itemtype="http://schema.org/<?php if (!isset($_smarty_tpl->tpl_vars['uri']->value[1])) {?>WebPage<?php } else { ?>ItemPage<?php }?>" lang="<?php echo $_smarty_tpl->tpl_vars['_page']->value['lang'];?>

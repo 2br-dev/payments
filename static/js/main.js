@@ -196,9 +196,24 @@ $(document).ready(function() {
       allId.push($(this).data('id'));
       allSum.push($(this).data('sum'));
     });
+    
     var allMonths = [];
     $("input[name='month']:checked").each(function() {
       allMonths.push($(this).val());
+    });
+
+    var index = 0;
+    $("input[name='period_sum']:enabled").each(function() {
+      if ($(this).val() == '') {
+        index++;
+      } else {
+        allSum[index] = $(this).val();
+        index++;
+      }
+    }); 
+
+    allSum = allSum.map(function(sum) {
+      return parseFloat(sum.replace(/,/g,'.')).toFixed(2);
     });
 
     var data = {
@@ -211,16 +226,6 @@ $(document).ready(function() {
       summa_id:           allId,
       period_sum:         allSum,
     };
-
-    var index = 0;
-    $("input[name='period_sum']:enabled").each(function() {
-      if ($(this).val() == '') {
-        index++;
-      } else {
-        allSum[index] = $(this).val();
-        index++;
-      }
-    }); 
 
     console.log(data);
     //валидация

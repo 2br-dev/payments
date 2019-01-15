@@ -185,12 +185,11 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 					$contracts_for_schet = Q("SELECT * from `#_mdd_contracts` as `contract` WHERE `contract`.`renter` = ?i", array($_POST['renter'][$index]))->row();
 					$status = 1;
 					$renter = Q("SELECT * from `#_mdd_renters` as `renter` WHERE `renter`.`id` = ?i", array($value))->row();
-					$rest 	= $_POST['period_sum'][$index];
+					$rest 	= floatval($_POST['period_sum'][$index]);
 					// изменяем баланс
 					// сумма по счету
-					$period_sum = $_POST['period_sum'][$index];
-					
-					// ID арендодателя
+					$period_sum = $rest;
+			   	// ID арендодателя
 					$renter_id = $_POST['renter'][$index];
 					// ID текущего договора 
 					$contract_id = $_POST['summa_id'][$index];
@@ -202,14 +201,14 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 	
 						// Если да, и день начала аренды ревен 1 то колличество в счете = 1	
 						if ($start_arenda[0] == '01') {
-							$summa = $rest = $_POST['period_sum'][$index];
+							$summa = $rest = $rest;
 							$amount = 1;
 						}
 						// Если день начала аренды больше 1, то колличество дней аренды в текущем месяце в счете вычисляется
 						else {
 							$days_arenda = $days - $start_arenda[0] + 1;
 							$amount = $days_arenda/$days;	
-							$rest = $_POST['period_sum'][$index] * $amount;		
+							$rest = $rest * $amount;		
 						}
 
 					}
@@ -217,10 +216,11 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 						$amount = 1;
 					} 
 										
-					$summa = $_POST['period_sum'][$index] * $amount;
+					$summa = $rest * $amount;
 					$summa = number_format($summa, 2, '.', '');
 					$period_balance = $summa;
 
+					
 					//находим текущий баланс и считаем разницу между текущим и суммой по счету
 					$balance = Q("SELECT `balance` FROM `#_mdd_renters` WHERE `id` = ?i",array($renter_id))->row('balance');
 					$contract_balance = Q("SELECT `balance` FROM `#_mdd_contracts` WHERE `id` = ?i", array($contract_id))->row('balance');
@@ -230,11 +230,13 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 					// считаем баланс
 					$balance -= $period_balance;
 					$contract_balance -= $period_balance;
-					
+					$balance = number_format($balance,2,".","");
+					$contract_balance = number_format($contract_balance,2,".","");
+
 					// апдейтим баланс у арендодателя
-					$sql = "UPDATE `db_mdd_renters` SET `balance` = $balance WHERE `db_mdd_renters`.`id` = $renter_id";
+					$sql = "UPDATE `db_mdd_renters` SET `balance` = '$balance' WHERE `db_mdd_renters`.`id` = '$renter_id'";
 					// апдейтим баланс у договора
-					$update_contract_balance = "UPDATE `db_mdd_contracts` SET `balance` = $contract_balance WHERE `db_mdd_contracts`.`id` = $contract_id";
+					$update_contract_balance = "UPDATE `db_mdd_contracts` SET `balance` = '$contract_balance' WHERE `db_mdd_contracts`.`id` = '$contract_id'";
 					
 					$conn->query($sql);
 					$conn->query($update_contract_balance);
@@ -243,7 +245,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 					// еще раз првоеряем баланс, если положительный то..
 					if ($starting_balance > 0) {
 						// записываем в остаток разницу счета и баланса
-						$rest = $_POST['period_sum'][$index] - $starting_balance;
+						$rest = $rest - $starting_balance;
 						// если разница меньше нуля, значит баланс покрывает счет полность
 						// => делаем остаток 0, меняем статус на 0, и пересчитываем баланс
 						if ($rest < 0) {
@@ -252,9 +254,11 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 							// вычитаем из баланса всю сумму счета
 							$starting_balance -= $period_balance;
 							$contract_str_balance -= $period_balance;
+							$starting_balance = number_format($starting_balance,2,".","");
+							$contract_str_balance = number_format($contract_str_balance,2,".","");
 							// меняем баланс у арендодателя
-							$update_balance = "UPDATE `db_mdd_renters` SET `balance` = $starting_balance WHERE `db_mdd_renters`.`id` = $renter_id";
-							$update_ctr_balance = "UPDATE `db_mdd_contracts` SET `balance` = $contract_str_balance WHERE `db_mdd_contracts`.`id` = $contract_id";
+							$update_balance = "UPDATE `db_mdd_renters` SET `balance` = '$starting_balance' WHERE `db_mdd_renters`.`id` = '$renter_id'";
+							$update_ctr_balance = "UPDATE `db_mdd_contracts` SET `balance` = '$contract_str_balance' WHERE `db_mdd_contracts`.`id` = '$contract_id'";
 							$conn->query($update_balance);
 							$conn->query($update_ctr_balance);
 						}

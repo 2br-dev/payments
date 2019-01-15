@@ -20,7 +20,7 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 					`invoice`.`rest` as `invoice_rest`, `invoice`.`status` as `status`, `invoice`.`akt_date`,
 					`invoice`.`period_month` as `month`, `invoice`.`period_year` as `year`,
 					`renter`.`short_name` as `renter_name`, `renter`.`id` as `renter_id`,
-					`contract`.`number` as `document_number`							  
+					`contract`.`number` as `document_number`, `contract`.`summa` as `contract_summa`							  
 
 					FROM `#_mdd_invoice` as `invoice`
 
@@ -269,6 +269,7 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 		// LOGIN NAME в этой сессии для получения списка договоров
 		$login = $_SESSION['login'];
 
+		
 		// получем ID авторизованного пользователя
 		$clientID = Q("SELECT `id` FROM `#_mdd_renters` WHERE `short_name` = '$login'")->row('id');
 		// запрос для получения списка всех договор арендатора
@@ -277,6 +278,7 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 		// если сегодняшняя дата скидки до присваем ключу дискаунт - 1, если нет то 0
 		$today = getdate();
 		for($i = 0; $i < count($allinvoices); $i++) {
+			$summa_contract = Q("SELECT `summa` FROM `#_mdd_contracts` WHERE `id` = ?i", array($allinvoices[$i]['summa']))->row('summa'); 
 			$invoice_date = explode('-', $allinvoices[$i]['akt_date']);
 			$invoice_month = $invoice_date[1];
 			$invoice_year = $invoice_date[0];
@@ -288,10 +290,16 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 			}
 		}
 
+		for($j = 0; $j < count($invoices); $j++) {
+			if ($invoices[$j]['contract_sum'] > $invoices[$j]['invoice_summa']) {
+				$invoices[$j]['disc'] = 0;
+			}
+		}
+
 		$renters = Q("SELECT `short_name`, `id` FROM `#_mdd_renters` WHERE `visible` = 1", array())->all();
 
 		/* exit(__(!$month ? 'false' : 'true')); */
-	/* exit(__($balance)); */
+	  exit(__($invoices));  
 		return array(
 			'inv' 				=> 	$invoices,
 			'year' 				=> 	$year,
