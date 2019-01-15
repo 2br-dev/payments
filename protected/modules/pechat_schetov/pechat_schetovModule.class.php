@@ -298,8 +298,7 @@ final class pechat_schetovModule extends \Fastest\Core\Modules\Module
 
 		$renters = Q("SELECT `short_name`, `id` FROM `#_mdd_renters` WHERE `visible` = 1", array())->all();
 
-		/* exit(__(!$month ? 'false' : 'true')); */
-	  exit(__($invoices));  
+		/* exit(__(!$month ? 'false' : 'true')); */ 
 		return array(
 			'inv' 				=> 	$invoices,
 			'year' 				=> 	$year,
