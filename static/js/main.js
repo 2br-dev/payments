@@ -151,6 +151,11 @@ $(document).ready(function() {
     } else {
       $(".num2str").html(numberToString(finalSaldo));
     }
+
+    var __numeric_sum = $('#numeric-sum').val();
+    console.log(__numeric_sum);
+    $(".numeric-sum").val(numberToString(__numeric_sum)); 
+
   
   })();
 

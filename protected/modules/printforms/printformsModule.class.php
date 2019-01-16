@@ -451,6 +451,7 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 				
 
 				function num2str($num) {
+				/* 	$num = str_replace('.', $num, ','); */
 					$nul='ноль';
 					$ten=array(
 						array('','один','два','три','четыре','пять','шесть','семь', 'восемь','девять'),
@@ -560,7 +561,12 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 					$history = $saldo = 0;
 				}
 
-				$invoice_day = substr($print['invoice_date'], -2);
+				if(isset($print['invoice_date'])) {
+					$invoice_day = substr($print['invoice_date'], -2);
+				} else {
+					$invoice_day = 0;
+				}
+				
 
 				return array(
 					'print' 				=> $print,

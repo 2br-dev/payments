@@ -165,15 +165,15 @@
 					{if $peni == 1}
 						<p>Всего наименований 1 на сумму <input type="text" value="{$allpeni.peni}"></p>
 						{elseif $disc == 1}
-							<p>Всего наименований 1 на сумму <input type="text" value="{$print.discoint}"></p>
+							<p>Всего наименований 1 на сумму <input type="text" id='numeric-sum' value="{$print.discoint}"></p>
 						{else}
-							<p>Всего наименований 1 на сумму <input type="text" value="{$print.invoice_summa}"></p>
+							<p>Всего наименований 1 на сумму <input type="text" id='numeric-sum' value="{$print.invoice_summa}"></p>
 					{/if}
 
 					{if $peni == 1}
 						<p><input style="width: 97%;" type="text" value="( {$allpeni.string} )"></p>
 						{else}
-						<p><input style="width: 97%;" type="text" value="( {$print.contract_summa_string} )"></p>
+						<p><input style="width: 97%;" type="text" class='numeric-sum' value="обновите страницу"></p>
 					{/if}					
 					
 				</div>
@@ -311,12 +311,12 @@
 						{if $disc == 1}
 							<tr>
 								<td style="text-align: right; font-weight: bold; border: none;">Всего:</td>
-								<td style="border: 1px solid #000000;"><input type="text" value="{$print.discoint}"></td>
+								<td style="border: 1px solid #000000;"><input type="text" id='numeric-sum' value="{$print.discoint}"></td>
 							</tr>
 						{else}
 							<tr>
 								<td style="text-align: right; font-weight: bold; border: none;">Всего:</td>
-								<td style="border: 1px solid #000000;"><input type="text" value="{$print.invoice_summa}"></td>
+								<td style="border: 1px solid #000000;"><input type="text" id='numeric-sum' value="{$print.invoice_summa}"></td>
 							</tr>
 						{/if}
 					{/if}					
@@ -328,9 +328,9 @@
 					<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму<strong><input type="text" value="{$allpeni.string}"></strong>, в т.ч.: НДС - Ноль рублей 00 копеек</p>
 				{else}
 					{if $disc == 1}
-						<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму<strong><input type="text" value="{$print.contract_summa_string}"></strong>, в т.ч.: НДС - Ноль рублей 00 копеек</p>
+						<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму<strong><input type="text" class='numeric-sum' value=""></strong>, в т.ч.: НДС - Ноль рублей 00 копеек</p>
 					{else}
-						<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму<strong><input type="text" value="{$print.contract_summa_string}"></strong>, в т.ч.: НДС - Ноль рублей 00 копеек</p>
+						<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму<strong><input type="text" class='numeric-sum' value=""></strong>, в т.ч.: НДС - Ноль рублей 00 копеек</p>
 					{/if}
 				{/if}	
 					<p style="font-style: italic; font-size: 12px;">Вышеперечисленные услуги выполненые полностью и в срок. Заказчик претензий по объему, качеству и срокам оказания услуг не имеет</p>
